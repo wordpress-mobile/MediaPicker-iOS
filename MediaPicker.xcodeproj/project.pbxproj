@@ -1,0 +1,596 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E12CE9461CAA528700767F8E /* WPIndexMove.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE92A1CAA528700767F8E /* WPIndexMove.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9471CAA528700767F8E /* WPIndexMove.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE92B1CAA528700767F8E /* WPIndexMove.m */; };
+		E12CE9481CAA528700767F8E /* WPMediaCapturePreviewCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE92C1CAA528700767F8E /* WPMediaCapturePreviewCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9491CAA528700767F8E /* WPMediaCapturePreviewCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE92D1CAA528700767F8E /* WPMediaCapturePreviewCollectionView.m */; };
+		E12CE94A1CAA528700767F8E /* WPMediaCollectionDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE92E1CAA528700767F8E /* WPMediaCollectionDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE94B1CAA528700767F8E /* WPMediaCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE92F1CAA528700767F8E /* WPMediaCollectionViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE94C1CAA528700767F8E /* WPMediaCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9301CAA528700767F8E /* WPMediaCollectionViewCell.m */; };
+		E12CE94D1CAA528700767F8E /* WPMediaCollectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE9311CAA528700767F8E /* WPMediaCollectionViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE94E1CAA528700767F8E /* WPMediaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9321CAA528700767F8E /* WPMediaCollectionViewController.m */; };
+		E12CE94F1CAA528700767F8E /* WPMediaGroupPickerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE9331CAA528700767F8E /* WPMediaGroupPickerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9501CAA528700767F8E /* WPMediaGroupPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9341CAA528700767F8E /* WPMediaGroupPickerViewController.m */; };
+		E12CE9511CAA528700767F8E /* WPMediaGroupTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE9351CAA528700767F8E /* WPMediaGroupTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9521CAA528700767F8E /* WPMediaGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9361CAA528700767F8E /* WPMediaGroupTableViewCell.m */; };
+		E12CE9531CAA528700767F8E /* WPMediaPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE9371CAA528700767F8E /* WPMediaPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9541CAA528700767F8E /* WPMediaPickerResources.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE9381CAA528700767F8E /* WPMediaPickerResources.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9551CAA528700767F8E /* WPMediaPickerResources.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9391CAA528700767F8E /* WPMediaPickerResources.m */; };
+		E12CE9561CAA528700767F8E /* WPMediaPickerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE93A1CAA528700767F8E /* WPMediaPickerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9571CAA528700767F8E /* WPMediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE93B1CAA528700767F8E /* WPMediaPickerViewController.m */; };
+		E12CE9581CAA528700767F8E /* WPPHAssetDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = E12CE93C1CAA528700767F8E /* WPPHAssetDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E12CE9591CAA528700767F8E /* WPPHAssetDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE93D1CAA528700767F8E /* WPPHAssetDataSource.m */; };
+		E12CE95B1CAA52F000767F8E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12CE95A1CAA52F000767F8E /* UIKit.framework */; };
+		E12CE9921CAA5DA900767F8E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE97A1CAA5D7600767F8E /* AppDelegate.m */; };
+		E12CE9931CAA5DA900767F8E /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE97C1CAA5D7600767F8E /* DemoViewController.m */; };
+		E12CE9941CAA5DA900767F8E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9811CAA5D7600767F8E /* main.m */; };
+		E12CE9951CAA5DA900767F8E /* OptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12CE9831CAA5D7600767F8E /* OptionsViewController.m */; };
+		E12CE9961CAA5DAD00767F8E /* WPMediaPicker-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E12CE9841CAA5D7600767F8E /* WPMediaPicker-Info.plist */; };
+		E12CE9971CAA5DB900767F8E /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E12CE9801CAA5D7600767F8E /* Launch Screen.xib */; };
+		E12CE9981CAA5DC000767F8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E12CE97F1CAA5D7600767F8E /* Images.xcassets */; };
+		E12CE9991CAA5DC700767F8E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E12CE97D1CAA5D7600767F8E /* InfoPlist.strings */; };
+		E12CE99A1CAA5DD600767F8E /* WPMediaPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12CE90F1CAA51CB00767F8E /* WPMediaPicker.framework */; };
+		E1FDF15C1CAA5ECC0093952B /* camera.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE9221CAA528700767F8E /* camera.png */; };
+		E1FDF15D1CAA5ECC0093952B /* camera@2x.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE9231CAA528700767F8E /* camera@2x.png */; };
+		E1FDF15E1CAA5ECC0093952B /* camera@3x.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE9241CAA528700767F8E /* camera@3x.png */; };
+		E1FDF15F1CAA5ECC0093952B /* video.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE9251CAA528700767F8E /* video.png */; };
+		E1FDF1601CAA5ECC0093952B /* video@2x.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE9261CAA528700767F8E /* video@2x.png */; };
+		E1FDF1611CAA5ECC0093952B /* video@3x.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE9271CAA528700767F8E /* video@3x.png */; };
+		E1FDF1631CAA5F420093952B /* WPMediaPicker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E12CE90F1CAA51CB00767F8E /* WPMediaPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E1FDF1641CAA5F4A0093952B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E12CE9061CAA51CB00767F8E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E12CE90E1CAA51CB00767F8E;
+			remoteInfo = WPMediaPicker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E1FDF15B1CAA5EC20093952B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				E1FDF15C1CAA5ECC0093952B /* camera.png in CopyFiles */,
+				E1FDF15D1CAA5ECC0093952B /* camera@2x.png in CopyFiles */,
+				E1FDF15E1CAA5ECC0093952B /* camera@3x.png in CopyFiles */,
+				E1FDF15F1CAA5ECC0093952B /* video.png in CopyFiles */,
+				E1FDF1601CAA5ECC0093952B /* video@2x.png in CopyFiles */,
+				E1FDF1611CAA5ECC0093952B /* video@3x.png in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1FDF1621CAA5F380093952B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E1FDF1631CAA5F420093952B /* WPMediaPicker.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E12CE90F1CAA51CB00767F8E /* WPMediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WPMediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E12CE91B1CAA520F00767F8E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E12CE9221CAA528700767F8E /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		E12CE9231CAA528700767F8E /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		E12CE9241CAA528700767F8E /* camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@3x.png"; sourceTree = "<group>"; };
+		E12CE9251CAA528700767F8E /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
+		E12CE9261CAA528700767F8E /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
+		E12CE9271CAA528700767F8E /* video@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@3x.png"; sourceTree = "<group>"; };
+		E12CE92A1CAA528700767F8E /* WPIndexMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPIndexMove.h; sourceTree = "<group>"; };
+		E12CE92B1CAA528700767F8E /* WPIndexMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPIndexMove.m; sourceTree = "<group>"; };
+		E12CE92C1CAA528700767F8E /* WPMediaCapturePreviewCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaCapturePreviewCollectionView.h; sourceTree = "<group>"; };
+		E12CE92D1CAA528700767F8E /* WPMediaCapturePreviewCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaCapturePreviewCollectionView.m; sourceTree = "<group>"; };
+		E12CE92E1CAA528700767F8E /* WPMediaCollectionDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaCollectionDataSource.h; sourceTree = "<group>"; };
+		E12CE92F1CAA528700767F8E /* WPMediaCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaCollectionViewCell.h; sourceTree = "<group>"; };
+		E12CE9301CAA528700767F8E /* WPMediaCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaCollectionViewCell.m; sourceTree = "<group>"; };
+		E12CE9311CAA528700767F8E /* WPMediaCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaCollectionViewController.h; sourceTree = "<group>"; };
+		E12CE9321CAA528700767F8E /* WPMediaCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaCollectionViewController.m; sourceTree = "<group>"; };
+		E12CE9331CAA528700767F8E /* WPMediaGroupPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaGroupPickerViewController.h; sourceTree = "<group>"; };
+		E12CE9341CAA528700767F8E /* WPMediaGroupPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaGroupPickerViewController.m; sourceTree = "<group>"; };
+		E12CE9351CAA528700767F8E /* WPMediaGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaGroupTableViewCell.h; sourceTree = "<group>"; };
+		E12CE9361CAA528700767F8E /* WPMediaGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaGroupTableViewCell.m; sourceTree = "<group>"; };
+		E12CE9371CAA528700767F8E /* WPMediaPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaPicker.h; sourceTree = "<group>"; };
+		E12CE9381CAA528700767F8E /* WPMediaPickerResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaPickerResources.h; sourceTree = "<group>"; };
+		E12CE9391CAA528700767F8E /* WPMediaPickerResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaPickerResources.m; sourceTree = "<group>"; };
+		E12CE93A1CAA528700767F8E /* WPMediaPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaPickerViewController.h; sourceTree = "<group>"; };
+		E12CE93B1CAA528700767F8E /* WPMediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaPickerViewController.m; sourceTree = "<group>"; };
+		E12CE93C1CAA528700767F8E /* WPPHAssetDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPHAssetDataSource.h; sourceTree = "<group>"; };
+		E12CE93D1CAA528700767F8E /* WPPHAssetDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPHAssetDataSource.m; sourceTree = "<group>"; };
+		E12CE95A1CAA52F000767F8E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E12CE9611CAA5D6300767F8E /* WPMediaPicker-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WPMediaPicker-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E12CE9791CAA5D7600767F8E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E12CE97A1CAA5D7600767F8E /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E12CE97B1CAA5D7600767F8E /* DemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
+		E12CE97C1CAA5D7600767F8E /* DemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
+		E12CE97E1CAA5D7600767F8E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E12CE97F1CAA5D7600767F8E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E12CE9801CAA5D7600767F8E /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		E12CE9811CAA5D7600767F8E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E12CE9821CAA5D7600767F8E /* OptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsViewController.h; sourceTree = "<group>"; };
+		E12CE9831CAA5D7600767F8E /* OptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsViewController.m; sourceTree = "<group>"; };
+		E12CE9841CAA5D7600767F8E /* WPMediaPicker-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WPMediaPicker-Info.plist"; sourceTree = "<group>"; };
+		E12CE9851CAA5D7600767F8E /* WPMediaPicker-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPicker-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E12CE90B1CAA51CB00767F8E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E12CE95B1CAA52F000767F8E /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E12CE95E1CAA5D6300767F8E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E12CE99A1CAA5DD600767F8E /* WPMediaPicker.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E12CE9051CAA51CB00767F8E = {
+			isa = PBXGroup;
+			children = (
+				E12CE9781CAA5D7600767F8E /* Example */,
+				E12CE91F1CAA528700767F8E /* Sources */,
+				E12CE91A1CAA520F00767F8E /* Support */,
+				E12CE95C1CAA532900767F8E /* Frameworks */,
+				E12CE9101CAA51CB00767F8E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E12CE9101CAA51CB00767F8E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE90F1CAA51CB00767F8E /* WPMediaPicker.framework */,
+				E12CE9611CAA5D6300767F8E /* WPMediaPicker-Example.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E12CE91A1CAA520F00767F8E /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE91B1CAA520F00767F8E /* Info.plist */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		E12CE91F1CAA528700767F8E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE9201CAA528700767F8E /* Assets */,
+				E12CE9281CAA528700767F8E /* Classes */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		E12CE9201CAA528700767F8E /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE9221CAA528700767F8E /* camera.png */,
+				E12CE9231CAA528700767F8E /* camera@2x.png */,
+				E12CE9241CAA528700767F8E /* camera@3x.png */,
+				E12CE9251CAA528700767F8E /* video.png */,
+				E12CE9261CAA528700767F8E /* video@2x.png */,
+				E12CE9271CAA528700767F8E /* video@3x.png */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		E12CE9281CAA528700767F8E /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE92A1CAA528700767F8E /* WPIndexMove.h */,
+				E12CE92B1CAA528700767F8E /* WPIndexMove.m */,
+				E12CE92C1CAA528700767F8E /* WPMediaCapturePreviewCollectionView.h */,
+				E12CE92D1CAA528700767F8E /* WPMediaCapturePreviewCollectionView.m */,
+				E12CE92E1CAA528700767F8E /* WPMediaCollectionDataSource.h */,
+				E12CE92F1CAA528700767F8E /* WPMediaCollectionViewCell.h */,
+				E12CE9301CAA528700767F8E /* WPMediaCollectionViewCell.m */,
+				E12CE9311CAA528700767F8E /* WPMediaCollectionViewController.h */,
+				E12CE9321CAA528700767F8E /* WPMediaCollectionViewController.m */,
+				E12CE9331CAA528700767F8E /* WPMediaGroupPickerViewController.h */,
+				E12CE9341CAA528700767F8E /* WPMediaGroupPickerViewController.m */,
+				E12CE9351CAA528700767F8E /* WPMediaGroupTableViewCell.h */,
+				E12CE9361CAA528700767F8E /* WPMediaGroupTableViewCell.m */,
+				E12CE9371CAA528700767F8E /* WPMediaPicker.h */,
+				E12CE9381CAA528700767F8E /* WPMediaPickerResources.h */,
+				E12CE9391CAA528700767F8E /* WPMediaPickerResources.m */,
+				E12CE93A1CAA528700767F8E /* WPMediaPickerViewController.h */,
+				E12CE93B1CAA528700767F8E /* WPMediaPickerViewController.m */,
+				E12CE93C1CAA528700767F8E /* WPPHAssetDataSource.h */,
+				E12CE93D1CAA528700767F8E /* WPPHAssetDataSource.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		E12CE95C1CAA532900767F8E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE95A1CAA52F000767F8E /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E12CE9781CAA5D7600767F8E /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				E12CE9791CAA5D7600767F8E /* AppDelegate.h */,
+				E12CE97A1CAA5D7600767F8E /* AppDelegate.m */,
+				E12CE97B1CAA5D7600767F8E /* DemoViewController.h */,
+				E12CE97C1CAA5D7600767F8E /* DemoViewController.m */,
+				E12CE97D1CAA5D7600767F8E /* InfoPlist.strings */,
+				E12CE97F1CAA5D7600767F8E /* Images.xcassets */,
+				E12CE9801CAA5D7600767F8E /* Launch Screen.xib */,
+				E12CE9811CAA5D7600767F8E /* main.m */,
+				E12CE9821CAA5D7600767F8E /* OptionsViewController.h */,
+				E12CE9831CAA5D7600767F8E /* OptionsViewController.m */,
+				E12CE9841CAA5D7600767F8E /* WPMediaPicker-Info.plist */,
+				E12CE9851CAA5D7600767F8E /* WPMediaPicker-Prefix.pch */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E12CE90C1CAA51CB00767F8E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E12CE9511CAA528700767F8E /* WPMediaGroupTableViewCell.h in Headers */,
+				E12CE9581CAA528700767F8E /* WPPHAssetDataSource.h in Headers */,
+				E12CE94B1CAA528700767F8E /* WPMediaCollectionViewCell.h in Headers */,
+				E12CE94D1CAA528700767F8E /* WPMediaCollectionViewController.h in Headers */,
+				E12CE9481CAA528700767F8E /* WPMediaCapturePreviewCollectionView.h in Headers */,
+				E12CE9531CAA528700767F8E /* WPMediaPicker.h in Headers */,
+				E12CE94A1CAA528700767F8E /* WPMediaCollectionDataSource.h in Headers */,
+				E12CE94F1CAA528700767F8E /* WPMediaGroupPickerViewController.h in Headers */,
+				E12CE9561CAA528700767F8E /* WPMediaPickerViewController.h in Headers */,
+				E12CE9541CAA528700767F8E /* WPMediaPickerResources.h in Headers */,
+				E12CE9461CAA528700767F8E /* WPIndexMove.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E12CE90E1CAA51CB00767F8E /* WPMediaPicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E12CE9171CAA51CC00767F8E /* Build configuration list for PBXNativeTarget "WPMediaPicker" */;
+			buildPhases = (
+				E12CE90A1CAA51CB00767F8E /* Sources */,
+				E12CE90B1CAA51CB00767F8E /* Frameworks */,
+				E12CE90C1CAA51CB00767F8E /* Headers */,
+				E1FDF15B1CAA5EC20093952B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WPMediaPicker;
+			productName = WPMediaPicker;
+			productReference = E12CE90F1CAA51CB00767F8E /* WPMediaPicker.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E12CE9601CAA5D6300767F8E /* WPMediaPicker-Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E12CE9771CAA5D6300767F8E /* Build configuration list for PBXNativeTarget "WPMediaPicker-Example" */;
+			buildPhases = (
+				E12CE95D1CAA5D6300767F8E /* Sources */,
+				E12CE95E1CAA5D6300767F8E /* Frameworks */,
+				E12CE95F1CAA5D6300767F8E /* Resources */,
+				E1FDF1621CAA5F380093952B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E1FDF1651CAA5F4A0093952B /* PBXTargetDependency */,
+			);
+			name = "WPMediaPicker-Example";
+			productName = "WPMediaPicker-Example";
+			productReference = E12CE9611CAA5D6300767F8E /* WPMediaPicker-Example.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E12CE9061CAA51CB00767F8E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = WordPress;
+				TargetAttributes = {
+					E12CE90E1CAA51CB00767F8E = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					E12CE9601CAA5D6300767F8E = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = E12CE9091CAA51CB00767F8E /* Build configuration list for PBXProject "MediaPicker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E12CE9051CAA51CB00767F8E;
+			productRefGroup = E12CE9101CAA51CB00767F8E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E12CE90E1CAA51CB00767F8E /* WPMediaPicker */,
+				E12CE9601CAA5D6300767F8E /* WPMediaPicker-Example */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E12CE95F1CAA5D6300767F8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E12CE9981CAA5DC000767F8E /* Images.xcassets in Resources */,
+				E12CE9991CAA5DC700767F8E /* InfoPlist.strings in Resources */,
+				E12CE9961CAA5DAD00767F8E /* WPMediaPicker-Info.plist in Resources */,
+				E12CE9971CAA5DB900767F8E /* Launch Screen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E12CE90A1CAA51CB00767F8E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E12CE9491CAA528700767F8E /* WPMediaCapturePreviewCollectionView.m in Sources */,
+				E12CE9471CAA528700767F8E /* WPIndexMove.m in Sources */,
+				E12CE9501CAA528700767F8E /* WPMediaGroupPickerViewController.m in Sources */,
+				E12CE9521CAA528700767F8E /* WPMediaGroupTableViewCell.m in Sources */,
+				E12CE9591CAA528700767F8E /* WPPHAssetDataSource.m in Sources */,
+				E12CE9571CAA528700767F8E /* WPMediaPickerViewController.m in Sources */,
+				E12CE94E1CAA528700767F8E /* WPMediaCollectionViewController.m in Sources */,
+				E12CE94C1CAA528700767F8E /* WPMediaCollectionViewCell.m in Sources */,
+				E12CE9551CAA528700767F8E /* WPMediaPickerResources.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E12CE95D1CAA5D6300767F8E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E12CE9921CAA5DA900767F8E /* AppDelegate.m in Sources */,
+				E12CE9951CAA5DA900767F8E /* OptionsViewController.m in Sources */,
+				E12CE9941CAA5DA900767F8E /* main.m in Sources */,
+				E12CE9931CAA5DA900767F8E /* DemoViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E1FDF1651CAA5F4A0093952B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E12CE90E1CAA51CB00767F8E /* WPMediaPicker */;
+			targetProxy = E1FDF1641CAA5F4A0093952B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E12CE97D1CAA5D7600767F8E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E12CE97E1CAA5D7600767F8E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E12CE9151CAA51CC00767F8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E12CE9161CAA51CC00767F8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E12CE9181CAA51CC00767F8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WPMediaPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E12CE9191CAA51CC00767F8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WPMediaPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E12CE9751CAA5D6300767F8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "$(SRCROOT)/Example/WPMediaPicker-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.WPMediaPicker-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E12CE9761CAA5D6300767F8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "$(SRCROOT)/Example/WPMediaPicker-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.WPMediaPicker-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E12CE9091CAA51CB00767F8E /* Build configuration list for PBXProject "MediaPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E12CE9151CAA51CC00767F8E /* Debug */,
+				E12CE9161CAA51CC00767F8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E12CE9171CAA51CC00767F8E /* Build configuration list for PBXNativeTarget "WPMediaPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E12CE9181CAA51CC00767F8E /* Debug */,
+				E12CE9191CAA51CC00767F8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E12CE9771CAA5D6300767F8E /* Build configuration list for PBXNativeTarget "WPMediaPicker-Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E12CE9751CAA5D6300767F8E /* Debug */,
+				E12CE9761CAA5D6300767F8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E12CE9061CAA51CB00767F8E /* Project object */;
+}

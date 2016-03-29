@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0600"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,75 +14,70 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6003F589195388D20070C39A"
-               BuildableName = "WPMediaPicker.app"
-               BlueprintName = "WPMediaPicker"
-               ReferencedContainer = "container:WPMediaPicker.xcodeproj">
+               BlueprintIdentifier = "E12CE9601CAA5D6300767F8E"
+               BuildableName = "WPMediaPicker-Example.app"
+               BlueprintName = "WPMediaPicker-Example"
+               ReferencedContainer = "container:MediaPicker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6003F5AD195388D20070C39A"
-               BuildableName = "Tests.xctest"
-               BlueprintName = "Tests"
-               ReferencedContainer = "container:WPMediaPicker.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "WPMediaPicker.app"
-            BlueprintName = "WPMediaPicker"
-            ReferencedContainer = "container:WPMediaPicker.xcodeproj">
+            BlueprintIdentifier = "E12CE9601CAA5D6300767F8E"
+            BuildableName = "WPMediaPicker-Example.app"
+            BlueprintName = "WPMediaPicker-Example"
+            ReferencedContainer = "container:MediaPicker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "WPMediaPicker.app"
-            BlueprintName = "WPMediaPicker"
-            ReferencedContainer = "container:WPMediaPicker.xcodeproj">
+            BlueprintIdentifier = "E12CE9601CAA5D6300767F8E"
+            BuildableName = "WPMediaPicker-Example.app"
+            BlueprintName = "WPMediaPicker-Example"
+            ReferencedContainer = "container:MediaPicker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "WPMediaPicker.app"
-            BlueprintName = "WPMediaPicker"
-            ReferencedContainer = "container:WPMediaPicker.xcodeproj">
+            BlueprintIdentifier = "E12CE9601CAA5D6300767F8E"
+            BuildableName = "WPMediaPicker-Example.app"
+            BlueprintName = "WPMediaPicker-Example"
+            ReferencedContainer = "container:MediaPicker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

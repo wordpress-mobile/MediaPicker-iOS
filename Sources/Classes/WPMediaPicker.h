@@ -7,6 +7,7 @@
 #import "WPPHAssetDataSource.h"
 #import "WPMediaCapturePreviewCollectionView.h"
 #import "WPMediaGroupPickerViewController.h"
+#import "WPMediaGroupTableViewCell.h"
 #import "WPIndexMove.h"
 
 #endif /* _WPMEDIAPICKER_ */

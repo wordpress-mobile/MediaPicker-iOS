@@ -11,7 +11,13 @@ static NSString *const ResourcesBundleName = @"WPMediaPicker";
     dispatch_once(&_onceToken, ^{
         NSBundle * classBundle = [NSBundle bundleForClass:[self class]];
         NSString * bundlePath = [classBundle pathForResource:ResourcesBundleName ofType:@"bundle"];
-        _bundle = [NSBundle bundleWithPath:bundlePath];
+        // Cocoapods uses a bundle for the assets, but resources are added directly in
+        // the framework target. If the bundle isn't present, use the framework bundle instead
+        if (bundlePath) {
+            _bundle = [NSBundle bundleWithPath:bundlePath];
+        } else {
+            _bundle = classBundle;
+        }
     });
     return _bundle;
 }
