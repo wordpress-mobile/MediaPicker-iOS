@@ -22,6 +22,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		B5FF3BEA1CAD8AB100C1D597 /* PostProcessingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FF3BE91CAD8AB100C1D597 /* PostProcessingViewController.m */; };
 		DD821F4817504E75FB9E2B91 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA47A0718D787F4D3E328AF /* libPods-Tests.a */; };
+		FF2716861CAAC10D0006E2D4 /* MediaPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = FF2716851CAAC10D0006E2D4 /* MediaPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FFC3F6F31B0D9BB100EFC359 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC3F6F21B0D9BB100EFC359 /* Launch Screen.xib */; };
 		FFE69A1D1B14AB840073C2EB /* OptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE69A1C1B14AB840073C2EB /* OptionsViewController.m */; };
 		FFFFD8811A447E67000FC184 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFFD8801A447E67000FC184 /* DemoViewController.m */; };
@@ -66,6 +67,9 @@
 		ED8347A02DA278006813C36B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0D09511821A352B062D5699 /* WPMediaPicker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WPMediaPicker.podspec; path = ../WPMediaPicker.podspec; sourceTree = "<group>"; };
 		FBE1845B23E3060E3B0B5CF2 /* Pods-WPMediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPMediaPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-WPMediaPicker/Pods-WPMediaPicker.release.xcconfig"; sourceTree = "<group>"; };
+		FF2716831CAAC10D0006E2D4 /* MediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF2716851CAAC10D0006E2D4 /* MediaPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPicker.h; sourceTree = "<group>"; };
+		FF2716871CAAC10D0006E2D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFC3F6F21B0D9BB100EFC359 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		FFE69A1B1B14AB840073C2EB /* OptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsViewController.h; sourceTree = "<group>"; };
 		FFE69A1C1B14AB840073C2EB /* OptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsViewController.m; sourceTree = "<group>"; };
@@ -96,6 +100,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FF27167F1CAAC10D0006E2D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -105,6 +116,7 @@
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* WPMediaPicker */,
 				6003F5B5195388D20070C39A /* Tests */,
+				FF2716841CAAC10D0006E2D4 /* MediaPicker */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				E407CB686FC85EB404994FDE /* Pods */,
@@ -116,6 +128,7 @@
 			children = (
 				6003F58A195388D20070C39A /* WPMediaPicker.app */,
 				6003F5AE195388D20070C39A /* Tests.xctest */,
+				FF2716831CAAC10D0006E2D4 /* MediaPicker.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,7 +215,27 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FF2716841CAAC10D0006E2D4 /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				FF2716851CAAC10D0006E2D4 /* MediaPicker.h */,
+				FF2716871CAAC10D0006E2D4 /* Info.plist */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		FF2716801CAAC10D0006E2D4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF2716861CAAC10D0006E2D4 /* MediaPicker.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		6003F589195388D20070C39A /* WPMediaPicker */ = {
@@ -246,6 +279,24 @@
 			productReference = 6003F5AE195388D20070C39A /* Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		FF2716821CAAC10D0006E2D4 /* MediaPicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF27168A1CAAC10D0006E2D4 /* Build configuration list for PBXNativeTarget "MediaPicker" */;
+			buildPhases = (
+				FF27167E1CAAC10D0006E2D4 /* Sources */,
+				FF27167F1CAAC10D0006E2D4 /* Frameworks */,
+				FF2716801CAAC10D0006E2D4 /* Headers */,
+				FF2716811CAAC10D0006E2D4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MediaPicker;
+			productName = MediaPicker;
+			productReference = FF2716831CAAC10D0006E2D4 /* MediaPicker.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -258,6 +309,9 @@
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
+					};
+					FF2716821CAAC10D0006E2D4 = {
+						CreatedOnToolsVersion = 7.3;
 					};
 				};
 			};
@@ -276,6 +330,7 @@
 			targets = (
 				6003F589195388D20070C39A /* WPMediaPicker */,
 				6003F5AD195388D20070C39A /* Tests */,
+				FF2716821CAAC10D0006E2D4 /* MediaPicker */,
 			);
 		};
 /* End PBXProject section */
@@ -296,6 +351,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF2716811CAAC10D0006E2D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +474,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF27167E1CAAC10D0006E2D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,6 +666,62 @@
 			};
 			name = Release;
 		};
+		FF2716881CAAC10D0006E2D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = MediaPicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.MediaPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		FF2716891CAAC10D0006E2D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = MediaPicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.MediaPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -626,6 +751,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		FF27168A1CAAC10D0006E2D4 /* Build configuration list for PBXNativeTarget "MediaPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF2716881CAAC10D0006E2D4 /* Debug */,
+				FF2716891CAAC10D0006E2D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
