@@ -209,7 +209,7 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     } else {
         self.titleButton.hidden = NO;
     }
-    NSString *localizedOptionHint = NSLocalizedString(@"Tap here to change", "");
+    NSString *localizedOptionHint = NSLocalizedString(@"Tap here to change", "Tip for tapping media picker title to change the group.");
     NSString *albumName = [NSString stringWithFormat:@"%@\n", [mediaGroup name]];
     UIFont *titleFont = self.titleButton.titleLabel.font;
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumName attributes:@{NSFontAttributeName: titleFont}];
