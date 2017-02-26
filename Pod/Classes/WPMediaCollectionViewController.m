@@ -35,7 +35,7 @@
 @implementation WPMediaCollectionViewController
 
 static CGFloat SelectAnimationTime = 0.2;
-static NSString *const ArrowDown = @"\u25be";
+static NSString *const ArrowDown = @"\u25bc";
 static CGSize CameraPreviewSize =  {88.0, 88.0};
 
 - (instancetype)init
@@ -209,8 +209,16 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     } else {
         self.titleButton.hidden = NO;
     }
-    NSString *title = [NSString stringWithFormat:@"%@ %@", [mediaGroup name], ArrowDown];
-    [self.titleButton setTitle:title forState:UIControlStateNormal];
+    NSString *localizedOptionHint = NSLocalizedString(@"Tap here to change", "");
+    NSString *albumName = [NSString stringWithFormat:@"%@\n", [mediaGroup name]];
+    UIFont *titleFont = self.titleButton.titleLabel.font;
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumName attributes:@{NSFontAttributeName: titleFont}];
+    NSString *callForAction = [NSString stringWithFormat:@"%@ %@",localizedOptionHint, ArrowDown];
+    [title appendAttributedString:[[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}]];
+
+    [self.titleButton setAttributedTitle:title forState:UIControlStateNormal];
+    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.titleButton sizeToFit];
 }
 
