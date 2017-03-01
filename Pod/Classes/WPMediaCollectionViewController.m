@@ -221,7 +221,7 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}]];
 
     [self.titleButton setAttributedTitle:title forState:UIControlStateNormal];
-    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     self.titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleButton.titleLabel.numberOfLines = 2;
     [self.titleButton sizeToFit];
