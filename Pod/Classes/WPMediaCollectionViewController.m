@@ -35,7 +35,7 @@
 @implementation WPMediaCollectionViewController
 
 static CGFloat SelectAnimationTime = 0.2;
-static NSString *const ArrowDown = @"\u25bc";
+static NSString *const ArrowDown = @"\u25be";
 static CGSize CameraPreviewSize =  {88.0, 88.0};
 
 - (instancetype)init
@@ -210,15 +210,20 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
         self.titleButton.hidden = NO;
     }
     NSString *localizedOptionHint = NSLocalizedString(@"Tap here to change", "Tip for tapping media picker title to change the group.");
-    NSString *albumName = [NSString stringWithFormat:@"%@\n", [mediaGroup name]];
+    NSString *albumName = NSLocalizedString(@"No Photos", "Group name to show when permission are denied to access Photos albums");
+    if ([mediaGroup name] != nil) {
+        albumName = [mediaGroup name];
+    }
+    NSString *albumLine = [NSString stringWithFormat:@"%@\n", albumName];
     UIFont *titleFont = self.titleButton.titleLabel.font;
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumName attributes:@{NSFontAttributeName: titleFont}];
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumLine attributes:@{NSFontAttributeName: titleFont}];
     NSString *callForAction = [NSString stringWithFormat:@"%@ %@",localizedOptionHint, ArrowDown];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}]];
 
     [self.titleButton setAttributedTitle:title forState:UIControlStateNormal];
-    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleButton.titleLabel.numberOfLines = 2;
     [self.titleButton sizeToFit];
 }
 
