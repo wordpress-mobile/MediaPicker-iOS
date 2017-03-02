@@ -86,25 +86,7 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
                    withReuseIdentifier:NSStringFromClass([WPMediaCapturePreviewCollectionView class])];
     [self setupLayout];
 
-    //setup navigation items
-    self.titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.titleButton addTarget:self action:@selector(changeGroup:) forControlEvents:UIControlEventTouchUpInside];
-
-    self.titleTipButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.titleTipButton addTarget:self action:@selector(changeGroup:) forControlEvents:UIControlEventTouchUpInside];
-    self.titleTipButton.backgroundColor = [UIColor clearColor];
-    [self.titleButton addSubview:self.titleTipButton];
-    self.titleTipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth;
-    self.titleTipButton.userInteractionEnabled = NO;
-
-    self.navigationItem.titleView = self.titleButton;
-
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
-    
-    if (self.allowMultipleSelection) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finishPicker:)];
-    }
+    [self setupNavigationItems];
 
     //setup data
     [self.dataSource setMediaTypeFilter:self.filter];
@@ -129,6 +111,54 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     }
 
     [self refreshData];
+}
+
+- (void)setupNavigationItems
+{
+    self.titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.titleButton addTarget:self action:@selector(changeGroup:) forControlEvents:UIControlEventTouchUpInside];
+    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    self.titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleButton.titleLabel.numberOfLines = 1;
+
+    self.titleTipButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.titleTipButton addTarget:self action:@selector(changeGroup:) forControlEvents:UIControlEventTouchUpInside];
+    self.titleTipButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleTipButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    self.titleTipButton.titleLabel.numberOfLines = 1;
+    NSString *localizedOptionHint = NSLocalizedString(@"Tap here to change", "Tip for tapping media picker title to change the group.");
+    NSString *callForAction = [NSString stringWithFormat:@"%@ %@",localizedOptionHint, ArrowDown];
+    UIFont *titleFont = self.titleButton.titleLabel.font;
+    NSMutableAttributedString *titleTip = [[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}];
+
+    [self.titleTipButton setAttributedTitle:titleTip forState:UIControlStateNormal];
+
+    UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[self.titleButton, self.titleTipButton]];
+    stackView.backgroundColor = [UIColor redColor];
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.distribution = UIStackViewDistributionFillProportionally;
+    stackView.spacing = 0;
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
+    titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    [titleView addSubview:stackView];
+
+    [stackView.widthAnchor constraintEqualToAnchor:titleView.widthAnchor multiplier:1].active = YES;
+    [stackView.heightAnchor constraintEqualToAnchor:titleView.heightAnchor multiplier:1].active = YES;
+    [stackView.leftAnchor constraintEqualToAnchor:titleView.leftAnchor].active = YES;
+    [stackView.topAnchor constraintEqualToAnchor:titleView.topAnchor].active = YES;
+
+    self.navigationItem.titleView = titleView;
+
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
+
+    if (self.allowMultipleSelection) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finishPicker:)];
+    }
+
 }
 
 - (void)setupLayout
@@ -220,7 +250,6 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     } else {
         self.titleButton.hidden = NO;
     }
-    NSString *localizedOptionHint = NSLocalizedString(@"Tap here to change", "Tip for tapping media picker title to change the group.");
     NSString *albumName = NSLocalizedString(@"No Photos", "Group name to show when permission are denied to access Photos albums");
     if ([mediaGroup name] != nil) {
         albumName = [mediaGroup name];
@@ -228,27 +257,7 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     UIFont *titleFont = self.titleButton.titleLabel.font;
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumName attributes:@{NSFontAttributeName: titleFont}];
 
-    NSString *callForAction = [NSString stringWithFormat:@"%@ %@",localizedOptionHint, ArrowDown];
-    NSMutableAttributedString *titleTip = [[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}];
-
-    [self.titleTipButton setAttributedTitle:titleTip forState:UIControlStateNormal];
-    self.titleTipButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleTipButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
-    self.titleTipButton.titleLabel.numberOfLines = 1;
-    [self.titleTipButton sizeToFit];
-
     [self.titleButton setAttributedTitle:title forState:UIControlStateNormal];
-    self.titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-    self.titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleButton.titleLabel.numberOfLines = 1;
-    [self.titleButton sizeToFit];
-
-    CGRect frame = self.titleTipButton.frame;
-
-    frame.origin.x = floorf((self.titleButton.frame.size.width - self.titleTipButton.frame.size.width) / 2.0);
-    frame.origin.y = titleFont.lineHeight;
-    //frame.size.width = MAX(self.titleButton.frame.size.width, self.titleTipButton.frame.size.width);
-    self.titleTipButton.frame = frame;
 }
 
 #pragma mark - UICollectionViewDataSource
