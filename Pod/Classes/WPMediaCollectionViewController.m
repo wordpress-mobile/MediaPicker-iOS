@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableArray *selectedAssets;
 @property (nonatomic, strong) WPMediaCapturePreviewCollectionView *captureCell;
 @property (nonatomic, strong) UIButton *titleButton;
+@property (nonatomic, strong) UIButton *titleTipButton;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) NSObject *changesObserver;
 @property (nonatomic, strong) NSIndexPath *firstVisibleCell;
@@ -88,7 +89,17 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     //setup navigation items
     self.titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.titleButton addTarget:self action:@selector(changeGroup:) forControlEvents:UIControlEventTouchUpInside];
+
+    self.titleTipButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.titleTipButton addTarget:self action:@selector(changeGroup:) forControlEvents:UIControlEventTouchUpInside];
+    self.titleTipButton.backgroundColor = [UIColor clearColor];
+    [self.titleButton addSubview:self.titleTipButton];
+    self.titleTipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleWidth;
+    self.titleTipButton.userInteractionEnabled = NO;
+
     self.navigationItem.titleView = self.titleButton;
+
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
     
     if (self.allowMultipleSelection) {
@@ -214,17 +225,30 @@ static CGSize CameraPreviewSize =  {88.0, 88.0};
     if ([mediaGroup name] != nil) {
         albumName = [mediaGroup name];
     }
-    NSString *albumLine = [NSString stringWithFormat:@"%@\n", albumName];
     UIFont *titleFont = self.titleButton.titleLabel.font;
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumLine attributes:@{NSFontAttributeName: titleFont}];
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:albumName attributes:@{NSFontAttributeName: titleFont}];
+
     NSString *callForAction = [NSString stringWithFormat:@"%@ %@",localizedOptionHint, ArrowDown];
-    [title appendAttributedString:[[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}]];
+    NSMutableAttributedString *titleTip = [[NSAttributedString alloc] initWithString:callForAction attributes:@{NSFontAttributeName: [titleFont fontWithSize:floorf(titleFont.pointSize * 0.75)]}];
+
+    [self.titleTipButton setAttributedTitle:titleTip forState:UIControlStateNormal];
+    self.titleTipButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleTipButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
+    self.titleTipButton.titleLabel.numberOfLines = 1;
+    [self.titleTipButton sizeToFit];
 
     [self.titleButton setAttributedTitle:title forState:UIControlStateNormal];
     self.titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     self.titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleButton.titleLabel.numberOfLines = 2;
+    self.titleButton.titleLabel.numberOfLines = 1;
     [self.titleButton sizeToFit];
+
+    CGRect frame = self.titleTipButton.frame;
+
+    frame.origin.x = floorf((self.titleButton.frame.size.width - self.titleTipButton.frame.size.width) / 2.0);
+    frame.origin.y = titleFont.lineHeight;
+    //frame.size.width = MAX(self.titleButton.frame.size.width, self.titleTipButton.frame.size.width);
+    self.titleTipButton.frame = frame;
 }
 
 #pragma mark - UICollectionViewDataSource
