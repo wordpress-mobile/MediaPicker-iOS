@@ -317,5 +317,14 @@ typedef int32_t WPMediaRequestID;
  */
 - (BOOL)ascendingOrdering;
 
+@optional
+
+/**
+ *  Tells the Data Source that the search string has changed
+ *
+ *  @param searchText the new search text
+ */
+- (void)searchTextDidChange:(nullable NSString *)searchText;
+
 @end
 

@@ -167,6 +167,12 @@
 @property (nonatomic, weak, nullable) id<WPMediaPickerViewControllerDelegate> mediaPickerDelegate;
 
 /**
+ The search bar or nil if there are no search bar visible.
+ @note Use options to make the search bar visible.
+ */
+@property (nonatomic, strong, readonly, nullable) UISearchBar *searchBar;
+
+/**
  Allows to set a group as the current display group on the data source. 
  */
 - (void)setGroup:(nonnull id<WPMediaGroup>)group;
