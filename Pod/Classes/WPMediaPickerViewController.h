@@ -142,6 +142,28 @@
  */
 - (void)mediaPickerControllerDidEndLoadingData:(nonnull WPMediaPickerViewController *)picker;
 
+/**
+ *  Asks the delegate whether an overlay view should be shown for the cell for
+ *  the specified media asset.
+ *
+ *  @param asset The asset to display an overlay view for.
+ *  @return `YES` if an overlay view should be displayed, `NO`, if not.
+ *
+ *  If this method is not implemented, no overlay view will be displayed.
+ */
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
+/**
+ *  Gives the delegate an opportunity to configure the overlay view for the
+ *  specified media asset's cell. You can implement this method to update the
+ *  overlay view as required for the asset (for example, to show a loading
+ *  indicator if the asset is currently being loaded).
+ *
+ *  @param overlayView The overlay view to configure.
+ *  @param asset       The asset to configure the overlay for.
+ */
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
 @end
 
 

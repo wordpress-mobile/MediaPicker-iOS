@@ -492,6 +492,13 @@ static CGFloat SelectAnimationTime = 0.2;
     return asset;
 }
 
+- (UIView *)dequeueReusableOverlayView
+{
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    return view;
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<WPMediaAsset> asset = [self assetForPosition:indexPath];
@@ -514,7 +521,27 @@ static CGFloat SelectAnimationTime = 0.2;
         cell.selected = NO;
     }
 
+    [self configureOverlayViewForCell:cell];
+    
     return cell;
+}
+
+- (void)configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell
+{
+    UIView *overlayView = nil;
+
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:shouldShowOverlayViewForCellForAsset:)]) {
+        if ([self.mediaPickerDelegate mediaPickerController:self shouldShowOverlayViewForCellForAsset:cell.asset]) {
+            overlayView = [self dequeueReusableOverlayView];
+            cell.overlayView = overlayView;
+        }
+    }
+
+    if (overlayView && [self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:willShowOverlayView:forCellForAsset:)]) {
+        [self.mediaPickerDelegate mediaPickerController:self
+                                    willShowOverlayView:cell.overlayView
+                                        forCellForAsset:cell.asset];
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
