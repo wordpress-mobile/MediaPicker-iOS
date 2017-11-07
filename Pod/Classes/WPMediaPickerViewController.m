@@ -36,6 +36,10 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, assign) BOOL refreshGroupFirstTime;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *assetIndexInPreview;
+
+@property (nonatomic, strong, nullable) Class overlayViewClass;
+@property (nonatomic, strong) NSArray<UIView *> * reusableOverlayViews;
+
 /**
  The size of the camera preview cell
  */
@@ -151,6 +155,15 @@ static CGFloat SelectAnimationTime = 0.2;
             [self.collectionView reloadData];
         }
     }
+}
+
+- (void)registerClassForReusableCellOverlayViews:(Class)overlayClass
+{
+    NSParameterAssert([overlayClass isSubclassOfClass:[UIView class]]);
+
+    self.overlayViewClass = overlayClass;
+
+    self.reusableOverlayViews = @[];
 }
 
 - (UICollectionViewFlowLayout *)layout
@@ -494,8 +507,14 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (UIView *)dequeueReusableOverlayView
 {
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    UIView *view = nil;
+
+    if (self.overlayViewClass) {
+        view = [self.overlayViewClass new];
+    } else {
+        view = [UIView new];
+    }
+
     return view;
 }
 

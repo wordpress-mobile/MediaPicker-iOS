@@ -233,5 +233,7 @@
  */
 - (CGFloat)cellSizeForPhotosPerLineCount:(NSUInteger)photosPerLine photoSpacing:(CGFloat)photoSpacing frameWidth:(CGFloat)frameWidth;
 
+- (void)registerClassForReusableCellOverlayViews:(Class)overlayClass;
+
 @end
 
