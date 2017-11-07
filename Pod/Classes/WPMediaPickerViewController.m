@@ -38,7 +38,7 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, strong) NSIndexPath *assetIndexInPreview;
 
 @property (nonatomic, strong, nullable) Class overlayViewClass;
-@property (nonatomic, strong) NSArray<UIView *> * reusableOverlayViews;
+@property (nonatomic, strong) NSMutableArray<UIView *> * reusableOverlayViews;
 
 /**
  The size of the camera preview cell
@@ -163,7 +163,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
     self.overlayViewClass = overlayClass;
 
-    self.reusableOverlayViews = @[];
+    self.reusableOverlayViews = [NSMutableArray new];
 }
 
 - (UICollectionViewFlowLayout *)layout
@@ -302,6 +302,11 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.collectionView scrollToItemAtIndexPath:indexPath
                                 atScrollPosition:position
                                         animated:animated];
+}
+
+- (void)showCapture {
+    [self captureMedia];
+    return;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -507,15 +512,18 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (UIView *)dequeueReusableOverlayView
 {
-    UIView *view = nil;
+    UIView *view = [self.reusableOverlayViews lastObject];
 
-    if (self.overlayViewClass) {
-        view = [self.overlayViewClass new];
-    } else {
-        view = [UIView new];
+    if (view) {
+        [self.reusableOverlayViews removeLastObject];
+        return view;
     }
 
-    return view;
+    if (self.overlayViewClass) {
+        return [self.overlayViewClass new];
+    } else {
+        return [UIView new];
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -540,8 +548,6 @@ static CGFloat SelectAnimationTime = 0.2;
         cell.selected = NO;
     }
 
-    [self configureOverlayViewForCell:cell];
-    
     return cell;
 }
 
@@ -617,9 +623,22 @@ referenceSizeForFooterInSection:(NSInteger)section
     return [UICollectionReusableView new];
 }
 
-- (void)showCapture {
-    [self captureMedia];
-    return;
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self configureOverlayViewForCell:cell];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[WPMediaCollectionViewCell class]]) {
+        WPMediaCollectionViewCell *mediaCell = (WPMediaCollectionViewCell *)cell;
+        UIView *overlayView = mediaCell.overlayView;
+
+        if (overlayView) {
+            [self.reusableOverlayViews addObject:overlayView];
+            mediaCell.overlayView = nil;
+        }
+    }
 }
 
 /**
