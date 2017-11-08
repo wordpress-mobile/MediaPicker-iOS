@@ -320,7 +320,7 @@ typedef int32_t WPMediaRequestID;
 @optional
 
 /**
- *  Tells the Data Source that the search string has changed
+ *  Tells the Data Source that the search string has been changed
  *
  *  @param searchText the new search text
  */

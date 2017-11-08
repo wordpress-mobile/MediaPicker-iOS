@@ -14,6 +14,7 @@
 - (instancetype _Nonnull )initWithOptions:(WPMediaPickerOptions *_Nonnull)options {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        options.showSearchBar = NO;
         _mediaPicker = [[WPMediaPickerViewController alloc] initWithOptions:[options copy]];
     }
     return self;

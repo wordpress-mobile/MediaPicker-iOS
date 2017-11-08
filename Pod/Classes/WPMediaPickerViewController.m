@@ -18,6 +18,8 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 
 @interface WPMediaPickerViewController ()
 <
+ UICollectionViewDataSource,
+ UICollectionViewDelegate,
  UIImagePickerControllerDelegate,
  UINavigationControllerDelegate,
  UIPopoverPresentationControllerDelegate,
@@ -44,7 +46,6 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
  */
 @property (nonatomic, assign) CGSize cameraPreviewSize;
 
-
 @end
 
 @implementation WPMediaPickerViewController
@@ -58,8 +59,9 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (instancetype)initWithOptions:(WPMediaPickerOptions *)options {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    self = [self initWithCollectionViewLayout:layout];
+    self = [self initWithNibName:nil bundle:nil];
     if (self) {
+        _collectionView = [[UICollectionView alloc] initWithFrame:(CGRectZero) collectionViewLayout:layout];
         _internalSelectedAssets = [[NSMutableArray alloc] init];
         _capturedAsset = nil;
         _options = [options copy];
@@ -68,7 +70,6 @@ static CGFloat SelectAnimationTime = 0.2;
         _viewControllerToUseToPresent = self;
     }
     return self;
-
 }
 
 - (void)dealloc
@@ -82,17 +83,14 @@ static CGFloat SelectAnimationTime = 0.2;
 {
     [super viewDidLoad];
 
-    [self setupSearchBar];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
-    // Configure collection view behaviour
-    self.clearsSelectionOnViewWillAppear = NO;
-    self.collectionView.allowsSelection = YES;
-    self.collectionView.allowsMultipleSelection = self.options.allowMultipleSelection;
-    self.collectionView.bounces = YES;
-    self.collectionView.alwaysBounceHorizontal = NO;
-    self.collectionView.alwaysBounceVertical = YES;
+
+    // Setup subviews
+    [self addCollectionViewToView];
+    [self setupCollectionView];
+    [self setupSearchBar];
 
     // Register cell classes
     [self.collectionView registerClass:[WPMediaCollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([WPMediaCollectionViewCell class])];
@@ -197,24 +195,15 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)resetContentInset
 {
-    if (self.options.showSearchBar) {
-        if (@available(iOS 11.0, *)) {
-            CGFloat searchBarHeight = self.searchBar.bounds.size.height;
-            self.additionalSafeAreaInsets = UIEdgeInsetsMake(searchBarHeight, 0, 0, 0);
-            self.searchBarTopConstraint.constant = self.view.safeAreaInsets.top - searchBarHeight;
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-            UIEdgeInsets inset = self.collectionView.contentInset;
-            inset.top = self.searchBar.bounds.size.height + self.topLayoutGuide.length;
-            self.collectionView.contentInset = inset;
-            self.searchBarTopConstraint.constant = self.topLayoutGuide.length;
-        }
+    if (@available(iOS 11.0, *)) {
+        CGFloat searchBarHeight = self.searchBar.bounds.size.height;
+        self.additionalSafeAreaInsets = UIEdgeInsetsMake(searchBarHeight, 0, 0, 0);
+        self.searchBarTopConstraint.constant = self.view.safeAreaInsets.top - searchBarHeight;
     } else {
-        if (@available(iOS 11.0, *)) {
-            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = YES;
-        }
+        UIEdgeInsets inset = self.collectionView.contentInset;
+        inset.top = self.searchBar.bounds.size.height + self.topLayoutGuide.length;
+        self.collectionView.contentInset = inset;
+        self.searchBarTopConstraint.constant = self.topLayoutGuide.length;
     }
 }
 
@@ -252,7 +241,6 @@ static CGFloat SelectAnimationTime = 0.2;
     return numberOfPhotos;
 }
 
-
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self setupLayout];
@@ -278,6 +266,41 @@ static CGFloat SelectAnimationTime = 0.2;
     return _viewControllerToUseToPresent;
 }
 
+- (void)setupCollectionView
+{
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+
+    self.collectionView.allowsSelection = YES;
+    self.collectionView.allowsMultipleSelection = self.options.allowMultipleSelection;
+    self.collectionView.bounces = YES;
+    self.collectionView.alwaysBounceHorizontal = NO;
+    self.collectionView.alwaysBounceVertical = YES;
+}
+
+- (void)addCollectionViewToView
+{
+    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.collectionView];
+
+    NSLayoutAnchor *leadingAnchor = self.view.leadingAnchor;
+    NSLayoutAnchor *trailingAnchor = self.view.trailingAnchor;
+
+    if (@available(iOS 11.0, *)) {
+        leadingAnchor = self.view.safeAreaLayoutGuide.leadingAnchor;
+        trailingAnchor = self.view.safeAreaLayoutGuide.trailingAnchor;
+    }
+
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [self.collectionView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+       [self.collectionView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+       [self.collectionView.leadingAnchor constraintEqualToAnchor:leadingAnchor],
+       [self.collectionView.trailingAnchor constraintEqualToAnchor:trailingAnchor]
+       ]
+     ];
+}
+
 - (void)setupSearchBar
 {
     if (self.options.showSearchBar) {
@@ -296,8 +319,22 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.searchBar sizeToFit];
     [self.view addSubview:self.searchBar];
     self.searchBarTopConstraint = [self.searchBar.topAnchor constraintEqualToAnchor:self.view.topAnchor];
-    [self.searchBarTopConstraint setActive:YES];
-    [[self.searchBar.widthAnchor constraintEqualToAnchor:self.view.widthAnchor] setActive:YES];
+
+    NSLayoutAnchor *leadingAnchor = self.view.leadingAnchor;
+    NSLayoutAnchor *trailingAnchor = self.view.trailingAnchor;
+
+    if (@available(iOS 11.0, *)) {
+        leadingAnchor = self.view.safeAreaLayoutGuide.leadingAnchor;
+        trailingAnchor = self.view.safeAreaLayoutGuide.trailingAnchor;
+    }
+
+    [NSLayoutConstraint activateConstraints:
+     @[
+       self.searchBarTopConstraint,
+       [self.searchBar.leadingAnchor constraintEqualToAnchor:leadingAnchor],
+       [self.searchBar.trailingAnchor constraintEqualToAnchor:trailingAnchor]
+       ]
+     ];
 }
 
 #pragma mark - Actions
@@ -334,7 +371,7 @@ static CGFloat SelectAnimationTime = 0.2;
     NSInteger sectionToScroll = 0;
     NSInteger itemToScroll = self.options.showMostRecentFirst ? 0 : [self.dataSource numberOfAssets] - 1;
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemToScroll inSection:sectionToScroll];
-    UICollectionViewScrollPosition position = UICollectionViewScrollPositionCenteredVertically;
+    UICollectionViewScrollPosition position = UICollectionViewScrollPositionBottom;
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     if (layout && layout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         position = UICollectionViewScrollPositionCenteredHorizontally;
@@ -420,6 +457,9 @@ static CGFloat SelectAnimationTime = 0.2;
                 [UIView performWithoutAnimation:^{
                     [strongSelf.refreshControl endRefreshing];
                 }];
+            }
+            if (@available(iOS 11, *)) {} else { // Just on iOS 10
+                [self resetContentInset]; //Fix top content inset when refresh control dissapear.
             }
 
             // Scroll to the correct position
