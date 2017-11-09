@@ -61,7 +61,7 @@ static const CGFloat LabelRegularFontSize = 13;
     self.placeholderStackView.hidden = YES;
     self.documentNameLabel.text = nil;
 
-    self.overlayView = nil;
+    self.overlayView.hidden = YES;
 }
 
 - (void)layoutSubviews {

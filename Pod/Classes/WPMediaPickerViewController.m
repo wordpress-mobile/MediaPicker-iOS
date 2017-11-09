@@ -36,9 +36,7 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, assign) BOOL refreshGroupFirstTime;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *assetIndexInPreview;
-
 @property (nonatomic, strong, nullable) Class overlayViewClass;
-@property (nonatomic, strong) NSMutableArray<UIView *> * reusableOverlayViews;
 
 /**
  The size of the camera preview cell
@@ -162,8 +160,6 @@ static CGFloat SelectAnimationTime = 0.2;
     NSParameterAssert([overlayClass isSubclassOfClass:[UIView class]]);
 
     self.overlayViewClass = overlayClass;
-
-    self.reusableOverlayViews = [NSMutableArray new];
 }
 
 - (UICollectionViewFlowLayout *)layout
@@ -510,20 +506,6 @@ static CGFloat SelectAnimationTime = 0.2;
     return asset;
 }
 
-- (UIView *)dequeueReusableOverlayView
-{
-    UIView *view = [self.reusableOverlayViews lastObject];
-
-    if (view) {
-        [self.reusableOverlayViews removeLastObject];
-        return view;
-    }
-
-    NSAssert(self.overlayViewClass != nil, @"Media Picker: Attempted to dequeue a reusable overlay view, but no reuse class has been set.");
-
-    return [self.overlayViewClass new];
-}
-
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<WPMediaAsset> asset = [self assetForPosition:indexPath];
@@ -551,16 +533,19 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell
 {
-    UIView *overlayView = nil;
-
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:shouldShowOverlayViewForCellForAsset:)]) {
         if ([self.mediaPickerDelegate mediaPickerController:self shouldShowOverlayViewForCellForAsset:cell.asset]) {
-            overlayView = [self dequeueReusableOverlayView];
-            cell.overlayView = overlayView;
+            if (!cell.overlayView || ![cell.overlayView isKindOfClass:self.overlayViewClass]) {
+                NSAssert(self.overlayViewClass != nil, @"Media Picker: Attempted to instantiate a reusable overlay view, but no reuse class has been set.");
+
+                cell.overlayView = [self.overlayViewClass new];
+            }
+
+            cell.overlayView.hidden = NO;
         }
     }
 
-    if (overlayView && [self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:willShowOverlayView:forCellForAsset:)]) {
+    if (cell.overlayView && [self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:willShowOverlayView:forCellForAsset:)]) {
         [self.mediaPickerDelegate mediaPickerController:self
                                     willShowOverlayView:cell.overlayView
                                         forCellForAsset:cell.asset];
@@ -632,12 +617,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 {
     if ([cell isKindOfClass:[WPMediaCollectionViewCell class]]) {
         WPMediaCollectionViewCell *mediaCell = (WPMediaCollectionViewCell *)cell;
-        UIView *overlayView = mediaCell.overlayView;
-
-        if (overlayView) {
-            [self.reusableOverlayViews addObject:overlayView];
-            mediaCell.overlayView = nil;
-        }
+        mediaCell.overlayView.hidden = YES;
     }
 }
 
