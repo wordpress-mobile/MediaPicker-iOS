@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17475FB81FB46DED00252689 /* SampleCellOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17475FB71FB46DED00252689 /* SampleCellOverlayView.m */; };
 		17F64FE01E6DDC74006C5A2B /* CustomPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F64FDF1E6DDC74006C5A2B /* CustomPreviewViewController.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -40,6 +41,8 @@
 
 /* Begin PBXFileReference section */
 		1120051BDDDC8A558883872E /* Pods-WPMediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPMediaPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-WPMediaPicker/Pods-WPMediaPicker.release.xcconfig"; sourceTree = "<group>"; };
+		17475FB61FB46DED00252689 /* SampleCellOverlayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleCellOverlayView.h; sourceTree = "<group>"; };
+		17475FB71FB46DED00252689 /* SampleCellOverlayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SampleCellOverlayView.m; sourceTree = "<group>"; };
 		17F64FDE1E6DDC74006C5A2B /* CustomPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPreviewViewController.h; sourceTree = "<group>"; };
 		17F64FDF1E6DDC74006C5A2B /* CustomPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPreviewViewController.m; sourceTree = "<group>"; };
 		5709B45B57F590232B3E5DA7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				B5FF3BE91CAD8AB100C1D597 /* PostProcessingViewController.m */,
 				17F64FDE1E6DDC74006C5A2B /* CustomPreviewViewController.h */,
 				17F64FDF1E6DDC74006C5A2B /* CustomPreviewViewController.m */,
+				17475FB61FB46DED00252689 /* SampleCellOverlayView.h */,
+				17475FB71FB46DED00252689 /* SampleCellOverlayView.m */,
 				6003F59C195388D20070C39A /* AppDelegate.h */,
 				6003F59D195388D20070C39A /* AppDelegate.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -424,6 +429,7 @@
 				17F64FE01E6DDC74006C5A2B /* CustomPreviewViewController.m in Sources */,
 				B5FF3BEA1CAD8AB100C1D597 /* PostProcessingViewController.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
+				17475FB81FB46DED00252689 /* SampleCellOverlayView.m in Sources */,
 				FFFFD8811A447E67000FC184 /* DemoViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				FFE69A1D1B14AB840073C2EB /* OptionsViewController.m in Sources */,
