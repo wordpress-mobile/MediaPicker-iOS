@@ -5,6 +5,7 @@
 #import "WPMediaGroupPickerViewController.h"
 #import "WPPHAssetDataSource.h"
 #import "WPMediaCapturePresenter.h"
+#import "WPInputMediaPickerViewController.h"
 
 @import MobileCoreServices;
 @import AVFoundation;
@@ -58,9 +59,9 @@ static CGFloat SelectAnimationTime = 0.2;
 }
 
 - (instancetype)initWithOptions:(WPMediaPickerOptions *)options {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     self = [self initWithNibName:nil bundle:nil];
     if (self) {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         _collectionView = [[UICollectionView alloc] initWithFrame:(CGRectZero) collectionViewLayout:layout];
         _internalSelectedAssets = [[NSMutableArray alloc] init];
         _capturedAsset = nil;
@@ -91,15 +92,6 @@ static CGFloat SelectAnimationTime = 0.2;
     [self addCollectionViewToView];
     [self setupCollectionView];
     [self setupSearchBar];
-
-    // Register cell classes
-    [self.collectionView registerClass:[WPMediaCollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([WPMediaCollectionViewCell class])];
-    [self.collectionView registerClass:[WPMediaCapturePreviewCollectionView class]
-            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                   withReuseIdentifier:NSStringFromClass([WPMediaCapturePreviewCollectionView class])];
-    [self.collectionView registerClass:[WPMediaCapturePreviewCollectionView class]
-            forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                   withReuseIdentifier:NSStringFromClass([WPMediaCapturePreviewCollectionView class])];
     [self setupLayout];
 
     //setup data
@@ -276,6 +268,16 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceHorizontal = NO;
     self.collectionView.alwaysBounceVertical = YES;
+    
+    // Register cell classes
+    [self.collectionView registerClass:[WPMediaCollectionViewCell class]
+            forCellWithReuseIdentifier:NSStringFromClass([WPMediaCollectionViewCell class])];
+    [self.collectionView registerClass:[WPMediaCapturePreviewCollectionView class]
+            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                   withReuseIdentifier:NSStringFromClass([WPMediaCapturePreviewCollectionView class])];
+    [self.collectionView registerClass:[WPMediaCapturePreviewCollectionView class]
+            forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                   withReuseIdentifier:NSStringFromClass([WPMediaCapturePreviewCollectionView class])];
 }
 
 - (void)addCollectionViewToView
@@ -303,7 +305,10 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)setupSearchBar
 {
-    if (self.options.showSearchBar) {
+    if ([self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
+        return; // To not allow search bar on WPInputMediaPicker
+    }
+    if (self.options.showSearchBar && self.searchBar == nil) {
         self.searchBar = [[UISearchBar alloc] init];
         self.searchBar.delegate = self;
         self.searchBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -652,7 +657,11 @@ referenceSizeForFooterInSection:(NSInteger)section
         CGSize fixedSize = self.cameraPreviewSize;
         UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         if (layout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-            fixedSize.height = self.view.frame.size.height;
+            if (@available(iOS 11, *)) {
+                fixedSize.height = self.view.frame.size.height - self.view.safeAreaInsets.top;
+            } else {
+                fixedSize.height = self.view.frame.size.height - self.collectionView.contentInset.top;
+            }
         } else {
             fixedSize.width = self.view.frame.size.width;
         }
@@ -1016,8 +1025,8 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if ([self.dataSource respondsToSelector:@selector(searchTextDidChange:)]) {
-        [self.dataSource searchTextDidChange:searchText];
+    if ([self.dataSource respondsToSelector:@selector(searchFor:)]) {
+        [self.dataSource searchFor:searchText];
         [self.collectionView reloadData];
     }
 }

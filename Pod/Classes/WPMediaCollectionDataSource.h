@@ -324,7 +324,7 @@ typedef int32_t WPMediaRequestID;
  *
  *  @param searchText the new search text
  */
-- (void)searchTextDidChange:(nullable NSString *)searchText;
+- (void)searchFor:(nullable NSString *)searchText;
 
 @end
 
