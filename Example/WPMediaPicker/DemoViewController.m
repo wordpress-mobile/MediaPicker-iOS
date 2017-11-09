@@ -140,6 +140,7 @@
         [self.mediaInputViewController didMoveToParentViewController:nil];
     } else {
         self.mediaInputViewController = [[WPInputMediaPickerViewController alloc] init];
+        [self.mediaInputViewController.mediaPicker registerClassForReusableCellOverlayViews:[SampleCellOverlayView class]];
     }    
 
     [self addChildViewController:self.mediaInputViewController];
