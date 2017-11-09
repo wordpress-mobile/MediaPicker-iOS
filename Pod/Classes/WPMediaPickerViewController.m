@@ -625,7 +625,9 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self configureOverlayViewForCell:cell];
+    if ([cell isKindOfClass:[WPMediaCollectionViewCell class]]) {
+        [self configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath

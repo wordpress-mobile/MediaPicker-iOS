@@ -162,7 +162,7 @@
  *  @param overlayView The overlay view to configure.
  *  @param asset       The asset to configure the overlay for.
  */
-- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(nonnull UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
 
 @end
 
@@ -233,7 +233,7 @@
  */
 - (CGFloat)cellSizeForPhotosPerLineCount:(NSUInteger)photosPerLine photoSpacing:(CGFloat)photoSpacing frameWidth:(CGFloat)frameWidth;
 
-- (void)registerClassForReusableCellOverlayViews:(Class)overlayClass;
+- (void)registerClassForReusableCellOverlayViews:(nonnull Class)overlayClass;
 
 @end
 
