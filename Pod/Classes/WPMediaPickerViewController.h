@@ -144,7 +144,8 @@
 
 /**
  *  Asks the delegate whether an overlay view should be shown for the cell for
- *  the specified media asset.
+ *  the specified media asset. If you return `YES` from this method, you must
+ *  have registered a reuse class though `-[WPMediaPickerViewController registerClassForReusableCellOverlayViews:]`.
  *
  *  @param asset The asset to display an overlay view for.
  *  @return `YES` if an overlay view should be displayed, `NO`, if not.
@@ -233,6 +234,11 @@
  */
 - (CGFloat)cellSizeForPhotosPerLineCount:(NSUInteger)photosPerLine photoSpacing:(CGFloat)photoSpacing frameWidth:(CGFloat)frameWidth;
 
+/**
+ Register a `UIView` subclass to use for overlay views applied to cells. For
+ overlays to be displayed, you must register a class using this method, and then
+ return `YES` from `mediaPickerController:shouldShowOverlayViewForCellForAsset:`
+ */
 - (void)registerClassForReusableCellOverlayViews:(nonnull Class)overlayClass;
 
 @end

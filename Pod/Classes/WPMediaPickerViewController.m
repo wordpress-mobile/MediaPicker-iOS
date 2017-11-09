@@ -519,11 +519,9 @@ static CGFloat SelectAnimationTime = 0.2;
         return view;
     }
 
-    if (self.overlayViewClass) {
-        return [self.overlayViewClass new];
-    } else {
-        return [UIView new];
-    }
+    NSAssert(self.overlayViewClass != nil, @"Media Picker: Attempted to dequeue a reusable overlay view, but no reuse class has been set.");
+
+    return [self.overlayViewClass new];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
