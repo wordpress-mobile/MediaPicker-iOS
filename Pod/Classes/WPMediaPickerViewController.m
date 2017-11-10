@@ -305,11 +305,11 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)setupSearchBar
 {
-    BOOL showldShowSearchBar = self.options.showSearchBar &&
+    BOOL shouldShowSearchBar = self.options.showSearchBar &&
         ![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]] && //Disable search bar on WPInputMediaPicker
         [self.dataSource respondsToSelector:@selector(searchFor:)];
 
-    if (showldShowSearchBar && self.searchBar == nil) {
+    if (shouldShowSearchBar && self.searchBar == nil) {
         self.searchBar = [[UISearchBar alloc] init];
         self.searchBar.delegate = self;
         self.searchBar.translatesAutoresizingMaskIntoConstraints = NO;

@@ -438,10 +438,6 @@
     _refreshGroups = YES;
 }
 
-- (void)searchFor:(nullable NSString *)searchText {
-
-}
-
 @end
 
 #pragma mark - WPPHAssetMedia
