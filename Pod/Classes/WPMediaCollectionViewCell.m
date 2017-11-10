@@ -60,6 +60,8 @@ static const CGFloat LabelRegularFontSize = 13;
     self.backgroundColor = self.loadingBackgroundColor;
     self.placeholderStackView.hidden = YES;
     self.documentNameLabel.text = nil;
+
+    self.overlayView.hidden = YES;
 }
 
 - (void)layoutSubviews {
@@ -313,6 +315,28 @@ static const CGFloat LabelRegularFontSize = 13;
             self.imageView.alpha = 1.0;
             self.imageView.image = image;
         }
+    }
+}
+
+- (void)setOverlayView:(UIView *)overlayView
+{
+    if (_overlayView != overlayView) {
+        [_overlayView removeFromSuperview];
+
+        _overlayView = overlayView;
+    }
+
+    if (_overlayView) {
+        [self insertSubview:overlayView aboveSubview:self.contentView];
+
+        overlayView.translatesAutoresizingMaskIntoConstraints = NO;
+
+        [NSLayoutConstraint activateConstraints:@[
+                                                  [overlayView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                  [overlayView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
+                                                  [overlayView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+                                                  [overlayView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
+                                                  ]];
     }
 }
 

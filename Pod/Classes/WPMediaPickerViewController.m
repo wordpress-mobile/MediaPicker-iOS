@@ -40,8 +40,12 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, assign) BOOL refreshGroupFirstTime;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) NSIndexPath *assetIndexInPreview;
+
+@property (nonatomic, strong, nullable) Class overlayViewClass;
+
 @property (nonatomic, strong, readwrite) UISearchBar *searchBar;
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopConstraint;
+
 /**
  The size of the camera preview cell
  */
@@ -147,6 +151,13 @@ static CGFloat SelectAnimationTime = 0.2;
     }
 
     [self setupSearchBar];
+}
+
+- (void)registerClassForReusableCellOverlayViews:(Class)overlayClass
+{
+    NSParameterAssert([overlayClass isSubclassOfClass:[UIView class]]);
+
+    self.overlayViewClass = overlayClass;
 }
 
 - (UICollectionViewFlowLayout *)layout
@@ -387,6 +398,11 @@ static CGFloat SelectAnimationTime = 0.2;
                                         animated:animated];
 }
 
+- (void)showCapture {
+    [self captureMedia];
+    return;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 -(void)updateDataWithRemoved:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moves {
@@ -616,6 +632,27 @@ static CGFloat SelectAnimationTime = 0.2;
     return cell;
 }
 
+- (void)configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell
+{
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:shouldShowOverlayViewForCellForAsset:)]) {
+        if ([self.mediaPickerDelegate mediaPickerController:self shouldShowOverlayViewForCellForAsset:cell.asset]) {
+            if (!cell.overlayView || ![cell.overlayView isKindOfClass:self.overlayViewClass]) {
+                NSAssert(self.overlayViewClass != nil, @"Media Picker: Attempted to instantiate a reusable overlay view, but no reuse class has been set.");
+
+                cell.overlayView = [self.overlayViewClass new];
+            }
+
+            cell.overlayView.hidden = NO;
+        }
+    }
+
+    if (cell.overlayView && [self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:willShowOverlayView:forCellForAsset:)]) {
+        [self.mediaPickerDelegate mediaPickerController:self
+                                    willShowOverlayView:cell.overlayView
+                                        forCellForAsset:cell.asset];
+    }
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
 referenceSizeForHeaderInSection:(NSInteger)section
@@ -674,9 +711,19 @@ referenceSizeForFooterInSection:(NSInteger)section
     return [UICollectionReusableView new];
 }
 
-- (void)showCapture {
-    [self captureMedia];
-    return;
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[WPMediaCollectionViewCell class]]) {
+        [self configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[WPMediaCollectionViewCell class]]) {
+        WPMediaCollectionViewCell *mediaCell = (WPMediaCollectionViewCell *)cell;
+        mediaCell.overlayView.hidden = YES;
+    }
 }
 
 /**

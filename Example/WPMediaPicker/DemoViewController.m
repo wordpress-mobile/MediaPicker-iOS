@@ -3,6 +3,7 @@
 #import "WPPHAssetDataSource.h"
 #import "OptionsViewController.h"
 #import "PostProcessingViewController.h"
+#import "SampleCellOverlayView.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
 @interface DemoViewController () <WPMediaPickerViewControllerDelegate, OptionsViewControllerDelegate, UITextFieldDelegate>
@@ -44,6 +45,7 @@
                      MediaPickerOptionsFilterType:@(WPMediaTypeImage | WPMediaTypeVideo),
                      MediaPickerOptionsCustomPreview:@(NO),
                      MediaPickerOptionsScrollInputPickerVertically:@(YES),
+                     MediaPickerOptionsShowSampleCellOverlays:@(NO),
                      MediaPickerOptionsShowSearchBar:@(YES)
                      };
 
@@ -139,6 +141,7 @@
         [self.mediaInputViewController didMoveToParentViewController:nil];
     } else {
         self.mediaInputViewController = [[WPInputMediaPickerViewController alloc] init];
+        [self.mediaInputViewController.mediaPicker registerClassForReusableCellOverlayViews:[SampleCellOverlayView class]];
     }    
 
     [self addChildViewController:self.mediaInputViewController];
@@ -212,7 +215,19 @@
     assetViewController.delegate = picker;
     assetViewController.selected = [picker.selectedAssets containsObject:asset];
     return assetViewController;
+}
 
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
+{
+    return [self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue];
+}
+
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker willShowOverlayView:(UIView *)overlayView forCellForAsset:(id<WPMediaAsset>)asset
+{
+    if ([overlayView isKindOfClass:[SampleCellOverlayView class]]) {
+        SampleCellOverlayView *view = (SampleCellOverlayView *)overlayView;
+        [view setLabelText:asset.filename];
+    }
 }
 
 #pragma - Actions
@@ -249,6 +264,10 @@
     self.mediaPicker.modalPresentationStyle = UIModalPresentationPopover;
     UIPopoverPresentationController *ppc = self.mediaPicker.popoverPresentationController;
     ppc.barButtonItem = sender;
+
+    if ([self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue]) {
+        [self.mediaPicker.mediaPicker registerClassForReusableCellOverlayViews:[SampleCellOverlayView class]];
+    }
     
     [self presentViewController:self.mediaPicker animated:YES completion:nil];
     [self.quickInputTextField resignFirstResponder];
