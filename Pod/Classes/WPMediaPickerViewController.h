@@ -168,11 +168,16 @@
 @end
 
 
-@interface WPMediaPickerViewController : UICollectionViewController<WPAssetViewControllerDelegate>
+@interface WPMediaPickerViewController : UIViewController<WPAssetViewControllerDelegate>
 
 - (instancetype _Nonnull )initWithOptions:(WPMediaPickerOptions *_Nonnull)options;
 
 @property (nonatomic, copy, nonnull) WPMediaPickerOptions *options;
+
+/**
+ The collection view object managed by this view controller.
+ */
+@property (nonatomic, strong, nullable) UICollectionView *collectionView;
 
 /**
  An array with the the assets that are currently selected.
@@ -188,6 +193,12 @@
  The delegate for the WPMediaPickerViewController events
  */
 @property (nonatomic, weak, nullable) id<WPMediaPickerViewControllerDelegate> mediaPickerDelegate;
+
+/**
+ The search bar or nil if there is no search bar visible.
+ @note Use options to make the search bar visible.
+ */
+@property (nonatomic, strong, readonly, nullable) UISearchBar *searchBar;
 
 /**
  Allows to set a group as the current display group on the data source. 

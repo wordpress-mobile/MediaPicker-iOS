@@ -11,6 +11,8 @@ NSString const *MediaPickerOptionsFilterType = @"MediaPickerOptionsFilterType";
 NSString const *MediaPickerOptionsCustomPreview = @"MediaPickerOptionsCustomPreview";
 NSString const *MediaPickerOptionsScrollInputPickerVertically = @"MediaPickerOptionsScrollInputPickerVertically";
 NSString const *MediaPickerOptionsShowSampleCellOverlays = @"MediaPickerOptionsShowSampleCellOverlays";
+NSString const *MediaPickerOptionsShowSearchBar = @"MediaPickerOptionsShowSearchBar";
+
 
 typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     OptionsViewControllerCellShowMostRecentFirst,
@@ -22,6 +24,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     OptionsViewControllerCellCustomPreview,
     OptionsViewControllerCellInputPickerScroll,
     OptionsViewControllerCellShowSampleCellOverlays,
+    OptionsViewControllerCellShowSearchBar,
     OptionsViewControllerCellTotal
 };
 
@@ -36,6 +39,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
 @property (nonatomic, strong) UITableViewCell *customPreviewCell;
 @property (nonatomic, strong) UITableViewCell *scrollInputPickerCell;
 @property (nonatomic, strong) UITableViewCell *cellOverlaysCell;
+@property (nonatomic, strong) UITableViewCell *showSearchBarCell;
 
 @end
 
@@ -102,6 +106,11 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     self.cellOverlaysCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.cellOverlaysCell.accessoryView).on = [self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue];
     self.cellOverlaysCell.textLabel.text = @"Show Sample Cell Overlays";
+
+    self.showSearchBarCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    self.showSearchBarCell.accessoryView = [[UISwitch alloc] init];
+    ((UISwitch *)self.showSearchBarCell.accessoryView).on = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
+    self.showSearchBarCell.textLabel.text = @"Show Search Bar";
 }
 
 #pragma mark - Table view data source
@@ -145,7 +154,8 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
             break;
         case OptionsViewControllerCellShowSampleCellOverlays:
             return self.cellOverlaysCell;
-            break;
+        case OptionsViewControllerCellShowSearchBar:
+            return self.showSearchBarCell;
         default:
             break;
     }
@@ -174,6 +184,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
              MediaPickerOptionsCustomPreview:@(((UISwitch *)self.customPreviewCell.accessoryView).on),
              MediaPickerOptionsScrollInputPickerVertically:@(((UISwitch *)self.scrollInputPickerCell.accessoryView).on),
              MediaPickerOptionsShowSampleCellOverlays:@(((UISwitch *)self.cellOverlaysCell.accessoryView).on),
+             MediaPickerOptionsShowSearchBar:@(((UISwitch *)self.showSearchBarCell.accessoryView).on)
              };
         
         [delegate optionsViewController:self changed:newOptions];

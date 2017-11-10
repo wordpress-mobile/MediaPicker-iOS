@@ -9,6 +9,7 @@ extern NSString const *MediaPickerOptionsFilterType;
 extern NSString const *MediaPickerOptionsCustomPreview;
 extern NSString const *MediaPickerOptionsScrollInputPickerVertically;
 extern NSString const *MediaPickerOptionsShowSampleCellOverlays;
+extern NSString const *MediaPickerOptionsShowSearchBar;
 
 @class OptionsViewController;
 

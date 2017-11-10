@@ -31,7 +31,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(showOptions:)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showPicker:)];
-    
+
     // date formatter
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
@@ -45,7 +45,8 @@
                      MediaPickerOptionsFilterType:@(WPMediaTypeImage | WPMediaTypeVideo),
                      MediaPickerOptionsCustomPreview:@(NO),
                      MediaPickerOptionsScrollInputPickerVertically:@(YES),
-                     MediaPickerOptionsShowSampleCellOverlays:@(NO)
+                     MediaPickerOptionsShowSampleCellOverlays:@(NO),
+                     MediaPickerOptionsShowSearchBar:@(YES)
                      };
 
 }
@@ -245,6 +246,7 @@
     options.allowMultipleSelection = [self.options[MediaPickerOptionsAllowMultipleSelection] boolValue];
     options.filter = [self.options[MediaPickerOptionsFilterType] intValue];
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
+    options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
     return options;
 }
 
@@ -299,7 +301,7 @@
 {
     if (textField == self.quickInputTextField) {
         [self setupMediaKeyboardForInputField];
-        self.mediaInputViewController.mediaPicker.options = [self selectedOptions];        
+        self.mediaInputViewController.mediaPicker.options = [self selectedOptions];
         [self.mediaInputViewController.mediaPicker resetState:NO];
     }
     return YES;
