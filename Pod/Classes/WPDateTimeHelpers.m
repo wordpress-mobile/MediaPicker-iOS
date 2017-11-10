@@ -1,8 +1,5 @@
 #import "WPDateTimeHelpers.h"
 
-// To use only on unit tests to check results in specific languages
-static NSString *forcedLocaleIdentifier = nil;
-
 @implementation WPDateTimeHelpers
 
 + (NSString *)userFriendlyStringDateFromDate:(NSDate *)date {
@@ -82,8 +79,7 @@ static NSString *forcedLocaleIdentifier = nil;
     return [[[self class] sharedDateComponentsFormatter] stringFromTimeInterval:interval];
 }
 
-+ (void)setForcedLocaleIdentifier:(NSString *)localeIdentifier {
-    forcedLocaleIdentifier = localeIdentifier;
++ (void)setForcedLocaleIdentifier:(NSString *)forcedLocaleIdentifier {
     if (forcedLocaleIdentifier) {
         NSLocale *forcedLocale = [[NSLocale alloc] initWithLocaleIdentifier:forcedLocaleIdentifier];
         self.sharedDateFormatter.locale = forcedLocale;
