@@ -8,6 +8,8 @@
 
 + (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval;
 
++ (void)setForcedLocaleIdentifier:(NSString *)localeIdentifier;
+
 @end
 
 @interface WPDateTimeHelpersTest : XCTestCase
@@ -15,6 +17,10 @@
 @end
 
 @implementation WPDateTimeHelpersTest
+
+- (void)tearDown {
+    [WPDateTimeHelpers setForcedLocaleIdentifier:nil];
+}
 
 - (void)testStringFromTimeInterval
 {
@@ -59,8 +65,22 @@
     XCTAssertEqualObjects(@"1:01:07", result);
 }
 
-- (void)testUserFriendlyStringDateFromDate {    
+- (void)testUserFriendlyStringDateFromDate {
+
     XCTAssertThrows([WPDateTimeHelpers userFriendlyStringDateFromDate:nil]);
+
+    [WPDateTimeHelpers setForcedLocaleIdentifier:@"en_us"];
+    NSDate *now = [NSDate new];
+    XCTAssertEqualObjects([WPDateTimeHelpers userFriendlyStringDateFromDate:now], @"Today");
+
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *yesterday = [calendar dateByAddingUnit:NSCalendarUnitDay value:-1 toDate:now options:0];
+    XCTAssertEqualObjects([WPDateTimeHelpers userFriendlyStringDateFromDate:yesterday], @"Yesterday");
+
+    [WPDateTimeHelpers setForcedLocaleIdentifier:@"pt_pt"];
+    XCTAssertEqualObjects([WPDateTimeHelpers userFriendlyStringDateFromDate:now], @"Hoje");
+    XCTAssertEqualObjects([WPDateTimeHelpers userFriendlyStringDateFromDate:yesterday], @"Ontem");
 }
+
 @end
 
