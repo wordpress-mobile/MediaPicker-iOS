@@ -1,5 +1,8 @@
 #import "WPDateTimeHelpers.h"
 
+// To use only on unit tests to check results in specific languages
+static NSString *forcedLocaleIdentifier = nil;
+
 @implementation WPDateTimeHelpers
 
 + (NSString *)userFriendlyStringDateFromDate:(NSDate *)date {
@@ -9,11 +12,7 @@
 
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDate *oneWeekAgo = [calendar dateByAddingUnit:NSCalendarUnitWeekOfYear value:-1 toDate:now options:0];
-    if ([calendar isDateInToday:date]) {
-        dateString = NSLocalizedString(@"Today", @"Reference to the current day.");
-    } else if ([calendar isDateInYesterday:date]) {
-        dateString = NSLocalizedString(@"Yesterday", @"Reference to the previous day.");
-    } else if ([date compare:oneWeekAgo] == NSOrderedDescending) {
+    if ((![calendar isDateInToday:date] && ![calendar isDateInYesterday:date]) && [date compare:oneWeekAgo] == NSOrderedDescending) {
         dateString = [[[[self class] sharedDateWeekFormatter] stringFromDate:date] capitalizedStringWithLocale:nil];
     }
     return dateString;
@@ -31,6 +30,7 @@
         _sharedDateFormatter = [[NSDateFormatter alloc] init];
         _sharedDateFormatter.dateStyle = NSDateFormatterLongStyle;
         _sharedDateFormatter.timeStyle = NSDateFormatterNoStyle;
+        _sharedDateFormatter.doesRelativeDateFormatting = YES;
     });
     return _sharedDateFormatter;
 }
@@ -82,4 +82,13 @@
     return [[[self class] sharedDateComponentsFormatter] stringFromTimeInterval:interval];
 }
 
++ (void)setForcedLocaleIdentifier:(NSString *)localeIdentifier {
+    forcedLocaleIdentifier = localeIdentifier;
+    if (forcedLocaleIdentifier) {
+        NSLocale *forcedLocale = [[NSLocale alloc] initWithLocaleIdentifier:forcedLocaleIdentifier];
+        self.sharedDateFormatter.locale = forcedLocale;
+    } else {
+        self.sharedDateFormatter.locale = NSLocale.currentLocale;
+    }
+}
 @end
