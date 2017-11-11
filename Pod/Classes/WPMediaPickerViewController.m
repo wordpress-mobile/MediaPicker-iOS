@@ -63,7 +63,7 @@ static CGFloat SelectAnimationTime = 0.2;
 }
 
 - (instancetype)initWithOptions:(WPMediaPickerOptions *)options {
-    self = [self initWithNibName:nil bundle:nil];
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         _collectionView = [[UICollectionView alloc] initWithFrame:(CGRectZero) collectionViewLayout:layout];
@@ -205,7 +205,9 @@ static CGFloat SelectAnimationTime = 0.2;
     } else {
         UIEdgeInsets inset = self.collectionView.contentInset;
         inset.top = self.searchBar.bounds.size.height + self.topLayoutGuide.length;
+        inset.bottom = self.bottomLayoutGuide.length;
         self.collectionView.contentInset = inset;
+        self.collectionView.scrollIndicatorInsets = inset;
         self.searchBarTopConstraint.constant = self.topLayoutGuide.length;
     }
 }
@@ -257,6 +259,13 @@ static CGFloat SelectAnimationTime = 0.2;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.captureCell startCapture];
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self unregisterForKeyboardNotifications];
 }
 
 - (UIViewController *)viewControllerToUseToPresent
@@ -296,20 +305,12 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.collectionView];
 
-    NSLayoutAnchor *leadingAnchor = self.view.leadingAnchor;
-    NSLayoutAnchor *trailingAnchor = self.view.trailingAnchor;
-
-    if (@available(iOS 11.0, *)) {
-        leadingAnchor = self.view.safeAreaLayoutGuide.leadingAnchor;
-        trailingAnchor = self.view.safeAreaLayoutGuide.trailingAnchor;
-    }
-
     [NSLayoutConstraint activateConstraints:
      @[
        [self.collectionView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
        [self.collectionView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-       [self.collectionView.leadingAnchor constraintEqualToAnchor:leadingAnchor],
-       [self.collectionView.trailingAnchor constraintEqualToAnchor:trailingAnchor]
+       [self.collectionView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+       [self.collectionView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
        ]
      ];
 }
@@ -337,19 +338,11 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.view addSubview:self.searchBar];
     self.searchBarTopConstraint = [self.searchBar.topAnchor constraintEqualToAnchor:self.view.topAnchor];
 
-    NSLayoutAnchor *leadingAnchor = self.view.leadingAnchor;
-    NSLayoutAnchor *trailingAnchor = self.view.trailingAnchor;
-
-    if (@available(iOS 11.0, *)) {
-        leadingAnchor = self.view.safeAreaLayoutGuide.leadingAnchor;
-        trailingAnchor = self.view.safeAreaLayoutGuide.trailingAnchor;
-    }
-
     [NSLayoutConstraint activateConstraints:
      @[
        self.searchBarTopConstraint,
-       [self.searchBar.leadingAnchor constraintEqualToAnchor:leadingAnchor],
-       [self.searchBar.trailingAnchor constraintEqualToAnchor:trailingAnchor]
+       [self.searchBar.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+       [self.searchBar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
        ]
      ];
 }
@@ -996,6 +989,51 @@ referenceSizeForFooterInSection:(NSInteger)section
     } else {
         [self.viewControllerToUseToPresent dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark - Keyboard Handling
+
+- (void)registerForKeyboardNotifications
+{
+    if (![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+    }
+}
+
+- (void)unregisterForKeyboardNotifications
+{
+    if (![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
+        [NSNotificationCenter.defaultCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    }
+}
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification
+{
+    CGRect keyboardFrameEnd = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIEdgeInsets contentInset = self.collectionView.contentInset;
+
+    contentInset.bottom = keyboardFrameEnd.size.height - self.view.layoutMargins.bottom; //Remove extra safe area
+    if (!self.tabBarController.tabBar.translucent) {
+        contentInset.bottom -= self.tabBarController.tabBar.frame.size.height;
+    }
+    self.collectionView.contentInset = contentInset;
+    self.collectionView.scrollIndicatorInsets = contentInset;
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification
+{
+    UIEdgeInsets contentInset = self.collectionView.contentInset;
+
+    if (@available(iOS 11, *)) {
+        contentInset.bottom = 0.f;
+    } else {
+        contentInset.bottom = self.bottomLayoutGuide.length;
+    }
+
+    self.collectionView.contentInset = contentInset;
+    self.collectionView.scrollIndicatorInsets = contentInset;
 }
 
 #pragma mark - UIViewControllerPreviewingDelegate
