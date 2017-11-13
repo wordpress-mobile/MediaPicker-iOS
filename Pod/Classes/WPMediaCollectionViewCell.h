@@ -17,5 +17,7 @@
 
 @property (nonatomic, assign) BOOL hiddenSelectionIndicator;
 
+@property (nonatomic, strong) UIView *overlayView;
+
 @end
 

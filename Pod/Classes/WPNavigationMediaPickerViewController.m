@@ -210,6 +210,24 @@ static NSString *const ArrowDown = @"\u25be";
     }
 }
 
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:shouldShowOverlayViewForCellForAsset:)]) {
+        return [self.delegate mediaPickerController:picker shouldShowOverlayViewForCellForAsset:asset];
+    }
+
+    return NO;
+}
+
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker willShowOverlayView:(UIView *)overlayView forCellForAsset:(id<WPMediaAsset>)asset
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:willShowOverlayView:forCellForAsset:)]) {
+        [self.delegate mediaPickerController:picker
+                         willShowOverlayView:overlayView
+                             forCellForAsset:asset];
+    }
+}
+
 - (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset {
     if ([self.delegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAsset:)]) {
         return [self.delegate mediaPickerController:picker previewViewControllerForAsset:asset];

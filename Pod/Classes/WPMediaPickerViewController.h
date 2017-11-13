@@ -142,6 +142,29 @@
  */
 - (void)mediaPickerControllerDidEndLoadingData:(nonnull WPMediaPickerViewController *)picker;
 
+/**
+ *  Asks the delegate whether an overlay view should be shown for the cell for
+ *  the specified media asset. If you return `YES` from this method, you must
+ *  have registered a reuse class though `-[WPMediaPickerViewController registerClassForReusableCellOverlayViews:]`.
+ *
+ *  @param asset The asset to display an overlay view for.
+ *  @return `YES` if an overlay view should be displayed, `NO`, if not.
+ *
+ *  If this method is not implemented, no overlay view will be displayed.
+ */
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
+/**
+ *  Gives the delegate an opportunity to configure the overlay view for the
+ *  specified media asset's cell. You can implement this method to update the
+ *  overlay view as required for the asset (for example, to show a loading
+ *  indicator if the asset is currently being loaded).
+ *
+ *  @param overlayView The overlay view to configure.
+ *  @param asset       The asset to configure the overlay for.
+ */
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(nonnull UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
 @end
 
 
@@ -221,6 +244,13 @@
  @return A CGFloat representing the height/width of the suggested cell size
  */
 - (CGFloat)cellSizeForPhotosPerLineCount:(NSUInteger)photosPerLine photoSpacing:(CGFloat)photoSpacing frameWidth:(CGFloat)frameWidth;
+
+/**
+ Register a `UIView` subclass to use for overlay views applied to cells. For
+ overlays to be displayed, you must register a class using this method, and then
+ return `YES` from `mediaPickerController:shouldShowOverlayViewForCellForAsset:`
+ */
+- (void)registerClassForReusableCellOverlayViews:(nonnull Class)overlayClass;
 
 @end
 
