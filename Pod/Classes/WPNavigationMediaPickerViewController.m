@@ -54,6 +54,7 @@ static NSString *const ArrowDown = @"\u25be";
 {
     [super viewDidLoad];
 
+    self.popoverPresentationController.delegate = self;
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setupNavigationController];
@@ -285,6 +286,13 @@ static NSString *const ArrowDown = @"\u25be";
     if (viewController == self.mediaPicker || viewController == self.groupViewController) {
         [self updateSelectionAction];
     }
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+-(void)prepareForPopoverPresentation:(UIPopoverPresentationController *)popoverPresentationController
+{
+    self.mediaPicker.presentedAsPopover = YES;
 }
 
 #pragma mark - Public Methods

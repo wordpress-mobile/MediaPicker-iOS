@@ -92,6 +92,8 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
 
+    self.popoverPresentationController.delegate = self;
+
     // Setup subviews
     [self addCollectionViewToView];
     [self setupCollectionView];
@@ -993,9 +995,14 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 #pragma mark - Keyboard Handling
 
+- (BOOL)shouldHandleKeyboard
+{
+    return !([self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]] || self.isPresentedAsPopover);
+}
+
 - (void)registerForKeyboardNotifications
 {
-    if (![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
+    if ([self shouldHandleKeyboard]) {
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     }
@@ -1003,7 +1010,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (void)unregisterForKeyboardNotifications
 {
-    if (![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
+    if ([self shouldHandleKeyboard]) {
         [NSNotificationCenter.defaultCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     }
@@ -1130,6 +1137,13 @@ referenceSizeForFooterInSection:(NSInteger)section
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+-(void)prepareForPopoverPresentation:(UIPopoverPresentationController *)popoverPresentationController
+{
+    self.presentedAsPopover = YES;
 }
 
 @end

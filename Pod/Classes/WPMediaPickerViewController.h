@@ -185,6 +185,11 @@
 @property (nonatomic, copy, nonnull) NSArray<id<WPMediaAsset>> *selectedAssets;
 
 /**
+ A boolean value that determines whether the controller is presented as a popover.
+ */
+@property (nonatomic, assign, getter=isPresentedAsPopover) BOOL presentedAsPopover;
+
+/**
   The object that acts as the data source of the media picker.
  */
 @property (nonatomic, weak, nullable) id<WPMediaCollectionDataSource> dataSource;
