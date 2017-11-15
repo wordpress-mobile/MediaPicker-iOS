@@ -53,8 +53,7 @@ static NSString *const ArrowDown = @"\u25be";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.popoverPresentationController.delegate = self;
+    
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setupNavigationController];
