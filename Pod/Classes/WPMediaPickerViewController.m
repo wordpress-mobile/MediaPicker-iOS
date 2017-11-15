@@ -92,8 +92,6 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
 
-    self.popoverPresentationController.delegate = self;
-
     // Setup subviews
     [self addCollectionViewToView];
     [self setupCollectionView];
@@ -691,9 +689,9 @@ referenceSizeForFooterInSection:(NSInteger)section
         UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         if (layout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
             if (@available(iOS 11, *)) {
-                fixedSize.height = self.view.frame.size.height - self.view.safeAreaInsets.top;
+                fixedSize.height = self.view.frame.size.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - self.collectionView.contentInset.bottom;
             } else {
-                fixedSize.height = self.view.frame.size.height - self.collectionView.contentInset.top;
+                fixedSize.height = self.view.frame.size.height - self.collectionView.contentInset.top - self.collectionView.contentInset.bottom;
             }
         } else {
             fixedSize.width = self.view.frame.size.width;
@@ -995,14 +993,20 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 #pragma mark - Keyboard Handling
 
-- (BOOL)shouldHandleKeyboard
+- (BOOL)isPresentedAsPopover
 {
-    return !([self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]] || self.isPresentedAsPopover);
+    for (UIViewController *controller = self; controller != nil; controller = controller.parentViewController) {
+        if (controller.popoverPresentationController) {
+            return controller.popoverPresentationController.arrowDirection != UIPopoverArrowDirectionUnknown;
+        }
+    }
+
+    return NO;
 }
 
 - (void)registerForKeyboardNotifications
 {
-    if ([self shouldHandleKeyboard]) {
+    if (![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     }
@@ -1010,7 +1014,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (void)unregisterForKeyboardNotifications
 {
-    if ([self shouldHandleKeyboard]) {
+    if (![self.parentViewController isKindOfClass:[WPInputMediaPickerViewController class]]) {
         [NSNotificationCenter.defaultCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     }
@@ -1018,6 +1022,10 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (void)keyboardWillShowNotification:(NSNotification *)notification
 {
+    if([self isPresentedAsPopover]) {
+        return;
+    }
+
     CGRect keyboardFrameEnd = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIEdgeInsets contentInset = self.collectionView.contentInset;
 
@@ -1027,6 +1035,8 @@ referenceSizeForFooterInSection:(NSInteger)section
     }
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
+
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)keyboardWillHideNotification:(NSNotification *)notification
@@ -1041,6 +1051,8 @@ referenceSizeForFooterInSection:(NSInteger)section
 
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
+
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 #pragma mark - UIViewControllerPreviewingDelegate
@@ -1137,13 +1149,6 @@ referenceSizeForFooterInSection:(NSInteger)section
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
-}
-
-#pragma mark - UIPopoverPresentationControllerDelegate
-
--(void)prepareForPopoverPresentation:(UIPopoverPresentationController *)popoverPresentationController
-{
-    self.presentedAsPopover = YES;
 }
 
 @end

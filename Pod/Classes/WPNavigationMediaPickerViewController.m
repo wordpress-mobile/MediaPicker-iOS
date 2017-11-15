@@ -288,13 +288,6 @@ static NSString *const ArrowDown = @"\u25be";
     }
 }
 
-#pragma mark - UIPopoverPresentationControllerDelegate
-
--(void)prepareForPopoverPresentation:(UIPopoverPresentationController *)popoverPresentationController
-{
-    self.mediaPicker.presentedAsPopover = YES;
-}
-
 #pragma mark - Public Methods
 
 - (void)showAfterViewController:(UIViewController *)viewController
