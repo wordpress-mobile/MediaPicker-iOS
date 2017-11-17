@@ -16,13 +16,16 @@ All notable changes to this project will be documented in this file.
 - `0.15` Releases - [0.15](#15)
 
 ---
-## [0.25](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.24)
+## [0.25](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.25)
 Released on 2017-11-17. All issues associated with this milestone can be found using this
 [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A0.25).
 
 ### Added
 - Added the possibility to display a overlay view on top of the media cells. #259 #261
 - Added the possibility to search for assets on the picker. #257 #260 #268
+
+### Fixed
+- Improved reload of cells by reconfiguring the cell instead of reloading it. #269
 
 ---
 ## [0.24](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.24)
