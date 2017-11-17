@@ -46,6 +46,8 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, strong, readwrite) UISearchBar *searchBar;
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopConstraint;
 
+@property (nonatomic, strong) UIView *emptyView;
+
 /**
  The size of the camera preview cell
  */
@@ -326,10 +328,20 @@ static CGFloat SelectAnimationTime = 0.2;
         self.searchBar.delegate = self;
         self.searchBar.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSearchBarToView];
-    } else if (self.searchBar) {
-        [self.searchBar removeFromSuperview];
-        self.searchBar = nil;
+    } else if (!shouldShowSearchBar && self.searchBar) {
+        [self hideSearchBar];
     }
+}
+
+- (void)showSearchBar
+{
+    [self setupSearchBar];
+}
+
+- (void)hideSearchBar
+{
+    [self.searchBar removeFromSuperview];
+    self.searchBar = nil;
 }
 
 - (void)addSearchBarToView
@@ -396,6 +408,34 @@ static CGFloat SelectAnimationTime = 0.2;
     return;
 }
 
+- (UIView *)emptyView
+{
+    if (_emptyView) {
+        return _emptyView;
+    }
+
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(emptyViewForMediaPickerController:)]) {
+        _emptyView = [self.mediaPickerDelegate emptyViewForMediaPickerController:self];
+    } else {
+        _emptyView = [self defaultEmptyView];
+    }
+
+    if (_emptyView) {
+        [self.collectionView addSubview:_emptyView];
+        _emptyView.center = self.collectionView.center;
+    }
+
+    return _emptyView;
+}
+
+- (UIView *)defaultEmptyView
+{
+    UILabel *emptyLabel = [[UILabel alloc] init];
+    emptyLabel.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
+    [emptyLabel sizeToFit];
+    return emptyLabel;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 -(void)updateDataWithRemoved:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moves {
@@ -411,8 +451,10 @@ static CGFloat SelectAnimationTime = 0.2;
         }
     } completion:^(BOOL finished) {
         [self.collectionView performBatchUpdates:^{
-            if (changed) {
-                [self.collectionView reloadItemsAtIndexPaths:[self indexPathsFromIndexSet:changed section:0]];
+            NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
+            for (NSIndexPath *indexPath in indexPaths) {
+                WPMediaCollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+                [self configureCell:cell forIndexPath:indexPath];
             }
             for (id<WPMediaMove> move in moves) {
                 [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
@@ -586,7 +628,15 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.dataSource numberOfAssets];
+    NSInteger numberOfAssets = [self.dataSource numberOfAssets];
+
+    if (self.searchBar.text && [self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didUpdateSearchWithAssetCount:)]) {
+        [self.mediaPickerDelegate mediaPickerController:self didUpdateSearchWithAssetCount:numberOfAssets];
+    }
+
+    [self.emptyView setHidden:(numberOfAssets != 0)];
+
+    return numberOfAssets;
 }
 
 - (id<WPMediaAsset>)assetForPosition:(NSIndexPath *)indexPath
@@ -602,10 +652,17 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<WPMediaAsset> asset = [self assetForPosition:indexPath];
     WPMediaCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([WPMediaCollectionViewCell class]) forIndexPath:indexPath];
 
-    // Configure the cell
+    [self configureCell:cell forIndexPath:indexPath];
+
+    return cell;
+}
+
+- (void)configureCell:(WPMediaCollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
+{
+    id<WPMediaAsset> asset = [self assetForPosition:indexPath];
+
     cell.asset = asset;
     NSUInteger position = [self positionOfAssetInSelection:asset];
     cell.hiddenSelectionIndicator = !self.options.allowMultipleSelection;
@@ -621,8 +678,6 @@ static CGFloat SelectAnimationTime = 0.2;
         [cell setPosition:NSNotFound];
         cell.selected = NO;
     }
-
-    return cell;
 }
 
 - (void)configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell
@@ -1036,6 +1091,8 @@ referenceSizeForFooterInSection:(NSInteger)section
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
 
+    [self centerEmptyView];
+
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
@@ -1052,7 +1109,25 @@ referenceSizeForFooterInSection:(NSInteger)section
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
 
+    [self centerEmptyView];
+
     [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+
+/**
+ Centers the empty view vertically taking into account the collection view height and content insets.
+ */
+- (void)centerEmptyView
+{
+    CGRect emptyViewFrame = self.emptyView.frame;
+    CGFloat superviewHeight = self.collectionView.frame.size.height;
+    CGFloat totalInsets = self.collectionView.contentInset.top + self.collectionView.contentInset.bottom;
+
+    superviewHeight = superviewHeight - totalInsets > 0 ? superviewHeight - totalInsets : superviewHeight;
+    emptyViewFrame.origin.y = (superviewHeight / 2.0) - (emptyViewFrame.size.height / 2.0) + self.collectionView.frame.origin.y;
+
+    self.emptyView.frame = emptyViewFrame;
 }
 
 #pragma mark - UIViewControllerPreviewingDelegate
@@ -1149,6 +1224,11 @@ referenceSizeForFooterInSection:(NSInteger)section
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+    self.searchBar.text = nil;
+    if ([self.dataSource respondsToSelector:@selector(searchCancelled)]) {
+        [self.dataSource searchCancelled];
+        [self.collectionView reloadData];
+    }
 }
 
 @end
