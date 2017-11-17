@@ -326,5 +326,10 @@ typedef int32_t WPMediaRequestID;
  */
 - (void)searchFor:(nullable NSString *)searchText;
 
+/**
+ *  Tells the Data Source that the search was cancelled by the user
+ */
+- (void)searchCancelled;
+
 @end
 

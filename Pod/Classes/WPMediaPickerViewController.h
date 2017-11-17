@@ -165,6 +165,26 @@
  */
 - (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(nonnull UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
 
+/**
+ *  Gives the delegate an oportunity to react to a change in the number
+ *  of assets displayed as a consequence of a search filter.
+ *
+ *  @param assetCount The new asset count after a search filter is performed.
+ */
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount;
+
+/**
+ *  Asks the delegate for an empty view to show when there are no assets
+ *  to be displayed. If no empty view is required, you have to implement this
+ *  method and return `nil`.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @return An empty view to display or `nil` to not display any.
+ *
+ *  If this method is not implemented, a default UILabel will be displayed.
+ */
+- (nullable UIView *)emptyViewForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
+
 @end
 
 
@@ -251,6 +271,21 @@
  return `YES` from `mediaPickerController:shouldShowOverlayViewForCellForAsset:`
  */
 - (void)registerClassForReusableCellOverlayViews:(nonnull Class)overlayClass;
+
+/**
+ Shows the search bar that was hidden by `hideSearchBar`. If the
+ `showSearchBar` option is set to `NO`, and the data source does not implement
+ `searchFor:`, this method will do nothing.
+ 
+ @see hideSearchBar
+ */
+- (void)showSearchBar;
+
+
+/**
+ Hides the presented search bar.
+ */
+- (void)hideSearchBar;
 
 @end
 
