@@ -451,8 +451,10 @@ static CGFloat SelectAnimationTime = 0.2;
         }
     } completion:^(BOOL finished) {
         [self.collectionView performBatchUpdates:^{
-            if (changed) {
-                [self.collectionView reloadItemsAtIndexPaths:[self indexPathsFromIndexSet:changed section:0]];
+            NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
+            for (NSIndexPath *indexPath in indexPaths) {
+                WPMediaCollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+                [self configureCell:cell forIndexPath:indexPath];
             }
             for (id<WPMediaMove> move in moves) {
                 [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
@@ -650,10 +652,17 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<WPMediaAsset> asset = [self assetForPosition:indexPath];
     WPMediaCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([WPMediaCollectionViewCell class]) forIndexPath:indexPath];
 
-    // Configure the cell
+    [self configureCell:cell forIndexPath:indexPath];
+
+    return cell;
+}
+
+- (void)configureCell:(WPMediaCollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
+{
+    id<WPMediaAsset> asset = [self assetForPosition:indexPath];
+
     cell.asset = asset;
     NSUInteger position = [self positionOfAssetInSelection:asset];
     cell.hiddenSelectionIndicator = !self.options.allowMultipleSelection;
@@ -669,8 +678,6 @@ static CGFloat SelectAnimationTime = 0.2;
         [cell setPosition:NSNotFound];
         cell.selected = NO;
     }
-
-    return cell;
 }
 
 - (void)configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell
