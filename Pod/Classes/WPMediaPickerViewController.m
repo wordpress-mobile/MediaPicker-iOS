@@ -17,8 +17,6 @@ static CGFloat const IPadPortraitWidth = 768.0f;
 static CGFloat const IPadLandscapeWidth = 1024.0f;
 static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 
-static NSString * const kDefaultEmptyText = @"Nothing to show";
-
 @interface WPMediaPickerViewController ()
 <
  UICollectionViewDataSource,
@@ -433,7 +431,7 @@ static CGFloat SelectAnimationTime = 0.2;
 - (UIView *)defaultEmptyView
 {
     UILabel *emptyLabel = [[UILabel alloc] init];
-    emptyLabel.text = kDefaultEmptyText;
+    emptyLabel.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
     [emptyLabel sizeToFit];
     return emptyLabel;
 }
