@@ -461,7 +461,7 @@ static CGFloat SelectAnimationTime = 0.2;
         [self.collectionView performBatchUpdates:^{
             NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
             for (NSIndexPath *indexPath in indexPaths) {
-                WPMediaCollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+                WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
                 [self configureCell:cell forIndexPath:indexPath];
             }
             for (id<WPMediaMove> move in moves) {
