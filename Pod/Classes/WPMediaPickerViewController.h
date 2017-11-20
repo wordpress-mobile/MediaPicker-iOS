@@ -142,14 +142,62 @@
  */
 - (void)mediaPickerControllerDidEndLoadingData:(nonnull WPMediaPickerViewController *)picker;
 
+/**
+ *  Asks the delegate whether an overlay view should be shown for the cell for
+ *  the specified media asset. If you return `YES` from this method, you must
+ *  have registered a reuse class though `-[WPMediaPickerViewController registerClassForReusableCellOverlayViews:]`.
+ *
+ *  @param asset The asset to display an overlay view for.
+ *  @return `YES` if an overlay view should be displayed, `NO`, if not.
+ *
+ *  If this method is not implemented, no overlay view will be displayed.
+ */
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
+/**
+ *  Gives the delegate an opportunity to configure the overlay view for the
+ *  specified media asset's cell. You can implement this method to update the
+ *  overlay view as required for the asset (for example, to show a loading
+ *  indicator if the asset is currently being loaded).
+ *
+ *  @param overlayView The overlay view to configure.
+ *  @param asset       The asset to configure the overlay for.
+ */
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(nonnull UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
+/**
+ *  Gives the delegate an oportunity to react to a change in the number
+ *  of assets displayed as a consequence of a search filter.
+ *
+ *  @param assetCount The new asset count after a search filter is performed.
+ */
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount;
+
+/**
+ *  Asks the delegate for an empty view to show when there are no assets
+ *  to be displayed. If no empty view is required, you have to implement this
+ *  method and return `nil`.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @return An empty view to display or `nil` to not display any.
+ *
+ *  If this method is not implemented, a default UILabel will be displayed.
+ */
+- (nullable UIView *)emptyViewForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
+
 @end
 
 
-@interface WPMediaPickerViewController : UICollectionViewController<WPAssetViewControllerDelegate>
+@interface WPMediaPickerViewController : UIViewController<WPAssetViewControllerDelegate>
 
 - (instancetype _Nonnull )initWithOptions:(WPMediaPickerOptions *_Nonnull)options;
 
 @property (nonatomic, copy, nonnull) WPMediaPickerOptions *options;
+
+/**
+ The collection view object managed by this view controller.
+ */
+@property (nonatomic, strong, nullable) UICollectionView *collectionView;
 
 /**
  An array with the the assets that are currently selected.
@@ -165,6 +213,17 @@
  The delegate for the WPMediaPickerViewController events
  */
 @property (nonatomic, weak, nullable) id<WPMediaPickerViewControllerDelegate> mediaPickerDelegate;
+
+/**
+ The search bar or nil if there is no search bar visible.
+ @note Use options to make the search bar visible.
+ */
+@property (nonatomic, strong, readonly, nullable) UISearchBar *searchBar;
+
+/**
+ The default empty view. When `emptyViewForMediaPickerController:` is not implemented, use this property to style the mensaje.
+ */
+@property (nonatomic, strong, readonly, nonnull) UILabel *defaultEmptyView;
 
 /**
  Allows to set a group as the current display group on the data source. 
@@ -210,6 +269,28 @@
  @return A CGFloat representing the height/width of the suggested cell size
  */
 - (CGFloat)cellSizeForPhotosPerLineCount:(NSUInteger)photosPerLine photoSpacing:(CGFloat)photoSpacing frameWidth:(CGFloat)frameWidth;
+
+/**
+ Register a `UIView` subclass to use for overlay views applied to cells. For
+ overlays to be displayed, you must register a class using this method, and then
+ return `YES` from `mediaPickerController:shouldShowOverlayViewForCellForAsset:`
+ */
+- (void)registerClassForReusableCellOverlayViews:(nonnull Class)overlayClass;
+
+/**
+ Shows the search bar that was hidden by `hideSearchBar`. If the
+ `showSearchBar` option is set to `NO`, and the data source does not implement
+ `searchFor:`, this method will do nothing.
+ 
+ @see hideSearchBar
+ */
+- (void)showSearchBar;
+
+
+/**
+ Hides the presented search bar.
+ */
+- (void)hideSearchBar;
 
 @end
 

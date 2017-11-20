@@ -3,6 +3,7 @@
 #import "WPPHAssetDataSource.h"
 #import "OptionsViewController.h"
 #import "PostProcessingViewController.h"
+#import "SampleCellOverlayView.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
 @interface DemoViewController () <WPMediaPickerViewControllerDelegate, OptionsViewControllerDelegate, UITextFieldDelegate>
@@ -30,7 +31,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(showOptions:)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showPicker:)];
-    
+
     // date formatter
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
@@ -43,7 +44,9 @@
                      MediaPickerOptionsPostProcessingStep:@(NO),
                      MediaPickerOptionsFilterType:@(WPMediaTypeImage | WPMediaTypeVideo),
                      MediaPickerOptionsCustomPreview:@(NO),
-                     MediaPickerOptionsScrollInputPickerVertically:@(YES)
+                     MediaPickerOptionsScrollInputPickerVertically:@(YES),
+                     MediaPickerOptionsShowSampleCellOverlays:@(NO),
+                     MediaPickerOptionsShowSearchBar:@(YES)
                      };
 
 }
@@ -138,6 +141,7 @@
         [self.mediaInputViewController didMoveToParentViewController:nil];
     } else {
         self.mediaInputViewController = [[WPInputMediaPickerViewController alloc] init];
+        [self.mediaInputViewController.mediaPicker registerClassForReusableCellOverlayViews:[SampleCellOverlayView class]];
     }    
 
     [self addChildViewController:self.mediaInputViewController];
@@ -211,7 +215,19 @@
     assetViewController.delegate = picker;
     assetViewController.selected = [picker.selectedAssets containsObject:asset];
     return assetViewController;
+}
 
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
+{
+    return [self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue];
+}
+
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker willShowOverlayView:(UIView *)overlayView forCellForAsset:(id<WPMediaAsset>)asset
+{
+    if ([overlayView isKindOfClass:[SampleCellOverlayView class]]) {
+        SampleCellOverlayView *view = (SampleCellOverlayView *)overlayView;
+        [view setLabelText:asset.filename];
+    }
 }
 
 #pragma - Actions
@@ -230,6 +246,7 @@
     options.allowMultipleSelection = [self.options[MediaPickerOptionsAllowMultipleSelection] boolValue];
     options.filter = [self.options[MediaPickerOptionsFilterType] intValue];
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
+    options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
     return options;
 }
 
@@ -247,6 +264,10 @@
     self.mediaPicker.modalPresentationStyle = UIModalPresentationPopover;
     UIPopoverPresentationController *ppc = self.mediaPicker.popoverPresentationController;
     ppc.barButtonItem = sender;
+
+    if ([self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue]) {
+        [self.mediaPicker.mediaPicker registerClassForReusableCellOverlayViews:[SampleCellOverlayView class]];
+    }
     
     [self presentViewController:self.mediaPicker animated:YES completion:nil];
     [self.quickInputTextField resignFirstResponder];
@@ -280,7 +301,7 @@
 {
     if (textField == self.quickInputTextField) {
         [self setupMediaKeyboardForInputField];
-        self.mediaInputViewController.mediaPicker.options = [self selectedOptions];        
+        self.mediaInputViewController.mediaPicker.options = [self selectedOptions];
         [self.mediaInputViewController.mediaPicker resetState:NO];
     }
     return YES;

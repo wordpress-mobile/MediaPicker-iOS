@@ -53,7 +53,7 @@ static NSString *const ArrowDown = @"\u25be";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setupNavigationController];
@@ -156,6 +156,19 @@ static NSString *const ArrowDown = @"\u25be";
 
 #pragma mark - WPMediaPickerViewControllerDelegate
 
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount {
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:didUpdateSearchWithAssetCount:)]) {
+        [self.delegate mediaPickerController:picker didUpdateSearchWithAssetCount:assetCount];
+    }
+}
+
+- (UIView *)emptyViewForMediaPickerController:(WPMediaPickerViewController *)picker {
+    if ([self.delegate respondsToSelector:@selector(emptyViewForMediaPickerController:)]) {
+        return [self.delegate emptyViewForMediaPickerController:picker];
+    }
+    return picker.defaultEmptyView;
+}
+
 - (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker didFinishPickingAssets:(nonnull NSArray<WPMediaAsset> *)assets {
     if ([self.delegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
         [self.delegate mediaPickerController:picker didFinishPickingAssets:assets];
@@ -207,6 +220,24 @@ static NSString *const ArrowDown = @"\u25be";
     [self updateSelectionAction];
     if ([self.delegate respondsToSelector:@selector(mediaPickerController:didSelectAsset:)]) {
         [self.delegate mediaPickerController:picker didDeselectAsset:asset];
+    }
+}
+
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:shouldShowOverlayViewForCellForAsset:)]) {
+        return [self.delegate mediaPickerController:picker shouldShowOverlayViewForCellForAsset:asset];
+    }
+
+    return NO;
+}
+
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker willShowOverlayView:(UIView *)overlayView forCellForAsset:(id<WPMediaAsset>)asset
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:willShowOverlayView:forCellForAsset:)]) {
+        [self.delegate mediaPickerController:picker
+                         willShowOverlayView:overlayView
+                             forCellForAsset:asset];
     }
 }
 
