@@ -47,6 +47,7 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopConstraint;
 
 @property (nonatomic, strong) UIView *emptyView;
+@property (nonatomic, strong) UILabel *defaultEmptyView;
 
 /**
  The size of the camera preview cell
@@ -96,6 +97,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
     // Setup subviews
     [self addCollectionViewToView];
+    [self addEmptyViewToView];
     [self setupCollectionView];
     [self setupSearchBar];
     [self setupLayout];
@@ -420,20 +422,26 @@ static CGFloat SelectAnimationTime = 0.2;
         _emptyView = [self defaultEmptyView];
     }
 
-    if (_emptyView) {
-        [self.collectionView addSubview:_emptyView];
-        _emptyView.center = self.collectionView.center;
-    }
-
     return _emptyView;
 }
 
-- (UIView *)defaultEmptyView
+- (void)addEmptyViewToView
 {
-    UILabel *emptyLabel = [[UILabel alloc] init];
-    emptyLabel.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
-    [emptyLabel sizeToFit];
-    return emptyLabel;
+    if (self.emptyView.superview == nil) {
+        [self.collectionView addSubview:_emptyView];
+        [self centerEmptyView];
+    }
+}
+
+- (UILabel *)defaultEmptyView
+{
+    if (_defaultEmptyView) {
+        return _defaultEmptyView;
+    }
+    _defaultEmptyView = [[UILabel alloc] init];
+    _defaultEmptyView.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
+    [_defaultEmptyView sizeToFit];
+    return _defaultEmptyView;
 }
 
 #pragma mark - UICollectionViewDataSource
