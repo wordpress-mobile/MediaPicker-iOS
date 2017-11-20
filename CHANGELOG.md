@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 ## [0.25](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.25)
-Released on 2017-11-17. All issues associated with this milestone can be found using this
+Released on 2017-11-20. All issues associated with this milestone can be found using this
 [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A0.25).
 
 ### Added
