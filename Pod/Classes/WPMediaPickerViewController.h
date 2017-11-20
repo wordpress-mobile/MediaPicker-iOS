@@ -221,6 +221,11 @@
 @property (nonatomic, strong, readonly, nullable) UISearchBar *searchBar;
 
 /**
+ The default empty view. When `emptyViewForMediaPickerController:` is not implemented, use this property to style the mensaje.
+ */
+@property (nonatomic, strong, readonly, nonnull) UILabel *defaultEmptyView;
+
+/**
  Allows to set a group as the current display group on the data source. 
  */
 - (void)setGroup:(nonnull id<WPMediaGroup>)group;
