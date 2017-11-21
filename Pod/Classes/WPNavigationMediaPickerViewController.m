@@ -70,6 +70,11 @@ static NSString *const ArrowDown = @"\u25be";
     return self.internalNavigationController.topViewController;
 }
 
+- (UIViewController *)childViewControllerForHomeIndicatorAutoHidden
+{
+    return self.internalNavigationController.topViewController;
+}
+
 - (void)setupNavigationController
 {
     if (!self.dataSource) {
