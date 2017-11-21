@@ -181,17 +181,17 @@ static CGFloat toolbarHeight = 44;
                        completion:nil];
 }
 
-- (void)setControlToolbarHidden:(BOOL)hidden animated:(BOOL)animated completion:(void(^)())completion
+- (void)setControlToolbarHidden:(BOOL)hidden animated:(BOOL)animated completion:(void(^)(void))completion
 {
     CGFloat animationDuration = animated ? UINavigationControllerHideShowBarDuration : 0;
 
     __weak __typeof(self) weakSelf = self;
 
-    void (^updateBlock)() = ^{
+    void (^updateBlock)(void) = ^{
         [weakSelf updateToolbarPosition:hidden];
     };
 
-    void (^completionBlock)() = ^{
+    void (^completionBlock)(void) = ^{
         weakSelf.controlToolbar.hidden = hidden;
         if (completion) {
             completion();
