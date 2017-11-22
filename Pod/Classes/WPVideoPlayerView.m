@@ -54,6 +54,10 @@ static CGFloat toolbarHeight = 44;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, NSEC_PER_SEC) queue:nil usingBlock:^(CMTime time) {
         [weakSelf updateVideoDuration];
     }];
+
+    if (@available(iOS 11.0, *)) {
+        self.accessibilityIgnoresInvertColors = YES;
+    }
 }
 
 - (void)dealloc {

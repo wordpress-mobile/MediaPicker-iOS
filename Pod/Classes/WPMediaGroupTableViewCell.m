@@ -21,6 +21,9 @@ static CGFloat const WPMediaGroupTableViewCellCountLabelMargin = 2.0;
     _imagePosterView.clipsToBounds = YES;
     _imagePosterView.translatesAutoresizingMaskIntoConstraints = NO;
     _imagePosterView.backgroundColor = _posterBackgroundColor;
+    if (@available(iOS 11.0, *)) {
+        _imagePosterView.accessibilityIgnoresInvertColors = YES;
+    }
     [self.contentView addSubview:_imagePosterView];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
