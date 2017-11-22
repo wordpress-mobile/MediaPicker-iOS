@@ -103,6 +103,9 @@
     _imageView.backgroundColor = [UIColor blackColor];
     _imageView.userInteractionEnabled = YES;
     [_imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnAsset:)]];
+    if (@available(iOS 11.0, *)) {
+        _imageView.accessibilityIgnoresInvertColors = YES;
+    }
     return _imageView;
 }
 
