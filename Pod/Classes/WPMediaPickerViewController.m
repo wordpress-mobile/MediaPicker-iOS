@@ -198,6 +198,7 @@ static CGFloat SelectAnimationTime = 0.2;
     layout.minimumInteritemSpacing = photoSpacing;
 
     [self resetContentInset];
+    [self centerEmptyView];
 }
 
 - (void)resetContentInset
@@ -429,7 +430,6 @@ static CGFloat SelectAnimationTime = 0.2;
 {
     if (self.emptyView.superview == nil) {
         [self.collectionView addSubview:_emptyView];
-        [self centerEmptyView];
     }
 }
 
@@ -1124,10 +1124,12 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 
 /**
- Centers the empty view vertically taking into account the collection view height and content insets.
+ Centers the empty view taking into account the collection view height and content insets.
  */
 - (void)centerEmptyView
 {
+    self.emptyView.center = self.collectionView.center;
+
     CGRect emptyViewFrame = self.emptyView.frame;
     CGFloat superviewHeight = self.collectionView.frame.size.height;
     CGFloat totalInsets = self.collectionView.contentInset.top + self.collectionView.contentInset.bottom;
