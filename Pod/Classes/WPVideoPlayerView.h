@@ -28,6 +28,7 @@
 @property (nonatomic, assign) BOOL shouldAutoPlay;
 
 - (void)setControlToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setControlToolbarHidden:(BOOL)hidden animated:(BOOL)animated completion:(void(^)(void))completion;
 
 @property (nonatomic, readonly) UIToolbar *controlToolbar;
 
