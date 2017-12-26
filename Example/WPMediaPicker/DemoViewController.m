@@ -40,7 +40,7 @@
     self.options = @{
                      MediaPickerOptionsShowMostRecentFirst:@(YES),
                      MediaPickerOptionsShowCameraCapture:@(YES),
-                     MediaPickerOptionsAllowMultipleSelection:@(YES),
+                     MediaPickerOptionsSelectionLimit:@(5),
                      MediaPickerOptionsPostProcessingStep:@(NO),
                      MediaPickerOptionsFilterType:@(WPMediaTypeImage | WPMediaTypeVideo),
                      MediaPickerOptionsCustomPreview:@(NO),
@@ -243,7 +243,7 @@
     options.showMostRecentFirst = [self.options[MediaPickerOptionsShowMostRecentFirst] boolValue];
     options.allowCaptureOfMedia = [self.options[MediaPickerOptionsShowCameraCapture] boolValue];
     options.preferFrontCamera = [self.options[MediaPickerOptionsPreferFrontCamera] boolValue];
-    options.allowMultipleSelection = [self.options[MediaPickerOptionsAllowMultipleSelection] boolValue];
+    options.selectionLimit = [self.options[MediaPickerOptionsSelectionLimit] intValue];
     options.filter = [self.options[MediaPickerOptionsFilterType] intValue];
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
     options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
