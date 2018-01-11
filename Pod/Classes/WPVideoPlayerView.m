@@ -54,6 +54,10 @@ static CGFloat toolbarHeight = 44;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, NSEC_PER_SEC) queue:nil usingBlock:^(CMTime time) {
         [weakSelf updateVideoDuration];
     }];
+
+    if (@available(iOS 11.0, *)) {
+        self.accessibilityIgnoresInvertColors = YES;
+    }
 }
 
 - (void)dealloc {
@@ -68,8 +72,8 @@ static CGFloat toolbarHeight = 44;
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
-    CGFloat position = self.controlToolbarHidden ? 0 : toolbarHeight;
-    self.controlToolbar.frame = CGRectMake(0, self.frame.size.height - position, self.frame.size.width, toolbarHeight);
+
+    [self updateToolbarPosition:self.controlToolbarHidden];
 }
 
 - (UIToolbar *)controlToolbar {
@@ -176,16 +180,55 @@ static CGFloat toolbarHeight = 44;
 }
 
 - (void)setControlToolbarHidden:(BOOL)hidden animated:(BOOL)animated {
+    [self setControlToolbarHidden:hidden
+                         animated:animated
+                       completion:nil];
+}
+
+- (void)setControlToolbarHidden:(BOOL)hidden animated:(BOOL)animated completion:(void(^)(void))completion
+{
     CGFloat animationDuration = animated ? UINavigationControllerHideShowBarDuration : 0;
+
+    __weak __typeof(self) weakSelf = self;
+
+    void (^updateBlock)(void) = ^{
+        [weakSelf updateToolbarPosition:hidden];
+    };
+
+    void (^completionBlock)(void) = ^{
+        weakSelf.controlToolbar.hidden = hidden;
+        if (completion) {
+            completion();
+        }
+    };
+
+    if (!animated) {
+        updateBlock();
+        completionBlock();
+        return;
+    }
+
     if (!hidden) {
+        // Unhide before animating appearance
         self.controlToolbar.hidden = hidden;
     }
-    [UIView animateWithDuration:animationDuration animations:^{
-        CGFloat position = hidden ? 0 : self.controlToolbar.frame.size.height;
-        self.controlToolbar.frame = CGRectMake(0, self.frame.size.height - position, self.frame.size.width, toolbarHeight);
-    } completion:^(BOOL finished) {
-        self.controlToolbar.hidden = hidden;
+
+    [UIView animateWithDuration:animationDuration
+                     animations:updateBlock
+                     completion:^(BOOL finished) {
+        completionBlock();
     }];
+}
+
+- (void)updateToolbarPosition:(BOOL)hidden
+{
+    CGFloat height = toolbarHeight;
+    if (@available(iOS 11.0, *)) {
+        height += self.safeAreaInsets.bottom;
+    }
+
+    CGFloat position = hidden ? 0 : height;
+    self.controlToolbar.frame = CGRectMake(0, self.frame.size.height - position, self.frame.size.width, toolbarHeight);
 }
 
 - (void)setControlToolbarHidden:(BOOL)hidden {
@@ -199,6 +242,7 @@ static CGFloat toolbarHeight = 44;
 - (void)updateControlToolbar {
     [self updateControlToolbarVideoEnded:NO];
 }
+
 - (void)updateControlToolbarVideoEnded:(BOOL)videoEnded{
     UIBarButtonSystemItem playPauseButton = [self.player timeControlStatus] == AVPlayerTimeControlStatusPaused || videoEnded ? UIBarButtonSystemItemPlay : UIBarButtonSystemItemPause;
 

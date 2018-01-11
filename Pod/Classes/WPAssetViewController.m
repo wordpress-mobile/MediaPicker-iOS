@@ -103,6 +103,9 @@
     _imageView.backgroundColor = [UIColor blackColor];
     _imageView.userInteractionEnabled = YES;
     [_imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnAsset:)]];
+    if (@available(iOS 11.0, *)) {
+        _imageView.accessibilityIgnoresInvertColors = YES;
+    }
     return _imageView;
 }
 
@@ -201,16 +204,29 @@
     }
 }
 
-- (BOOL)prefersStatusBarHidden {
+- (BOOL)prefersStatusBarHidden
+{
+    return self.videoView.controlToolbarHidden;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
     return self.videoView.controlToolbarHidden;
 }
 
 - (void)handleTapOnAsset:(UIGestureRecognizer *)gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        [self.navigationController setNavigationBarHidden:!self.videoView.controlToolbarHidden animated:YES];
-        [self.videoView setControlToolbarHidden: !self.videoView.controlToolbarHidden animated: YES];
-        [self setNeedsStatusBarAppearanceUpdate];
+        BOOL hidden = !self.videoView.controlToolbarHidden;
+        [self.navigationController setNavigationBarHidden:hidden animated:YES];
+        __weak __typeof(self) weakSelf = self;
+        [self.videoView setControlToolbarHidden:hidden animated:YES completion:^{
+            [weakSelf setNeedsStatusBarAppearanceUpdate];
+
+            if (@available(iOS 11.0, *)) {
+                [weakSelf setNeedsUpdateOfHomeIndicatorAutoHidden];
+            }
+        }];
     }
 }
 
