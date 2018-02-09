@@ -10,11 +10,29 @@
 - (instancetype)init
 {
     if (self = [super init]) {
+        [self addAlphaView];
         [self addBackgroundView];
         [self addLabel];
     }
 
     return self;
+}
+
+- (void)addAlphaView
+{
+    UIView *alphaView = [UIView new];
+    alphaView.backgroundColor = [UIColor darkGrayColor];
+    alphaView.alpha = 0.5;
+    alphaView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self addSubview:alphaView];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [alphaView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [alphaView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              [alphaView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [alphaView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              ]];
+
 }
 
 - (void)addBackgroundView
