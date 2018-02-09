@@ -88,7 +88,8 @@ static const CGFloat LabelRegularFontSize = 13;
     _selectionFrame = [[UIView alloc] initWithFrame:self.backgroundView.frame];
     _selectionFrame.layer.borderColor = [[self tintColor] CGColor];
     _selectionFrame.layer.borderWidth = 2.0;
-    self.selectedBackgroundView = _selectionFrame;
+    _selectionFrame.hidden = YES;
+    [self insertSubview:_selectionFrame aboveSubview:self.contentView];
 
     CGFloat labelMargin = 10.0;
     CGFloat labelSize = 20;
@@ -113,8 +114,8 @@ static const CGFloat LabelRegularFontSize = 13;
     _positionLabelShadowView.layer.shadowOpacity = 0.5;
     _positionLabelShadowView.layer.shadowOffset = CGSizeMake(0, 0);
 
-    [self.contentView addSubview:_positionLabelShadowView];
-    [self.contentView addSubview:_positionLabel];
+    [self addSubview:_positionLabelShadowView];
+    [self addSubview:_positionLabel];
 
     [self updatePositionLabelToSelectedState:NO];
 
@@ -376,22 +377,33 @@ static const CGFloat LabelRegularFontSize = 13;
         return;
     }
     [super setSelected:selected];
+
+    [self updateSelectedFrameToSelectedState:self.isSelected];
     [self updatePositionLabelToSelectedState:self.isSelected];
 }
 
 - (void)tintColorDidChange
 {
     [super tintColorDidChange];
+
     _selectionFrame.layer.borderColor = [[self tintColor] CGColor];
 
     [self updatePositionLabelToSelectedState:self.isSelected];
+}
+
+- (void)updateSelectedFrameToSelectedState:(BOOL)selected
+{
+    _selectionFrame.hidden = !selected;
+
+    if (selected) {
+        [self bringSubviewToFront:self.selectionFrame];
+    }
 }
 
 - (void)updatePositionLabelToSelectedState:(BOOL)selected
 {
     _positionLabel.hidden = _hiddenSelectionIndicator;
     _positionLabelShadowView.hidden = _hiddenSelectionIndicator;
-    _selectionFrame.hidden = _hiddenSelectionIndicator;
 
     if (selected) {
         _positionLabel.backgroundColor = [self tintColor];
