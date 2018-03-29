@@ -22,7 +22,9 @@ static CGFloat const WPMediaGroupCellHeight = 86.0f;
 
 - (void)dealloc
 {
-    [_dataSource unregisterChangeObserver:_changesObserver];
+    if (_changesObserver) {
+        [_dataSource unregisterChangeObserver:_changesObserver];
+    }
 }
 
 - (void)viewDidLoad
