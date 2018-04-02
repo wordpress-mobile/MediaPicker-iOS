@@ -130,6 +130,9 @@
  */
 - (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset;
 
+
+- (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAssets:(nonnull NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected;
+
 /**
  *  Tells the delegate that the picker will begin requesting
  *  new data from its data source.

@@ -202,20 +202,20 @@
     [self.mediaPicker showAfterViewController:postProcessingViewController];
 }
 
-- (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAsset:(id<WPMediaAsset>)asset {
-    if (asset.assetType == WPMediaTypeAudio) {
-        return nil;
-    }
-
-    if ([self.options[MediaPickerOptionsCustomPreview] boolValue]) {
-        return [[CustomPreviewViewController alloc] initWithAsset:asset];
-    }
-
-    WPAssetViewController *assetViewController = [[WPAssetViewController alloc] initWithAsset: asset];
-    assetViewController.delegate = picker;
-    assetViewController.selected = [picker.selectedAssets containsObject:asset];
-    return assetViewController;
-}
+//- (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAsset:(id<WPMediaAsset>)asset {
+//    if (asset.assetType == WPMediaTypeAudio) {
+//        return nil;
+//    }
+//
+//    if ([self.options[MediaPickerOptionsCustomPreview] boolValue]) {
+//        return [[CustomPreviewViewController alloc] initWithAsset:asset];
+//    }
+//
+//    WPAssetViewController *assetViewController = [[WPAssetViewController alloc] initWithAsset: asset];
+//    assetViewController.delegate = picker;
+//    assetViewController.selected = [picker.selectedAssets containsObject:asset];
+//    return assetViewController;
+//}
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
 {

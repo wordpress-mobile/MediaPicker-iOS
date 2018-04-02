@@ -6,6 +6,7 @@
 #import "WPPHAssetDataSource.h"
 #import "WPMediaCapturePresenter.h"
 #import "WPInputMediaPickerViewController.h"
+#import "WPCarouselAssetsViewController.h"
 
 @import MobileCoreServices;
 @import AVFoundation;
@@ -1014,6 +1015,8 @@ referenceSizeForFooterInSection:(NSInteger)section
                                  previewViewControllerForAsset:asset];
     }
 
+
+
     return [self defaultPreviewViewControllerForAsset:asset];
 }
 
@@ -1024,11 +1027,16 @@ referenceSizeForFooterInSection:(NSInteger)section
         return nil;
     }
 
-    WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
-    fullScreenImageVC.asset = asset;
-    fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
-    fullScreenImageVC.delegate = self;
-    return fullScreenImageVC;
+//    WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
+//    fullScreenImageVC.asset = asset;
+//    fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
+//    fullScreenImageVC.delegate = self;
+//    return fullScreenImageVC;
+
+    WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:self.selectedAssets];
+    NSInteger index = [self.selectedAssets indexOfObject:asset];
+    [carouselVC setIndex:index animated:NO];
+    return carouselVC;
 }
 
 - (void)displayPreviewController:(UIViewController *)viewController {
