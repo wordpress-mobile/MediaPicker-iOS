@@ -121,6 +121,7 @@
 - (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker selectionChanged:(nonnull NSArray<id<WPMediaAsset>> *)assets;
 
 /**
+ *  DEPRECATED: Use `mediaPickerController:previewViewControllerForAssets:selectedIndex`
  *  Asks the delegate for a view controller to push when previewing the specified asset.
  *  If this method isn't implemented, the default view controller will be used.
  *  If it returns nil, no preview will be displayed.
@@ -128,9 +129,17 @@
  *  @param picker The controller object managing the assets picker interface.
  *  @param asset  The asset to be previewed.
  */
-- (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset;
+- (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset DEPRECATED_ATTRIBUTE;
 
-
+/**
+ *  Asks the delegate for a view controller to push when previewing the selected assets.
+ *  If this method isn't implemented, the default view controller will be used.
+ *  If it returns nil, no preview will be displayed.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @param assets The selected assets.
+ *  @param selected Index of asset tapped by the user to begin the preview
+ */
 - (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAssets:(nonnull NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected;
 
 /**

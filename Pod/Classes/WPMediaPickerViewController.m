@@ -1010,9 +1010,19 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (UIViewController *)previewViewControllerForAsset:(id <WPMediaAsset>)asset
 {
-    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAsset:)]) {
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {
+
+        NSInteger index = [self.selectedAssets indexOfObject:asset];
+        NSArray *selectedAssets = [self.selectedAssets copy];
+        if (index == NSNotFound) {
+            selectedAssets = @[asset];
+            index = 0;
+        }
+
         return [self.mediaPickerDelegate mediaPickerController:self
-                                 previewViewControllerForAsset:asset];
+                                previewViewControllerForAssets:selectedAssets
+                                                 selectedIndex:index];
+
     }
 
     return [self defaultPreviewViewControllerForAsset:asset];
@@ -1043,16 +1053,27 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (UIViewController *)multipleAssetPreviewViewControllerForSelectedAsset:(id <WPMediaAsset>)asset
 {
+    NSArray *selectedAssets = self.selectedAssets.copy;
+    NSInteger index = [selectedAssets indexOfObject:asset];
+
     // We can't preview PHAssets that are audio files
-    if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]] && asset.assetType == WPMediaTypeAudio) {
-        return nil;
+    if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]]) {
+        selectedAssets = [self selectedAssetsByRemovingAudioAssets];
     }
 
-    WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:self.selectedAssets];
+    WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:selectedAssets];
     carouselVC.assetViewDelegate = self;
-    NSInteger index = [self.selectedAssets indexOfObject:asset];
     [carouselVC setIndex:index animated:NO];
     return carouselVC;
+}
+
+- (NSArray <id <WPMediaAsset>> *)selectedAssetsByRemovingAudioAssets
+{
+    NSPredicate *removeAudioPredicate = [NSPredicate predicateWithBlock:^BOOL(id <WPMediaAsset> _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return evaluatedObject.assetType != WPMediaTypeAudio;
+    }];
+
+    return [self.selectedAssets filteredArrayUsingPredicate:removeAudioPredicate];
 }
 
 - (void)displayPreviewController:(UIViewController *)viewController {

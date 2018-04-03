@@ -202,20 +202,19 @@
     [self.mediaPicker showAfterViewController:postProcessingViewController];
 }
 
-//- (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAsset:(id<WPMediaAsset>)asset {
-//    if (asset.assetType == WPMediaTypeAudio) {
-//        return nil;
-//    }
-//
-//    if ([self.options[MediaPickerOptionsCustomPreview] boolValue]) {
-//        return [[CustomPreviewViewController alloc] initWithAsset:asset];
-//    }
-//
-//    WPAssetViewController *assetViewController = [[WPAssetViewController alloc] initWithAsset: asset];
-//    assetViewController.delegate = picker;
-//    assetViewController.selected = [picker.selectedAssets containsObject:asset];
-//    return assetViewController;
-//}
+- (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAssets:(NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected
+{
+
+    if ([self.options[MediaPickerOptionsCustomPreview] boolValue]) {
+        id<WPMediaAsset> asset = assets[selected];
+        return [[CustomPreviewViewController alloc] initWithAsset:asset];
+    }
+
+    WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:assets];
+    carouselVC.assetViewDelegate = picker;
+    [carouselVC setIndex:selected animated:NO];
+    return carouselVC;
+}
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
 {
