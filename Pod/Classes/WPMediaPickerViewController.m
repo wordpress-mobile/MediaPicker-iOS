@@ -1054,12 +1054,20 @@ referenceSizeForFooterInSection:(NSInteger)section
 - (UIViewController *)multipleAssetPreviewViewControllerForSelectedAsset:(id <WPMediaAsset>)asset
 {
     NSArray *selectedAssets = self.selectedAssets.copy;
-    NSInteger index = [selectedAssets indexOfObject:asset];
 
     // We can't preview PHAssets that are audio files
     if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]]) {
+        if (asset.assetType == WPMediaTypeAudio) {
+            return nil;
+        }
+
         selectedAssets = [self selectedAssetsByRemovingAudioAssets];
+        if (selectedAssets.count == 0) {
+            return nil;
+        }
     }
+
+    NSInteger index = [selectedAssets indexOfObject:asset];
 
     WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:selectedAssets];
     carouselVC.assetViewDelegate = self;
