@@ -212,7 +212,7 @@
 
     WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:assets];
     carouselVC.assetViewDelegate = picker;
-    [carouselVC setIndex:selected animated:NO];
+    [carouselVC setPreviewingAssetAtIndex:selected animated:NO];
     return carouselVC;
 }
 

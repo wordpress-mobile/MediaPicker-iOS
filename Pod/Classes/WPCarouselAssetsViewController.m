@@ -28,7 +28,7 @@
     [self updateTitle];
 }
 
-- (void)setIndex:(NSInteger)index animated:(BOOL)animated
+- (void)setPreviewingAssetAtIndex:(NSInteger)index animated:(BOOL)animated
 {
     self.index = index;
     if (self.isViewLoaded) {
@@ -100,8 +100,9 @@
 
 - (void)updateTitle
 {
-    NSString *separator = NSLocalizedString(@"of", @"Word separating the current index of the total amount. I.e.: 7 of 9");
-    self.title = [NSString stringWithFormat:@"%ld %@ %ld", self.index + 1, separator, self.assets.count];
+    NSString *separator = NSLocalizedString(@"of", @"Word separating the current index from the total amount. I.e.: 7 of 9");
+    long showingCount = self.index + 1;
+    self.title = [NSString stringWithFormat:@"%ld %@ %ld", showingCount, separator, (long)self.assets.count];
 }
 
 - (NSInteger)indexForViewController:(UIViewController *)viewController

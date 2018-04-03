@@ -1071,7 +1071,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
     WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:selectedAssets];
     carouselVC.assetViewDelegate = self;
-    [carouselVC setIndex:index animated:NO];
+    [carouselVC setPreviewingAssetAtIndex:index animated:NO];
     return carouselVC;
 }
 
