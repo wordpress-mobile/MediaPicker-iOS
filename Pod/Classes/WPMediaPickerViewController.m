@@ -1015,25 +1015,41 @@ referenceSizeForFooterInSection:(NSInteger)section
                                  previewViewControllerForAsset:asset];
     }
 
-
-
     return [self defaultPreviewViewControllerForAsset:asset];
 }
 
-- (UIViewController *)defaultPreviewViewControllerForAsset:(id <WPMediaAsset>)asset
+- (nonnull UIViewController *)defaultPreviewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset
+{
+    if (self.selectedAssets.count <= 1 || [self.selectedAssets indexOfObject:asset] == NSNotFound) {
+        return [self singleAssetPreviewViewController:asset];
+    } else {
+        return [self multipleAssetPreviewViewControllerForSelectedAsset:asset];
+    }
+}
+
+- (UIViewController *)singleAssetPreviewViewController:(id <WPMediaAsset>)asset
 {
     // We can't preview PHAssets that are audio files
     if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]] && asset.assetType == WPMediaTypeAudio) {
         return nil;
     }
 
-//    WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
-//    fullScreenImageVC.asset = asset;
-//    fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
-//    fullScreenImageVC.delegate = self;
-//    return fullScreenImageVC;
+    WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
+    fullScreenImageVC.asset = asset;
+    fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
+    fullScreenImageVC.delegate = self;
+    return fullScreenImageVC;
+}
+
+- (UIViewController *)multipleAssetPreviewViewControllerForSelectedAsset:(id <WPMediaAsset>)asset
+{
+    // We can't preview PHAssets that are audio files
+    if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]] && asset.assetType == WPMediaTypeAudio) {
+        return nil;
+    }
 
     WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:self.selectedAssets];
+    carouselVC.assetViewDelegate = self;
     NSInteger index = [self.selectedAssets indexOfObject:asset];
     [carouselVC setIndex:index animated:NO];
     return carouselVC;

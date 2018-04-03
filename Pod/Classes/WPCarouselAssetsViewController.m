@@ -1,7 +1,6 @@
 #import "WPCarouselAssetsViewController.h"
-#import "WPAssetViewController.h"
 
-@interface WPCarouselAssetsViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface WPCarouselAssetsViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, WPAssetViewControllerDelegate>
 @property (nonatomic, strong) NSArray<id<WPMediaAsset>> *assets;
 @property (assign, nonatomic) NSInteger index;
 @property (assign, nonatomic) NSInteger nextIndex;
@@ -74,6 +73,20 @@
     self.nextIndex = [self indexForViewController:nextViewController];
 }
 
+#pragma mark: - WPAssetViewControllerDelegate
+
+- (void)assetViewController:(nonnull WPAssetViewController *)assetPreviewVC failedWithError:(nonnull NSError *)error {
+    if (self.assetViewDelegate) {
+        [self.assetViewDelegate assetViewController:assetPreviewVC failedWithError:error];
+    }
+}
+
+- (void)assetViewController:(nonnull WPAssetViewController *)assetPreviewVC selectionChanged:(BOOL)selected {
+    if (self.assetViewDelegate) {
+        [self.assetViewDelegate assetViewController:assetPreviewVC selectionChanged:selected];
+    }
+}
+
 #pragma mark: - Helpers
 
 - (void)initialSetup
@@ -108,7 +121,7 @@
     WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
     fullScreenImageVC.asset = asset;
     //    fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
-    //    fullScreenImageVC.delegate = self;
+    fullScreenImageVC.delegate = self;
     return fullScreenImageVC;
 }
 
