@@ -246,12 +246,12 @@ static NSString *const ArrowDown = @"\u25be";
     }
 }
 
-- (nullable UIViewController *)mediaPickerController:(nonnull WPMediaPickerViewController *)picker previewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset {
-    if ([self.delegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAsset:)]) {
-        return [self.delegate mediaPickerController:picker previewViewControllerForAsset:asset];
+- (nullable UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAssets:(nonnull NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected {
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {
+        return [self.delegate mediaPickerController:picker previewViewControllerForAssets:assets selectedIndex:selected];
     }
 
-    return [self.mediaPicker defaultPreviewViewControllerForAsset:asset];
+    return [self.mediaPicker defaultPreviewViewControllerForAsset:assets[selected]];
 }
 
 - (void)mediaPickerControllerWillBeginLoadingData:(nonnull WPMediaPickerViewController *)picker {
