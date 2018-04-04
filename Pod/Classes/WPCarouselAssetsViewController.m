@@ -37,7 +37,7 @@
     }
 }
 
-#pragma mark: - UIPageViewControllerDelegate
+#pragma mark - UIPageViewControllerDelegate
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
@@ -57,7 +57,7 @@
     return [self viewControllerAtIndex:index + 1];
 }
 
-#pragma mark: - UIPageViewControllerDelegate
+#pragma mark - UIPageViewControllerDelegate
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
 {
@@ -73,7 +73,7 @@
     self.nextIndex = [self indexForViewController:nextViewController];
 }
 
-#pragma mark: - WPAssetViewControllerDelegate
+#pragma mark - WPAssetViewControllerDelegate
 
 - (void)assetViewController:(nonnull WPAssetViewController *)assetPreviewVC failedWithError:(nonnull NSError *)error {
     if (self.assetViewDelegate) {
@@ -87,7 +87,7 @@
     }
 }
 
-#pragma mark: - Helpers
+#pragma mark - Helpers
 
 - (void)initialSetup
 {
@@ -121,7 +121,6 @@
     id<WPMediaAsset> asset = [self.assets objectAtIndex:index];
     WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
     fullScreenImageVC.asset = asset;
-    //    fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
     fullScreenImageVC.delegate = self;
     return fullScreenImageVC;
 }
