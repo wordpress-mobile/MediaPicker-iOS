@@ -143,6 +143,18 @@ static NSString *const ArrowDown = @"\u25be";
     [self presentViewController:groupViewController animated:YES completion:nil];
 }
 
+- (void)setSelectionActionTitle:(NSString *)selectionActionTitle
+{
+    _selectionActionTitle = selectionActionTitle;
+    self.mediaPicker.selectionActionTitle = _selectionActionTitle;
+}
+
+-(void)setPreviewActionTitle:(NSString *)previewActionTitle
+{
+    _previewActionTitle = previewActionTitle;
+    self.mediaPicker.previewActionTitle = _previewActionTitle;
+}
+
 #pragma mark - WPMediaGroupViewControllerDelegate
 
 - (void)mediaGroupPickerViewController:(WPMediaGroupPickerViewController *)picker didPickGroup:(id<WPMediaGroup>)group
@@ -272,31 +284,18 @@ static NSString *const ArrowDown = @"\u25be";
         [self.delegate mediaPickerController:picker selectionChanged:assets];
     }
     [self updateSelectionAction];
-
 }
 
 - (void)updateSelectionAction {
-//    if (self.mediaPicker.selectedAssets.count == 0 || !self.mediaPicker.options.allowMultipleSelection) {
-//        self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = nil;
-//        return;
-//    }
-//    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self selectionActionValue]
-//                                                            style:UIBarButtonItemStyleDone
-//                                                           target:self
-//                                                           action:@selector(finishPicker:)];
-//    self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = rightButtonItem;
-}
-
-- (NSString *)selectionActionValue {
-    NSString *actionString = self.selectionActionTitle;
-    if (actionString == nil) {
-        actionString = NSLocalizedString(@"Select %@", @"Action for Navigation bar to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected");
+    if (self.mediaPicker.options.showActionBar || self.mediaPicker.selectedAssets.count == 0 || !self.mediaPicker.options.allowMultipleSelection) {
+        self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = nil;
+        return;
     }
-    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
-    NSString * countString = [numberFormatter stringFromNumber:[NSNumber numberWithInteger:self.mediaPicker.selectedAssets.count]];
-    NSString * resultString = [NSString stringWithFormat:actionString, countString];
-
-    return resultString;
+    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.mediaPicker.selectionActionTitle
+                                                            style:UIBarButtonItemStyleDone
+                                                           target:self
+                                                           action:@selector(finishPicker:)];
+    self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = rightButtonItem;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {

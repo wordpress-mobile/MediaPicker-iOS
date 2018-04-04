@@ -366,40 +366,7 @@ static CGFloat SelectAnimationTime = 0.2;
      ];
 }
 
-#pragma mark: Action bar
-
-- (NSArray<UIBarButtonItem *>*)actionBarButtons
-{
-    UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:[self previewButtonTitle] style:(UIBarButtonItemStylePlain) target:self action:@selector(onPreviewButtonPressed:)];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:[self addButtonTitle] style:(UIBarButtonItemStyleDone) target:self action:@selector(onAddButtonPressed:)];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFlexibleSpace) target:nil action:nil];
-    UIBarButtonItem *leftFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
-    UIBarButtonItem *rightFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
-
-    return @[leftFixedSpace, previewButton, flexibleSpace, addButton, rightFixedSpace];
-}
-
-- (NSString *)previewButtonTitle
-{
-    BOOL hasSelections = (self.selectedAssets.count > 0);
-
-    if (hasSelections) {
-        return [NSString stringWithFormat:@"Preview %ld", (long)self.selectedAssets.count];
-    } else {
-        return @"Preview";
-    }
-}
-
-- (NSString *)addButtonTitle
-{
-    BOOL hasSelections = (self.selectedAssets.count > 0);
-
-    if (hasSelections) {
-        return [NSString stringWithFormat:@"Add %ld", (long)self.selectedAssets.count];
-    } else {
-        return @"Add";
-    }
-}
+#pragma mark - Action bar
 
 - (UIToolbar *)accessoryActionBar
 {
@@ -411,6 +378,43 @@ static CGFloat SelectAnimationTime = 0.2;
     [_accessoryActionBar sizeToFit];
 
     return _accessoryActionBar;
+}
+
+- (NSArray<UIBarButtonItem *>*)actionBarButtons
+{
+    UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:self.previewActionTitle style:(UIBarButtonItemStylePlain) target:self action:@selector(onPreviewButtonPressed:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:self.selectionActionTitle style:(UIBarButtonItemStyleDone) target:self action:@selector(onAddButtonPressed:)];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFlexibleSpace) target:nil action:nil];
+    UIBarButtonItem *leftFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
+    UIBarButtonItem *rightFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
+
+    return @[leftFixedSpace, previewButton, flexibleSpace, addButton, rightFixedSpace];
+}
+
+- (NSString *)previewActionTitle
+{
+    NSString *actionString = _previewActionTitle;
+    if (actionString == nil) {
+        actionString = NSLocalizedString(@"Preview %@", @"Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected");
+    }
+    return [self formatButtonTitleWithTitlePlaceholder:actionString];
+}
+
+-(NSString *)selectionActionTitle
+{
+    NSString *actionString = _selectionActionTitle;
+    if (actionString == nil) {
+        actionString = NSLocalizedString(@"Add %@", @"Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected");
+    }
+    return [self formatButtonTitleWithTitlePlaceholder:actionString];
+}
+
+- (NSString *)formatButtonTitleWithTitlePlaceholder:(NSString *)placeholder
+{
+    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
+    NSString * countString = [numberFormatter stringFromNumber:[NSNumber numberWithInteger:self.internalSelectedAssets.count]];
+    NSString * resultString = [NSString stringWithFormat:placeholder, countString];
+    return resultString;
 }
 
 - (void)updateActionbar
@@ -447,7 +451,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (BOOL)shouldShowActionBar
 {
-    return self.options.allowMultipleSelection && self.internalSelectedAssets.count > 0;
+    return self.options.showActionBar && self.options.allowMultipleSelection && self.internalSelectedAssets.count > 0;
 }
 
 - (void)onPreviewButtonPressed:(UIBarButtonItem *)sender
@@ -725,6 +729,7 @@ static CGFloat SelectAnimationTime = 0.2;
     }
 
     self.internalSelectedAssets = stillExistingSeletedAssets;
+    [self updateActionbar];
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:selectionChanged:)]) {
         [self.mediaPickerDelegate mediaPickerController:self selectionChanged:[self.internalSelectedAssets copy]];
     }
@@ -1114,8 +1119,8 @@ referenceSizeForFooterInSection:(NSInteger)section
 {
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {
 
-        NSInteger index = [self.selectedAssets indexOfObject:asset];
-        NSArray *selectedAssets = [self.selectedAssets copy];
+        NSInteger index = [self.internalSelectedAssets indexOfObject:asset];
+        NSArray *selectedAssets = self.selectedAssets;
         if (index == NSNotFound) {
             selectedAssets = @[asset];
             index = 0;
@@ -1132,7 +1137,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (nonnull UIViewController *)defaultPreviewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset
 {
-    if (self.selectedAssets.count <= 1 || [self.selectedAssets indexOfObject:asset] == NSNotFound) {
+    if (self.internalSelectedAssets.count <= 1 || [self.internalSelectedAssets indexOfObject:asset] == NSNotFound) {
         return [self singleAssetPreviewViewController:asset];
     } else {
         return [self multipleAssetPreviewViewControllerForSelectedAsset:asset];
@@ -1155,7 +1160,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (UIViewController *)multipleAssetPreviewViewControllerForSelectedAsset:(id <WPMediaAsset>)asset
 {
-    NSArray *selectedAssets = self.selectedAssets.copy;
+    NSArray *selectedAssets = self.selectedAssets;
 
     // We can't preview PHAssets that are audio files
     if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]]) {

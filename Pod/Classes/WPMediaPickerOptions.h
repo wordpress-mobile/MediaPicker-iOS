@@ -38,4 +38,9 @@
  */
 @property (nonatomic, assign) BOOL showSearchBar;
 
+/**
+ If YES, the picker will use a bottom action bar instead of the top right action button for multiple selection. By default the value is YES.
+ */
+@property (nonatomic, assign) BOOL showActionBar;
+
 @end
