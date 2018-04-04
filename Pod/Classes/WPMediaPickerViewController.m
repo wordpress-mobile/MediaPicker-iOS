@@ -50,6 +50,8 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, strong) UILabel *defaultEmptyView;
 
+@property (nonatomic, strong) UIToolbar *accessoryActionBar;
+
 /**
  The size of the camera preview cell
  */
@@ -266,6 +268,7 @@ static CGFloat SelectAnimationTime = 0.2;
     [super viewWillAppear:animated];
     [self.captureCell startCapture];
     [self registerForKeyboardNotifications];
+    [self updateActionbar];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -361,6 +364,103 @@ static CGFloat SelectAnimationTime = 0.2;
        [self.searchBar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
        ]
      ];
+}
+
+#pragma mark: Action bar
+
+- (NSArray<UIBarButtonItem *>*)actionBarButtons
+{
+    UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:[self previewButtonTitle] style:(UIBarButtonItemStylePlain) target:self action:@selector(onPreviewButtonPressed:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:[self addButtonTitle] style:(UIBarButtonItemStyleDone) target:self action:@selector(onAddButtonPressed:)];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFlexibleSpace) target:nil action:nil];
+    UIBarButtonItem *leftFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
+    UIBarButtonItem *rightFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
+
+    return @[leftFixedSpace, previewButton, flexibleSpace, addButton, rightFixedSpace];
+}
+
+- (NSString *)previewButtonTitle
+{
+    BOOL hasSelections = (self.selectedAssets.count > 0);
+
+    if (hasSelections) {
+        return [NSString stringWithFormat:@"Preview %ld", (long)self.selectedAssets.count];
+    } else {
+        return @"Preview";
+    }
+}
+
+- (NSString *)addButtonTitle
+{
+    BOOL hasSelections = (self.selectedAssets.count > 0);
+
+    if (hasSelections) {
+        return [NSString stringWithFormat:@"Add %ld", (long)self.selectedAssets.count];
+    } else {
+        return @"Add";
+    }
+}
+
+- (UIToolbar *)accessoryActionBar
+{
+    if (_accessoryActionBar) {
+        return _accessoryActionBar;
+    }
+    _accessoryActionBar = [[UIToolbar alloc] init];
+    [_accessoryActionBar setItems:[self actionBarButtons]];
+    [_accessoryActionBar sizeToFit];
+
+    return _accessoryActionBar;
+}
+
+- (void)updateActionbar
+{
+    if ([self shouldShowActionBar]) {
+        [self.accessoryActionBar setItems:[self actionBarButtons]];
+
+        if ([self.searchBar isFirstResponder]) {
+            [self.searchBar reloadInputViews];
+        } else {
+            [self becomeFirstResponder];
+        }
+    } else {
+        if ([self isFirstResponder]) {
+            [self resignFirstResponder];
+        } else {
+            [self.searchBar reloadInputViews];
+        }
+    }
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return [self shouldShowActionBar];
+}
+
+-(UIView *)inputAccessoryView
+{
+    if ([self shouldShowActionBar]) {
+        return self.accessoryActionBar;
+    }
+    return nil;
+}
+
+- (BOOL)shouldShowActionBar
+{
+    return self.options.allowMultipleSelection && self.internalSelectedAssets.count > 0;
+}
+
+- (void)onPreviewButtonPressed:(UIBarButtonItem *)sender
+{
+    UIViewController *previewController = [self previewViewControllerForAsset:[self.selectedAssets firstObject]];
+    [self displayPreviewController:previewController];
+}
+
+- (void)onAddButtonPressed:(UIBarButtonItem *)sender
+{
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
+        [self.mediaPickerDelegate mediaPickerController:self didFinishPickingAssets:[self.internalSelectedAssets copy]];
+    }
 }
 
 #pragma mark - Actions
@@ -827,7 +927,7 @@ referenceSizeForFooterInSection:(NSInteger)section
         [cell setPosition:NSNotFound];
     }
     [self animateCellSelection:cell completion:nil];
-
+    [self updateActionbar];
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didSelectAsset:)]) {
         [self.mediaPickerDelegate mediaPickerController:self didSelectAsset:asset];
     }
@@ -874,6 +974,8 @@ referenceSizeForFooterInSection:(NSInteger)section
             }
         }
     }];
+
+    [self updateActionbar];
 
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didDeselectAsset:)]) {
         [self.mediaPickerDelegate mediaPickerController:self didDeselectAsset:asset];

@@ -276,15 +276,15 @@ static NSString *const ArrowDown = @"\u25be";
 }
 
 - (void)updateSelectionAction {
-    if (self.mediaPicker.selectedAssets.count == 0 || !self.mediaPicker.options.allowMultipleSelection) {
-        self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = nil;
-        return;
-    }
-    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self selectionActionValue]
-                                                            style:UIBarButtonItemStyleDone
-                                                           target:self
-                                                           action:@selector(finishPicker:)];
-    self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = rightButtonItem;
+//    if (self.mediaPicker.selectedAssets.count == 0 || !self.mediaPicker.options.allowMultipleSelection) {
+//        self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = nil;
+//        return;
+//    }
+//    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self selectionActionValue]
+//                                                            style:UIBarButtonItemStyleDone
+//                                                           target:self
+//                                                           action:@selector(finishPicker:)];
+//    self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = rightButtonItem;
 }
 
 - (NSString *)selectionActionValue {
