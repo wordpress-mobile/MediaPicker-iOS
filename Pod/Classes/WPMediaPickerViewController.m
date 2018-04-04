@@ -385,10 +385,8 @@ static CGFloat SelectAnimationTime = 0.2;
     UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:self.previewActionTitle style:(UIBarButtonItemStylePlain) target:self action:@selector(onPreviewButtonPressed:)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:self.selectionActionTitle style:(UIBarButtonItemStyleDone) target:self action:@selector(onAddButtonPressed:)];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFlexibleSpace) target:nil action:nil];
-    UIBarButtonItem *leftFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
-    UIBarButtonItem *rightFixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFixedSpace) target:nil action:nil];
 
-    return @[leftFixedSpace, previewButton, flexibleSpace, addButton, rightFixedSpace];
+    return @[previewButton, flexibleSpace, addButton];
 }
 
 - (NSString *)previewActionTitle
