@@ -398,7 +398,7 @@ static CGFloat SelectAnimationTime = 0.2;
     return [self formatButtonTitleWithTitlePlaceholder:actionString];
 }
 
--(NSString *)selectionActionTitle
+- (NSString *)selectionActionTitle
 {
     NSString *actionString = _selectionActionTitle;
     if (actionString == nil) {
@@ -439,7 +439,7 @@ static CGFloat SelectAnimationTime = 0.2;
     return [self shouldShowActionBar];
 }
 
--(UIView *)inputAccessoryView
+- (UIView *)inputAccessoryView
 {
     if ([self shouldShowActionBar]) {
         return self.accessoryActionBar;
@@ -549,7 +549,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 #pragma mark - UICollectionViewDataSource
 
--(void)updateDataWithRemoved:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moves {
+- (void)updateDataWithRemoved:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moves {
     if ([removed containsIndex:self.assetIndexInPreview.item]){
         self.assetIndexInPreview = nil;
     }
@@ -582,7 +582,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 }
 
--(NSArray *)indexPathsFromIndexSet:(NSIndexSet *)indexSet section:(NSInteger)section{
+- (NSArray *)indexPathsFromIndexSet:(NSIndexSet *)indexSet section:(NSInteger)section{
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:indexSet.count];
     [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
         [indexPaths addObject:[NSIndexPath indexPathForItem:idx inSection:section]];
