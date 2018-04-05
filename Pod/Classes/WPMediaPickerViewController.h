@@ -2,6 +2,7 @@
 #import "WPMediaCollectionDataSource.h"
 #import "WPAssetViewController.h"
 #import "WPMediaPickerOptions.h"
+#import "WPActionBar.h"
 
 @class WPMediaPickerViewController;
 /**
@@ -250,6 +251,13 @@
  If this is nil the default value will be used. The default the value is 'Preview %@'
  */
 @property (nonatomic, copy, nullable) NSString *previewActionTitle;
+
+
+/**
+ The bottom bar used to show the action buttons.
+ Use this instance to style the bar as required, or to add extra buttons.
+ */
+@property (nonatomic, strong, readonly, nullable) WPActionBar *actionBar;
 
 /**
  Allows to set a group as the current display group on the data source. 

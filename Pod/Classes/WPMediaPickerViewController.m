@@ -50,7 +50,9 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, strong) UILabel *defaultEmptyView;
 
-@property (nonatomic, strong) UIToolbar *accessoryActionBar;
+@property (nonatomic, strong) WPActionBar *accessoryActionBar;
+@property (nonatomic, strong) UIButton *selectedActionButton;
+@property (nonatomic, strong) UIButton *previewActionButton;
 
 /**
  The size of the camera preview cell
@@ -368,25 +370,51 @@ static CGFloat SelectAnimationTime = 0.2;
 
 #pragma mark - Action bar
 
-- (UIToolbar *)accessoryActionBar
+- (UIView *)actionBar
+{
+    return self.accessoryActionBar;
+}
+
+- (WPActionBar *)accessoryActionBar
 {
     if (_accessoryActionBar) {
         return _accessoryActionBar;
     }
-    _accessoryActionBar = [[UIToolbar alloc] init];
-    [_accessoryActionBar setItems:[self actionBarButtons]];
+    _accessoryActionBar = [[WPActionBar alloc] init];
+
+    [_accessoryActionBar addLeftButton:self.previewActionButton];
+    [_accessoryActionBar addRightButton:self.selectedActionButton];
     [_accessoryActionBar sizeToFit];
 
     return _accessoryActionBar;
 }
 
-- (NSArray<UIBarButtonItem *>*)actionBarButtons
+- (UIButton *)previewActionButton
 {
-    UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:self.previewActionTitle style:(UIBarButtonItemStylePlain) target:self action:@selector(onPreviewButtonPressed:)];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:self.selectionActionTitle style:(UIBarButtonItemStyleDone) target:self action:@selector(onAddButtonPressed:)];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemFlexibleSpace) target:nil action:nil];
+    if (_previewActionButton) {
+        return _previewActionButton;
+    }
 
-    return @[previewButton, flexibleSpace, addButton];
+    _previewActionButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    [_previewActionButton addTarget:self action:@selector(onPreviewButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_previewActionButton setTitle:self.previewActionTitle forState:UIControlStateNormal];
+
+    return _previewActionButton;
+}
+
+- (UIButton *)selectedActionButton
+{
+    if (_selectedActionButton) {
+        return _selectedActionButton;
+    }
+
+    _selectedActionButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    UIFont *font = _selectedActionButton.titleLabel.font;
+    _selectedActionButton.titleLabel.font = [UIFont boldSystemFontOfSize:font.pointSize];
+    [_selectedActionButton addTarget:self action:@selector(onAddButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_selectedActionButton setTitle:self.selectionActionTitle forState:UIControlStateNormal];
+
+    return _selectedActionButton;
 }
 
 - (NSString *)previewActionTitle
@@ -416,7 +444,12 @@ static CGFloat SelectAnimationTime = 0.2;
 - (void)updateActionbar
 {
     if ([self shouldShowActionBar]) {
-        [self.accessoryActionBar setItems:[self actionBarButtons]];
+        [UIView performWithoutAnimation:^{
+            [self.previewActionButton setTitle:self.previewActionTitle forState:UIControlStateNormal];
+            [self.selectedActionButton setTitle:self.selectionActionTitle forState:UIControlStateNormal];
+            [self.previewActionButton layoutIfNeeded];
+            [self.selectedActionButton layoutIfNeeded];
+        }];
 
         if ([self.searchBar isFirstResponder]) {
             [self.searchBar reloadInputViews];
