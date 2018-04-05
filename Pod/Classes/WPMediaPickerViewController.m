@@ -409,10 +409,8 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (NSString *)formatButtonTitleWithTitlePlaceholder:(NSString *)placeholder
 {
-    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
-    NSString * countString = [numberFormatter stringFromNumber:[NSNumber numberWithInteger:self.internalSelectedAssets.count]];
-    NSString * resultString = [NSString stringWithFormat:placeholder, countString];
-    return resultString;
+    NSString * countString = @(self.internalSelectedAssets.count).stringValue;
+    return [NSString stringWithFormat:placeholder, countString];
 }
 
 - (void)updateActionbar
