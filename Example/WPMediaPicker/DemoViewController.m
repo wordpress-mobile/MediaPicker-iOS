@@ -255,7 +255,6 @@
     self.pickerDataSource = [WPPHAssetDataSource sharedInstance];
     self.mediaPicker.dataSource = self.pickerDataSource;
     self.mediaPicker.selectionActionTitle = NSLocalizedString(@"Insert %@", @"");
-    self.mediaPicker.mediaPicker.actionBar.lineColor = [UIColor colorWithRed:0.91 green:0.94 blue:0.95 alpha:1.0];
 
     if (self.mediaInputViewController) {
         self.mediaPicker.mediaPicker.selectedAssets = self.mediaInputViewController.mediaPicker.selectedAssets;

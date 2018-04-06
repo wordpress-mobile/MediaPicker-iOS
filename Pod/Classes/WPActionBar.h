@@ -5,7 +5,7 @@
 /**
  The color for the top horizontal line.
  */
-@property (nonatomic, strong) UIColor *lineColor;
+@property (nonatomic, strong) UIColor *lineColor UI_APPEARANCE_SELECTOR;
 
 /**
  Adds the given button to the left side of the bar
