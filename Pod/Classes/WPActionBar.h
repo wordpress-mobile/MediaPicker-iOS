@@ -1,10 +1,3 @@
-//
-//  WPActionBar.h
-//  WPMediaPicker
-//
-//  Created by Eduardo Toledo on 4/5/18.
-//
-
 #import <UIKit/UIKit.h>
 
 @interface WPActionBar : UIView
