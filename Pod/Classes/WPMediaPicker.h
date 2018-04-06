@@ -14,5 +14,6 @@
 #import "WPPHAssetDataSource.h"
 #import "WPMediaCapturePreviewCollectionView.h"
 #import "WPVideoPlayerView.h"
+#import "WPActionBar.h"
 
 #endif /* _WPMEDIAPICKER_ */

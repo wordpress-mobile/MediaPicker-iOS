@@ -13,6 +13,9 @@
     // Customize appearance
     self.window.tintColor = [UIColor colorWithRed:0/255.0f green:135/255.0f blue:190/255.0f alpha:1.0f];
     self.window.backgroundColor = [UIColor whiteColor];
+
+    //Configure bottom action bar line color
+    [[WPActionBar appearance] setLineColor:[UIColor colorWithRed:0.91 green:0.94 blue:0.95 alpha:1.0]];
     
     //Configure navigation bar background color
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0/255.0f green:135/255.0f blue:190/255.0f alpha:1.0f]];

@@ -13,6 +13,7 @@
         _allowMultipleSelection = YES;
         _scrollVertically = YES;
         _showSearchBar = NO;
+        _showActionBar = YES;
     }
     return self;
 }
@@ -26,6 +27,7 @@
     options.allowMultipleSelection = self.allowMultipleSelection;
     options.scrollVertically = self.scrollVertically;
     options.showSearchBar = self.showSearchBar;
+    options.showActionBar = self.showActionBar;
 
     return options;
 }

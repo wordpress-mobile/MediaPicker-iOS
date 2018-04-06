@@ -204,7 +204,6 @@
 
 - (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAssets:(NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected
 {
-
     if ([self.options[MediaPickerOptionsCustomPreview] boolValue]) {
         id<WPMediaAsset> asset = assets[selected];
         return [[CustomPreviewViewController alloc] initWithAsset:asset];
@@ -256,6 +255,7 @@
     self.pickerDataSource = [WPPHAssetDataSource sharedInstance];
     self.mediaPicker.dataSource = self.pickerDataSource;
     self.mediaPicker.selectionActionTitle = NSLocalizedString(@"Insert %@", @"");
+
     if (self.mediaInputViewController) {
         self.mediaPicker.mediaPicker.selectedAssets = self.mediaInputViewController.mediaPicker.selectedAssets;
         self.mediaInputViewController.mediaPicker.selectedAssets = [NSArray<WPMediaAsset> new];

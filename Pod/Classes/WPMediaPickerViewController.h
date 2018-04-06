@@ -2,6 +2,7 @@
 #import "WPMediaCollectionDataSource.h"
 #import "WPAssetViewController.h"
 #import "WPMediaPickerOptions.h"
+#import "WPActionBar.h"
 
 @class WPMediaPickerViewController;
 /**
@@ -236,6 +237,27 @@
  The default empty view. When `emptyViewForMediaPickerController:` is not implemented, use this property to style the mensaje.
  */
 @property (nonatomic, strong, readonly, nonnull) UILabel *defaultEmptyView;
+
+/**
+ A localized string that reflect the action that will be done when the user finishes picking assets.
+ This string can contain a a placeholder for a numeric value that will indicate the number of media items selected.
+ If this is nil the default value will be used. The default the value is 'Add %@'
+ */
+@property (nonatomic, copy, nullable) NSString *selectionActionTitle;
+
+/**
+ A localized string that reflect the action that will be done when the user chooses to preview the selected assets.
+ This string can contain a a placeholder for a numeric value that will indicate the number of media items selected.
+ If this is nil the default value will be used. The default the value is 'Preview %@'
+ */
+@property (nonatomic, copy, nullable) NSString *previewActionTitle;
+
+
+/**
+ The bottom bar used to show the action buttons.
+ Use this instance to style the bar as required, or to add extra buttons.
+ */
+@property (nonatomic, strong, readonly, nullable) WPActionBar *actionBar;
 
 /**
  Allows to set a group as the current display group on the data source. 
