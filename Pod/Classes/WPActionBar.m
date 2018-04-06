@@ -29,7 +29,7 @@ static const UIEdgeInsets ButtonsBarEdgeInsets = {0, 20, 0, 20}; //top, left, bo
 - (void)setupView
 {
     [self setBackgroundColor:[UIColor whiteColor]];
-    [self setAutoresizingMask:(UIViewAutoresizingFlexibleHeight)];
+    [self setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [self addSubview:[self lineView]];
 }
 
@@ -75,13 +75,11 @@ static const UIEdgeInsets ButtonsBarEdgeInsets = {0, 20, 0, 20}; //top, left, bo
 
 - (UIStackView *)stackView
 {
-    if (_stackView) {
-        return _stackView;
+    if (!_stackView) {
+        _stackView = [UIStackView new];
     }
-    _stackView = [UIStackView new];
     return _stackView;
 }
-
 
 #pragma mark - public methods
 
