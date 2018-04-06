@@ -138,7 +138,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
     [self.dataSource setMediaTypeFilter:options.filter];
     [self.dataSource setAscendingOrdering:!options.showMostRecentFirst];
-    self.collectionView.allowsMultipleSelection = options.allowMultipleSelection;
+    self.collectionView.allowsMultipleSelection = options.selectionLimit > 1;
     self.collectionView.alwaysBounceHorizontal = !options.scrollVertically;
     self.collectionView.alwaysBounceVertical = options.scrollVertically;
 
@@ -150,7 +150,7 @@ static CGFloat SelectAnimationTime = 0.2;
         [self refreshDataAnimated:NO];
     } else {
         // if just the selection mode changed we just need to reload the collection view not all the data.
-        if (originalOptions.allowMultipleSelection != options.allowMultipleSelection || options.allowCaptureOfMedia != originalOptions.allowCaptureOfMedia) {
+        if (originalOptions.selectionLimit != options.selectionLimit || options.allowCaptureOfMedia != originalOptions.allowCaptureOfMedia) {
             [self.collectionView reloadData];
         }
     }
@@ -290,7 +290,7 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.delegate = self;
 
     self.collectionView.allowsSelection = YES;
-    self.collectionView.allowsMultipleSelection = self.options.allowMultipleSelection;
+    self.collectionView.allowsMultipleSelection = self.options.selectionLimit > 1;
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceHorizontal = NO;
     self.collectionView.alwaysBounceVertical = YES;
@@ -512,7 +512,7 @@ static CGFloat SelectAnimationTime = 0.2;
         strongSelf.refreshGroupFirstTime = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
             strongSelf.collectionView.allowsSelection = YES;
-            strongSelf.collectionView.allowsMultipleSelection = strongSelf.options.allowMultipleSelection;
+            strongSelf.collectionView.allowsMultipleSelection = strongSelf.options.selectionLimit > 1;
             strongSelf.collectionView.scrollEnabled = YES;
             [strongSelf refreshSelection];
             [strongSelf.collectionView reloadData];
@@ -674,10 +674,10 @@ static CGFloat SelectAnimationTime = 0.2;
 
     cell.asset = asset;
     NSUInteger position = [self positionOfAssetInSelection:asset];
-    cell.hiddenSelectionIndicator = !self.options.allowMultipleSelection;
+    cell.hiddenSelectionIndicator = self.options.selectionLimit == 1;
     if (position != NSNotFound) {
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-        if (self.options.allowMultipleSelection) {
+        if (self.options.selectionLimit > 1) {
             [cell setPosition:position + 1];
         } else {
             [cell setPosition:NSNotFound];
@@ -804,7 +804,8 @@ referenceSizeForFooterInSection:(NSInteger)section
 {
     id<WPMediaAsset> asset = [self assetForPosition:indexPath];
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:shouldSelectAsset:)]) {
-        return [self.mediaPickerDelegate mediaPickerController:self shouldSelectAsset:asset];
+        return self.internalSelectedAssets.count < self.options.selectionLimit
+            && [self.mediaPickerDelegate mediaPickerController:self shouldSelectAsset:asset];
     }
     return YES;
 }
@@ -815,25 +816,27 @@ referenceSizeForFooterInSection:(NSInteger)section
     if (asset == nil) {
         return;
     }
-    if (!self.options.allowMultipleSelection) {
+    if (self.options.selectionLimit == 1) {
         [self.internalSelectedAssets removeAllObjects];
     }
-    [self.internalSelectedAssets addObject:asset];
-
-    WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    if (self.options.allowMultipleSelection) {
-        [cell setPosition:self.internalSelectedAssets.count];
-    } else {
-        [cell setPosition:NSNotFound];
-    }
-    [self animateCellSelection:cell completion:nil];
-
-    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didSelectAsset:)]) {
-        [self.mediaPickerDelegate mediaPickerController:self didSelectAsset:asset];
-    }
-    if (!self.options.allowMultipleSelection) {
-        if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
-            [self.mediaPickerDelegate mediaPickerController:self didFinishPickingAssets:[self.internalSelectedAssets copy]];
+    if (self.internalSelectedAssets.count < self.options.selectionLimit) {
+        [self.internalSelectedAssets addObject:asset];
+        
+        WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        if (self.options.selectionLimit > 1) {
+            [cell setPosition:self.internalSelectedAssets.count];
+        } else {
+            [cell setPosition:NSNotFound];
+        }
+        [self animateCellSelection:cell completion:nil];
+        
+        if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didSelectAsset:)]) {
+            [self.mediaPickerDelegate mediaPickerController:self didSelectAsset:asset];
+        }
+        if (self.options.selectionLimit == 1) {
+            if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
+                [self.mediaPickerDelegate mediaPickerController:self didFinishPickingAssets:[self.internalSelectedAssets copy]];
+            }
         }
     }
 }
@@ -866,7 +869,7 @@ referenceSizeForFooterInSection:(NSInteger)section
             id<WPMediaAsset> asset = [self assetForPosition:selectedIndexPath];
             NSUInteger position = [self positionOfAssetInSelection:asset];
             if (position != NSNotFound) {
-                if (self.options.allowMultipleSelection) {
+                if (self.options.selectionLimit > 1) {
                     [cell setPosition:position + 1];
                 } else {
                     [cell setPosition:NSNotFound];
@@ -961,7 +964,7 @@ referenceSizeForFooterInSection:(NSInteger)section
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didSelectAsset:)]) {
         [self.mediaPickerDelegate mediaPickerController:self didSelectAsset:asset];
     }
-    if (!self.options.allowMultipleSelection) {
+    if (self.options.selectionLimit == 1) {
         if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
             if (self.capturedAsset) {
                 [self.internalSelectedAssets addObject:self.capturedAsset];

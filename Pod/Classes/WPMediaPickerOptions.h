@@ -24,9 +24,9 @@
 @property (nonatomic, assign) WPMediaType filter;
 
 /**
- If YES the picker will allow the selection of multiple items. By default this value is YES.
+ The maximum number of selection allowed.
  */
-@property (nonatomic, assign) BOOL allowMultipleSelection;
+@property (nonatomic, assign) int selectionLimit;
 
 /**
  If YES the picker will scroll media vertically. Defaults to YES (vertical).

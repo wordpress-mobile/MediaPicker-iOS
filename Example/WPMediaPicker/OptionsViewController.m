@@ -5,7 +5,7 @@ NSString const *MediaPickerOptionsShowMostRecentFirst = @"MediaPickerOptionsShow
 NSString const *MediaPickerOptionsUsePhotosLibrary = @"MediaPickerOptionsUsePhotosLibrary";
 NSString const *MediaPickerOptionsShowCameraCapture = @"MediaPickerOptionsShowCameraCapture";
 NSString const *MediaPickerOptionsPreferFrontCamera = @"MediaPickerOptionsPreferFrontCamera";
-NSString const *MediaPickerOptionsAllowMultipleSelection = @"MediaPickerOptionsAllowMultipleSelection";
+NSString const *MediaPickerOptionsSelectionLimit = @"MediaPickerOptionsSelectionLimit";
 NSString const *MediaPickerOptionsPostProcessingStep = @"MediaPickerOptionsPostProcessingStep";
 NSString const *MediaPickerOptionsFilterType = @"MediaPickerOptionsFilterType";
 NSString const *MediaPickerOptionsCustomPreview = @"MediaPickerOptionsCustomPreview";
@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     OptionsViewControllerCellShowMostRecentFirst,
     OptionsViewControllerCellShowCameraCapture,
     OptionsViewControllerCellPreferFrontCamera,
-    OptionsViewControllerCellAllowMultipleSelection,
+    OptionsViewControllerCellSelectionLimit,
     OptionsViewControllerCellPostProcessingStep,
     OptionsViewControllerCellMediaType,
     OptionsViewControllerCellCustomPreview,
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
 @property (nonatomic, strong) UITableViewCell *showMostRecentFirstCell;
 @property (nonatomic, strong) UITableViewCell *showCameraCaptureCell;
 @property (nonatomic, strong) UITableViewCell *preferFrontCameraCell;
-@property (nonatomic, strong) UITableViewCell *allowMultipleSelectionCell;
+@property (nonatomic, strong) UITableViewCell *selectionLimitCell;
 @property (nonatomic, strong) UITableViewCell *postProcessingStepCell;
 @property (nonatomic, strong) UITableViewCell *filterMediaCell;
 @property (nonatomic, strong) UITableViewCell *customPreviewCell;
@@ -69,10 +69,11 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     ((UISwitch *)self.preferFrontCameraCell.accessoryView).on = [self.options[MediaPickerOptionsPreferFrontCamera] boolValue];
     self.preferFrontCameraCell.textLabel.text = @"Prefer Front Camera";
     
-    self.allowMultipleSelectionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    self.allowMultipleSelectionCell.accessoryView = [[UISwitch alloc] init];
-    ((UISwitch *)self.allowMultipleSelectionCell.accessoryView).on = [self.options[MediaPickerOptionsAllowMultipleSelection] boolValue];
-    self.allowMultipleSelectionCell.textLabel.text = @"Allow Multiple Selection";
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 40, self.view.frame.size.height)];
+    textField.text = [self.options[MediaPickerOptionsSelectionLimit] stringValue];
+    self.selectionLimitCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    self.selectionLimitCell.accessoryView = textField;
+    self.selectionLimitCell.textLabel.text = @"Selection Limit";
     
     self.postProcessingStepCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.postProcessingStepCell.accessoryView = [[UISwitch alloc] init];
@@ -137,8 +138,8 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
         case OptionsViewControllerCellPreferFrontCamera:
             return self.preferFrontCameraCell;
             break;
-        case OptionsViewControllerCellAllowMultipleSelection:
-            return self.allowMultipleSelectionCell;
+        case OptionsViewControllerCellSelectionLimit:
+            return self.selectionLimitCell;
             break;
         case OptionsViewControllerCellPostProcessingStep:
             return self.postProcessingStepCell;
@@ -174,11 +175,12 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
 
     if ([self.delegate respondsToSelector:@selector(optionsViewController:changed:)]){
         id<OptionsViewControllerDelegate> delegate = self.delegate;
+        NSString *selection = ((UITextField *)self.selectionLimitCell.accessoryView).text;
         NSDictionary *newOptions = @{
              MediaPickerOptionsShowMostRecentFirst:@(((UISwitch *)self.showMostRecentFirstCell.accessoryView).on),
              MediaPickerOptionsShowCameraCapture:@(((UISwitch *)self.showCameraCaptureCell.accessoryView).on),
              MediaPickerOptionsPreferFrontCamera:@(((UISwitch *)self.preferFrontCameraCell.accessoryView).on),
-             MediaPickerOptionsAllowMultipleSelection:@(((UISwitch *)self.allowMultipleSelectionCell.accessoryView).on),
+             MediaPickerOptionsSelectionLimit:@(selection.intValue),
              MediaPickerOptionsPostProcessingStep:@(((UISwitch *)self.postProcessingStepCell.accessoryView).on),
              MediaPickerOptionsFilterType:@(filterType),
              MediaPickerOptionsCustomPreview:@(((UISwitch *)self.customPreviewCell.accessoryView).on),

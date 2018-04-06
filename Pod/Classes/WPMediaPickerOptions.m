@@ -10,7 +10,7 @@
         _preferFrontCamera = NO;
         _showMostRecentFirst = NO;
         _filter = WPMediaTypeVideo | WPMediaTypeImage;
-        _allowMultipleSelection = YES;
+        _selectionLimit = 5;
         _scrollVertically = YES;
         _showSearchBar = NO;
     }
@@ -23,7 +23,7 @@
     options.preferFrontCamera = self.preferFrontCamera;
     options.showMostRecentFirst = self.showMostRecentFirst;
     options.filter = self.filter;
-    options.allowMultipleSelection = self.allowMultipleSelection;
+    options.selectionLimit = self.selectionLimit;
     options.scrollVertically = self.scrollVertically;
     options.showSearchBar = self.showSearchBar;
 

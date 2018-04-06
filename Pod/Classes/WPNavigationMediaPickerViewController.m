@@ -110,7 +110,7 @@ static NSString *const ArrowDown = @"\u25be";
     [nav didMoveToParentViewController:self];
     self.internalNavigationController = nav;
 
-    if (self.mediaPicker.options.allowMultipleSelection) {
+    if (self.mediaPicker.options.selectionLimit > 1) {
         [self updateSelectionAction];
     }
 }
@@ -276,7 +276,7 @@ static NSString *const ArrowDown = @"\u25be";
 }
 
 - (void)updateSelectionAction {
-    if (self.mediaPicker.selectedAssets.count == 0 || !self.mediaPicker.options.allowMultipleSelection) {
+    if (self.mediaPicker.selectedAssets.count == 0 || self.mediaPicker.options.selectionLimit == 1) {
         self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = nil;
         return;
     }
