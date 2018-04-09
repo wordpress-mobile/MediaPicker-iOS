@@ -245,6 +245,7 @@
     options.filter = [self.options[MediaPickerOptionsFilterType] intValue];
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
     options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
+    options.showActionBar = [self.options[MediaPickerOptionsShowActionBar] boolValue];
     return options;
 }
 
