@@ -209,10 +209,21 @@
         return [[CustomPreviewViewController alloc] initWithAsset:asset];
     }
 
-    WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:assets];
-    carouselVC.assetViewDelegate = picker;
-    [carouselVC setPreviewingAssetAtIndex:selected animated:NO];
-    return carouselVC;
+    if ([assets count] > 1) {
+        WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:assets];
+        carouselVC.assetViewDelegate = picker;
+        [carouselVC setPreviewingAssetAtIndex:selected animated:NO];
+        return carouselVC;
+    } else if ([assets count] == 1){
+        id<WPMediaAsset> asset = assets[0];
+
+        WPAssetViewController *assetVC = [[WPAssetViewController alloc] initWithAsset:asset];
+        assetVC.selected = [picker.selectedAssets containsObject:asset];
+        assetVC.delegate = picker;
+        return assetVC;
+    }
+
+    return nil;
 }
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
