@@ -199,14 +199,14 @@
 - (nullable UIView *)emptyViewForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
 
 /**
- *  Asks the delegate for a string literal to be used in the Cancel button
+ *  Asks the delegate for a title to be used in the Cancel button
  *
  *  @param picker The controller object managing the assets picker interface.
  *  @return The string to be used in the Cancel button, when presented enclosed in a navigation controller
  *
- *  If this method is not implemented, the literal in the Cancel button will be "Cancel".
+ *  If this method is not implemented, the title in the Cancel button will be "Cancel".
  */
-- (nonnull NSString *)cancelButtonTextForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
+- (nonnull NSString *)cancelButtonTitleForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
 
 @end
 
