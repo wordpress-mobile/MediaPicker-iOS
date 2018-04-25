@@ -116,7 +116,7 @@ static CGFloat SelectAnimationTime = 0.2;
                                 if (incrementalChanges && !weakSelf.refreshGroupFirstTime) {
                                     [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
                                 } else {
-                                    [weakSelf refreshData];
+                                    [weakSelf.collectionView reloadData];
                                 }
                             }];
 
@@ -1406,7 +1406,6 @@ referenceSizeForFooterInSection:(NSInteger)section
 {
     if ([self.dataSource respondsToSelector:@selector(searchFor:)]) {
         [self.dataSource searchFor:searchText];
-        [self.collectionView reloadData];
     }
 }
 
