@@ -116,7 +116,7 @@ static CGFloat SelectAnimationTime = 0.2;
                                 if (incrementalChanges && !weakSelf.refreshGroupFirstTime) {
                                     [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
                                 } else {
-                                    [weakSelf refreshData];
+                                    [weakSelf.collectionView reloadData];
                                 }
                             }];
 
@@ -297,8 +297,8 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.allowsSelection = YES;
     self.collectionView.allowsMultipleSelection = self.options.allowMultipleSelection;
     self.collectionView.bounces = YES;
-    self.collectionView.alwaysBounceHorizontal = NO;
-    self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.alwaysBounceHorizontal = !self.options.scrollVertically;
+    self.collectionView.alwaysBounceVertical = self.options.scrollVertically;
     
     // Register cell classes
     [self.collectionView registerClass:[WPMediaCollectionViewCell class]
@@ -1406,7 +1406,6 @@ referenceSizeForFooterInSection:(NSInteger)section
 {
     if ([self.dataSource respondsToSelector:@selector(searchFor:)]) {
         [self.dataSource searchFor:searchText];
-        [self.collectionView reloadData];
     }
 }
 
