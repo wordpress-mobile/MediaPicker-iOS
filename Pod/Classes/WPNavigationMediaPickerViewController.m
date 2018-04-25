@@ -96,7 +96,7 @@ static NSString *const ArrowDown = @"\u25be";
     nav.delegate = self;
 
     if (!self.showGroupSelector) {
-        nav.topViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
+        nav.topViewController.navigationItem.leftBarButtonItem = [self cancelButton];
     }
 
     if (self.showGroupSelector && !self.startOnGroupSelector) {
@@ -113,6 +113,23 @@ static NSString *const ArrowDown = @"\u25be";
     if (self.mediaPicker.options.allowMultipleSelection) {
         [self updateSelectionAction];
     }
+}
+
+- (UIBarButtonItem *)cancelButton {
+    if ([self.delegate respondsToSelector:@selector(cancelButtonTextForMediaPickerController:)]) {
+        NSString *title = [self.delegate cancelButtonTextForMediaPickerController:self.mediaPicker];
+        return [self cancelButtonWithTitle:title];
+    } else {
+        return [self defaultCancelButton];
+    }
+}
+
+- (UIBarButtonItem *)cancelButtonWithTitle:(NSString *)title {
+    return [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
+}
+
+- (UIBarButtonItem *)defaultCancelButton {
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
 }
 
 - (void)cancelPicker:(UIBarButtonItem *)sender
