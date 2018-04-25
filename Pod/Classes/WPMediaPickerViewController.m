@@ -297,8 +297,8 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.allowsSelection = YES;
     self.collectionView.allowsMultipleSelection = self.options.allowMultipleSelection;
     self.collectionView.bounces = YES;
-    self.collectionView.alwaysBounceHorizontal = NO;
-    self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.alwaysBounceHorizontal = !self.options.scrollVertically;
+    self.collectionView.alwaysBounceVertical = self.options.scrollVertically;
     
     // Register cell classes
     [self.collectionView registerClass:[WPMediaCollectionViewCell class]
