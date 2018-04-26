@@ -114,7 +114,7 @@ static NSString *const ArrowDown = @"\u25be";
 }
 
 - (UIBarButtonItem *)cancelButton {
-    if (self.cancelButtonTitle) {
+    if (self.cancelButtonTitle && self.cancelButtonTitle.length > 0) {
         return [self cancelButtonWithTitle:self.cancelButtonTitle];
     } else {
         return [self defaultCancelButton];
