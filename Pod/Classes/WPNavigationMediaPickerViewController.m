@@ -95,9 +95,7 @@ static NSString *const ArrowDown = @"\u25be";
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController: rootController];
     nav.delegate = self;
 
-    if (!self.showGroupSelector) {
-        nav.topViewController.navigationItem.leftBarButtonItem = [self cancelButton];
-    }
+    nav.topViewController.navigationItem.leftBarButtonItem = [self cancelButton];
 
     if (self.showGroupSelector && !self.startOnGroupSelector) {
         [nav pushViewController:self.mediaPicker animated:NO];
