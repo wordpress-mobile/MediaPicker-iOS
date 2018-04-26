@@ -114,9 +114,8 @@ static NSString *const ArrowDown = @"\u25be";
 }
 
 - (UIBarButtonItem *)cancelButton {
-    if ([self.delegate respondsToSelector:@selector(cancelButtonTitleForMediaPickerController:)]) {
-        NSString *title = [self.delegate cancelButtonTitleForMediaPickerController:self.mediaPicker];
-        return [self cancelButtonWithTitle:title];
+    if (self.cancelButtonTitle) {
+        return [self cancelButtonWithTitle:self.cancelButtonTitle];
     } else {
         return [self defaultCancelButton];
     }
