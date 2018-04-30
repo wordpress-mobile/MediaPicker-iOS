@@ -95,9 +95,7 @@ static NSString *const ArrowDown = @"\u25be";
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController: rootController];
     nav.delegate = self;
 
-    if (!self.showGroupSelector) {
-        nav.topViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
-    }
+    nav.topViewController.navigationItem.leftBarButtonItem = [self cancelButton];
 
     if (self.showGroupSelector && !self.startOnGroupSelector) {
         [nav pushViewController:self.mediaPicker animated:NO];
@@ -113,6 +111,22 @@ static NSString *const ArrowDown = @"\u25be";
     if (self.mediaPicker.options.allowMultipleSelection) {
         [self updateSelectionAction];
     }
+}
+
+- (UIBarButtonItem *)cancelButton {
+    if (self.cancelButtonTitle && self.cancelButtonTitle.length > 0) {
+        return [self cancelButtonWithTitle:self.cancelButtonTitle];
+    } else {
+        return [self defaultCancelButton];
+    }
+}
+
+- (UIBarButtonItem *)cancelButtonWithTitle:(NSString *)title {
+    return [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
+}
+
+- (UIBarButtonItem *)defaultCancelButton {
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
 }
 
 - (void)cancelPicker:(UIBarButtonItem *)sender

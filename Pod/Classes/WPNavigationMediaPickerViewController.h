@@ -40,16 +40,22 @@ The internal WPMediaPickerViewController that is used to display the media.
 /**
  A localized string that reflect the action that will be done when the picker is selected.
  This string can contain a a placeholder for a numeric value that will indicate the number of media items selected.
- If this is nil the default value will be used. The default the value is 'Select %@'
+ If this is nil the default value will be used. The default value is 'Select %@'
  */
 @property (nonatomic, copy, nullable) NSString *selectionActionTitle;
 
 /**
  A localized string that reflect the action that will be done when the user chooses to preview the selected assets.
  This string can contain a a placeholder for a numeric value that will indicate the number of media items selected.
- If this is nil the default value will be used. The default the value is 'Preview %@'
+ If this is nil the default value will be used. The default value is 'Preview %@'
  */
 @property (nonatomic, copy, nullable) NSString *previewActionTitle;
+
+/**
+ A localized string with the title for the cancel button
+ If this is nil the default value will be used. The default value is 'Cancel'
+ */
+@property (nonatomic, copy, nullable) NSString *cancelButtonTitle;
 
 /**
  If this property is set to NO the picker will not show the interface to display groups. The default value is YES.
