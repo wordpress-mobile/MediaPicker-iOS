@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 ## [0.28](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.28)
-Released on 2018-04-25. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A0.28).
+Released on 2018-04-30. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A0.28).
 
 ### Added
 
