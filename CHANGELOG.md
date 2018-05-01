@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 `WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
 
 #### 0.x Releases
+- `0.28` Release  - [0.28](#28)
 - `0.27` Release  - [0.27](#27)
 - `0.26` Release  - [0.26](#26)
 - `0.25` Release  - [0.25](#25)
@@ -16,6 +17,19 @@ All notable changes to this project will be documented in this file.
 - `0.17` Releases - [0.17](#17)
 - `0.16` Releases - [0.16](#16)
 - `0.15` Releases - [0.15](#15)
+
+---
+## [0.28](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.28)
+Released on 2018-04-30. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A0.28).
+
+### Added
+
+- Implements a carousel view to preview multiple selection of assets. #281
+- Bottom action bar. #282
+
+### Fixed
+- Fix crash when dealloc WPMediaGroupCell. #280
+- Enable bounce correctly depending of scrolling type. #288
 
 ---
 ## [0.27](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/0.27)

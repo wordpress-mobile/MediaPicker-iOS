@@ -15,7 +15,8 @@ It allows:
  * Preview of media (images and video) in full screen.
  * Show the media picker inside as a keyboard input view.
  * Super quick and memory optimized.
- * Allow horizontal and vertical scroll of assets.
+ * Allows horizontal and vertical scroll of assets.
+ * Allows custom searching/filtering of assets. 
 
 ![Screenshot](screenshots_1.jpg "Screenshot")
 
