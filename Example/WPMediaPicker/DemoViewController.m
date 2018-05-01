@@ -202,19 +202,28 @@
     [self.mediaPicker showAfterViewController:postProcessingViewController];
 }
 
-- (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAsset:(id<WPMediaAsset>)asset {
-    if (asset.assetType == WPMediaTypeAudio) {
-        return nil;
-    }
-
+- (UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAssets:(NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected
+{
     if ([self.options[MediaPickerOptionsCustomPreview] boolValue]) {
+        id<WPMediaAsset> asset = assets[selected];
         return [[CustomPreviewViewController alloc] initWithAsset:asset];
     }
 
-    WPAssetViewController *assetViewController = [[WPAssetViewController alloc] initWithAsset: asset];
-    assetViewController.delegate = picker;
-    assetViewController.selected = [picker.selectedAssets containsObject:asset];
-    return assetViewController;
+    if ([assets count] > 1) {
+        WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:assets];
+        carouselVC.assetViewDelegate = picker;
+        [carouselVC setPreviewingAssetAtIndex:selected animated:NO];
+        return carouselVC;
+    } else if ([assets count] == 1){
+        id<WPMediaAsset> asset = assets[0];
+
+        WPAssetViewController *assetVC = [[WPAssetViewController alloc] initWithAsset:asset];
+        assetVC.selected = [picker.selectedAssets containsObject:asset];
+        assetVC.delegate = picker;
+        return assetVC;
+    }
+
+    return nil;
 }
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldShowOverlayViewForCellForAsset:(id<WPMediaAsset>)asset
@@ -247,6 +256,7 @@
     options.filter = [self.options[MediaPickerOptionsFilterType] intValue];
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
     options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
+    options.showActionBar = [self.options[MediaPickerOptionsShowActionBar] boolValue];
     return options;
 }
 
@@ -257,6 +267,7 @@
     self.pickerDataSource = [WPPHAssetDataSource sharedInstance];
     self.mediaPicker.dataSource = self.pickerDataSource;
     self.mediaPicker.selectionActionTitle = NSLocalizedString(@"Insert %@", @"");
+
     if (self.mediaInputViewController) {
         self.mediaPicker.mediaPicker.selectedAssets = self.mediaInputViewController.mediaPicker.selectedAssets;
         self.mediaInputViewController.mediaPicker.selectedAssets = [NSArray<WPMediaAsset> new];

@@ -6,6 +6,7 @@
 #import "WPPHAssetDataSource.h"
 #import "WPMediaCapturePresenter.h"
 #import "WPInputMediaPickerViewController.h"
+#import "WPCarouselAssetsViewController.h"
 
 @import MobileCoreServices;
 @import AVFoundation;
@@ -48,6 +49,10 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, strong) UILabel *defaultEmptyView;
+
+@property (nonatomic, strong) WPActionBar *accessoryActionBar;
+@property (nonatomic, strong) UIButton *selectedActionButton;
+@property (nonatomic, strong) UIButton *previewActionButton;
 
 /**
  The size of the camera preview cell
@@ -111,7 +116,7 @@ static CGFloat SelectAnimationTime = 0.2;
                                 if (incrementalChanges && !weakSelf.refreshGroupFirstTime) {
                                     [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
                                 } else {
-                                    [weakSelf refreshData];
+                                    [weakSelf.collectionView reloadData];
                                 }
                             }];
 
@@ -265,6 +270,7 @@ static CGFloat SelectAnimationTime = 0.2;
     [super viewWillAppear:animated];
     [self.captureCell startCapture];
     [self registerForKeyboardNotifications];
+    [self updateActionbar];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -291,8 +297,8 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.allowsSelection = YES;
     self.collectionView.allowsMultipleSelection = self.options.allowMultipleSelection;
     self.collectionView.bounces = YES;
-    self.collectionView.alwaysBounceHorizontal = NO;
-    self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.alwaysBounceHorizontal = !self.options.scrollVertically;
+    self.collectionView.alwaysBounceVertical = self.options.scrollVertically;
     
     // Register cell classes
     [self.collectionView registerClass:[WPMediaCollectionViewCell class]
@@ -360,6 +366,134 @@ static CGFloat SelectAnimationTime = 0.2;
        [self.searchBar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
        ]
      ];
+}
+
+#pragma mark - Action bar
+
+- (UIView *)actionBar
+{
+    return self.accessoryActionBar;
+}
+
+- (WPActionBar *)accessoryActionBar
+{
+    if (_accessoryActionBar) {
+        return _accessoryActionBar;
+    }
+    _accessoryActionBar = [[WPActionBar alloc] init];
+
+    [_accessoryActionBar addLeftButton:self.previewActionButton];
+    [_accessoryActionBar addRightButton:self.selectedActionButton];
+    [_accessoryActionBar sizeToFit];
+
+    return _accessoryActionBar;
+}
+
+- (UIButton *)previewActionButton
+{
+    if (_previewActionButton) {
+        return _previewActionButton;
+    }
+
+    _previewActionButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    [_previewActionButton addTarget:self action:@selector(onPreviewButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_previewActionButton setTitle:self.previewActionTitle forState:UIControlStateNormal];
+
+    return _previewActionButton;
+}
+
+- (UIButton *)selectedActionButton
+{
+    if (_selectedActionButton) {
+        return _selectedActionButton;
+    }
+
+    _selectedActionButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    UIFont *font = _selectedActionButton.titleLabel.font;
+    _selectedActionButton.titleLabel.font = [UIFont boldSystemFontOfSize:font.pointSize];
+    [_selectedActionButton addTarget:self action:@selector(onAddButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_selectedActionButton setTitle:self.selectionActionTitle forState:UIControlStateNormal];
+
+    return _selectedActionButton;
+}
+
+- (NSString *)previewActionTitle
+{
+    NSString *actionString = _previewActionTitle;
+    if (actionString == nil) {
+        actionString = NSLocalizedString(@"Preview %@", @"Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected");
+    }
+    return [self formatButtonTitleWithTitlePlaceholder:actionString];
+}
+
+- (NSString *)selectionActionTitle
+{
+    NSString *actionString = _selectionActionTitle;
+    if (actionString == nil) {
+        actionString = NSLocalizedString(@"Add %@", @"Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected");
+    }
+    return [self formatButtonTitleWithTitlePlaceholder:actionString];
+}
+
+- (NSString *)formatButtonTitleWithTitlePlaceholder:(NSString *)placeholder
+{
+    NSString * countString = @(self.internalSelectedAssets.count).stringValue;
+    return [NSString stringWithFormat:placeholder, countString];
+}
+
+- (void)updateActionbar
+{
+    if ([self shouldShowActionBar]) {
+        [UIView performWithoutAnimation:^{
+            [self.previewActionButton setTitle:self.previewActionTitle forState:UIControlStateNormal];
+            [self.selectedActionButton setTitle:self.selectionActionTitle forState:UIControlStateNormal];
+            [self.previewActionButton layoutIfNeeded];
+            [self.selectedActionButton layoutIfNeeded];
+        }];
+
+        if ([self.searchBar isFirstResponder]) {
+            [self.searchBar reloadInputViews];
+        } else {
+            [self becomeFirstResponder];
+        }
+    } else {
+        if ([self isFirstResponder]) {
+            [self resignFirstResponder];
+        } else {
+            [self.searchBar reloadInputViews];
+        }
+    }
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return [self shouldShowActionBar];
+}
+
+- (UIView *)inputAccessoryView
+{
+    if ([self shouldShowActionBar]) {
+        return self.accessoryActionBar;
+    }
+    return nil;
+}
+
+- (BOOL)shouldShowActionBar
+{
+    return self.options.showActionBar && self.options.allowMultipleSelection && self.internalSelectedAssets.count > 0;
+}
+
+- (void)onPreviewButtonPressed:(UIBarButtonItem *)sender
+{
+    UIViewController *previewController = [self previewViewControllerForAsset:[self.selectedAssets firstObject]];
+    [self displayPreviewController:previewController];
+}
+
+- (void)onAddButtonPressed:(UIBarButtonItem *)sender
+{
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
+        [self.mediaPickerDelegate mediaPickerController:self didFinishPickingAssets:[self.internalSelectedAssets copy]];
+    }
 }
 
 #pragma mark - Actions
@@ -446,7 +580,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 #pragma mark - UICollectionViewDataSource
 
--(void)updateDataWithRemoved:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moves {
+- (void)updateDataWithRemoved:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moves {
     if ([removed containsIndex:self.assetIndexInPreview.item]){
         self.assetIndexInPreview = nil;
     }
@@ -479,7 +613,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 }
 
--(NSArray *)indexPathsFromIndexSet:(NSIndexSet *)indexSet section:(NSInteger)section{
+- (NSArray *)indexPathsFromIndexSet:(NSIndexSet *)indexSet section:(NSInteger)section{
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:indexSet.count];
     [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
         [indexPaths addObject:[NSIndexPath indexPathForItem:idx inSection:section]];
@@ -624,6 +758,7 @@ static CGFloat SelectAnimationTime = 0.2;
     }
 
     self.internalSelectedAssets = stillExistingSeletedAssets;
+    [self updateActionbar];
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:selectionChanged:)]) {
         [self.mediaPickerDelegate mediaPickerController:self selectionChanged:[self.internalSelectedAssets copy]];
     }
@@ -826,7 +961,7 @@ referenceSizeForFooterInSection:(NSInteger)section
         [cell setPosition:NSNotFound];
     }
     [self animateCellSelection:cell completion:nil];
-
+    [self updateActionbar];
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didSelectAsset:)]) {
         [self.mediaPickerDelegate mediaPickerController:self didSelectAsset:asset];
     }
@@ -873,6 +1008,8 @@ referenceSizeForFooterInSection:(NSInteger)section
             }
         }
     }];
+
+    [self updateActionbar];
 
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didDeselectAsset:)]) {
         [self.mediaPickerDelegate mediaPickerController:self didDeselectAsset:asset];
@@ -1009,15 +1146,34 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (UIViewController *)previewViewControllerForAsset:(id <WPMediaAsset>)asset
 {
-    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAsset:)]) {
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {
+
+        NSInteger index = [self.internalSelectedAssets indexOfObject:asset];
+        NSArray *selectedAssets = self.selectedAssets;
+        if (index == NSNotFound) {
+            selectedAssets = @[asset];
+            index = 0;
+        }
+
         return [self.mediaPickerDelegate mediaPickerController:self
-                                 previewViewControllerForAsset:asset];
+                                previewViewControllerForAssets:selectedAssets
+                                                 selectedIndex:index];
+
     }
 
     return [self defaultPreviewViewControllerForAsset:asset];
 }
 
-- (UIViewController *)defaultPreviewViewControllerForAsset:(id <WPMediaAsset>)asset
+- (nonnull UIViewController *)defaultPreviewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset
+{
+    if (self.internalSelectedAssets.count <= 1 || [self.internalSelectedAssets indexOfObject:asset] == NSNotFound) {
+        return [self singleAssetPreviewViewController:asset];
+    } else {
+        return [self multipleAssetPreviewViewControllerForSelectedAsset:asset];
+    }
+}
+
+- (UIViewController *)singleAssetPreviewViewController:(id <WPMediaAsset>)asset
 {
     // We can't preview PHAssets that are audio files
     if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]] && asset.assetType == WPMediaTypeAudio) {
@@ -1029,6 +1185,39 @@ referenceSizeForFooterInSection:(NSInteger)section
     fullScreenImageVC.selected = [self positionOfAssetInSelection:asset] != NSNotFound;
     fullScreenImageVC.delegate = self;
     return fullScreenImageVC;
+}
+
+- (UIViewController *)multipleAssetPreviewViewControllerForSelectedAsset:(id <WPMediaAsset>)asset
+{
+    NSArray *selectedAssets = self.selectedAssets;
+
+    // We can't preview PHAssets that are audio files
+    if ([self.dataSource isKindOfClass:[WPPHAssetDataSource class]]) {
+        if (asset.assetType == WPMediaTypeAudio) {
+            return nil;
+        }
+
+        selectedAssets = [self selectedAssetsByRemovingAudioAssets];
+        if (selectedAssets.count == 0) {
+            return nil;
+        }
+    }
+
+    NSInteger index = [selectedAssets indexOfObject:asset];
+
+    WPCarouselAssetsViewController *carouselVC = [[WPCarouselAssetsViewController alloc] initWithAssets:selectedAssets];
+    carouselVC.assetViewDelegate = self;
+    [carouselVC setPreviewingAssetAtIndex:index animated:NO];
+    return carouselVC;
+}
+
+- (NSArray <id <WPMediaAsset>> *)selectedAssetsByRemovingAudioAssets
+{
+    NSPredicate *removeAudioPredicate = [NSPredicate predicateWithBlock:^BOOL(id <WPMediaAsset> _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return evaluatedObject.assetType != WPMediaTypeAudio;
+    }];
+
+    return [self.selectedAssets filteredArrayUsingPredicate:removeAudioPredicate];
 }
 
 - (void)displayPreviewController:(UIViewController *)viewController {
@@ -1217,7 +1406,6 @@ referenceSizeForFooterInSection:(NSInteger)section
 {
     if ([self.dataSource respondsToSelector:@selector(searchFor:)]) {
         [self.dataSource searchFor:searchText];
-        [self.collectionView reloadData];
     }
 }
 

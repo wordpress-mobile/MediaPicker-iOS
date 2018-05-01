@@ -65,6 +65,12 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self updateNavigationTitle];
+    [self.videoView play];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.videoView pause];
 }
 
 - (void)updateNavigationTitle {

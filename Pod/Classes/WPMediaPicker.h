@@ -1,6 +1,7 @@
 #ifndef _WPMEDIAPICKER_
 
 #import "WPAssetViewController.h"
+#import "WPCarouselAssetsViewController.h"
 #import "WPIndexMove.h"
 #import "WPInputMediaPickerViewController.h"
 #import "WPMediaCapturePreviewCollectionView.h"
@@ -13,5 +14,6 @@
 #import "WPPHAssetDataSource.h"
 #import "WPMediaCapturePreviewCollectionView.h"
 #import "WPVideoPlayerView.h"
+#import "WPActionBar.h"
 
 #endif /* _WPMEDIAPICKER_ */
