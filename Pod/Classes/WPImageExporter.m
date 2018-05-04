@@ -16,8 +16,8 @@
 
 + (BOOL)writeImage:(UIImage *)image withMetadata:(NSDictionary *)metadata toURL:(NSURL *)fileURL;
 {
-    NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithDictionary:@{ (NSString *)kCGImageDestinationLossyCompressionQuality: @(1)}];
-    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((CFURLRef)fileURL, kUTTypeJPEG, 0.9, nil);
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithDictionary:@{ (NSString *)kCGImageDestinationLossyCompressionQuality: @(0.9)}];
+    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((CFURLRef)fileURL, kUTTypeJPEG, 1, nil);
     if (destination == NULL) {
         return NO;
     }
