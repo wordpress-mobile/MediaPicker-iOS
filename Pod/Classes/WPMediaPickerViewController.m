@@ -591,24 +591,21 @@ static CGFloat SelectAnimationTime = 0.2;
         if (inserted) {
             [self.collectionView insertItemsAtIndexPaths:[self indexPathsFromIndexSet:inserted section:0]];
         }
+        NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
+        for (NSIndexPath *indexPath in indexPaths) {
+            WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+            [self configureCell:cell forIndexPath:indexPath];
+        }
+        for (id<WPMediaMove> move in moves) {
+            [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
+                                         toIndexPath:[NSIndexPath indexPathForItem:[move to] inSection:0]];
+            if (self.assetIndexInPreview.row == move.from) {
+                self.assetIndexInPreview = [NSIndexPath indexPathForItem:move.to inSection:0];
+            }
+        }
     } completion:^(BOOL finished) {
-        [self.collectionView performBatchUpdates:^{
-            NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
-            for (NSIndexPath *indexPath in indexPaths) {
-                WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-                [self configureCell:cell forIndexPath:indexPath];
-            }
-            for (id<WPMediaMove> move in moves) {
-                [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
-                                             toIndexPath:[NSIndexPath indexPathForItem:[move to] inSection:0]];
-                if (self.assetIndexInPreview.row == move.from) {
-                    self.assetIndexInPreview = [NSIndexPath indexPathForItem:move.to inSection:0];
-                }
-            }
-        } completion:^(BOOL finished) {
-            [self refreshSelection];
-            [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForSelectedItems];
-        }];
+        [self refreshSelection];
+        [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForSelectedItems];        
     }];
 
 }
