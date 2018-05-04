@@ -110,15 +110,7 @@ static CGFloat SelectAnimationTime = 0.2;
     //setup data
     [self.dataSource setMediaTypeFilter:self.options.filter];
     [self.dataSource setAscendingOrdering:!self.options.showMostRecentFirst];
-    __weak __typeof__(self) weakSelf = self;
-    self.changesObserver = [self.dataSource registerChangeObserverBlock:
-                            ^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray *moves) {
-                                if (incrementalChanges && !weakSelf.refreshGroupFirstTime) {
-                                    [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
-                                } else {
-                                    [weakSelf.collectionView reloadData];
-                                }
-                            }];
+    [self registerDataSourceObservers];
 
     if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithForceTouchCapability:UIForceTouchCapabilityAvailable]]) {
         [self registerForPreviewingWithDelegate:self sourceView:self.view];
@@ -130,6 +122,22 @@ static CGFloat SelectAnimationTime = 0.2;
         self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
     }
     [self refreshDataAnimated:NO];
+}
+
+- (void)registerDataSourceObservers {
+    __weak __typeof__(self) weakSelf = self;
+    self.changesObserver = [self.dataSource registerChangeObserverBlock:
+                            ^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray *moves) {
+                                // If a refresh of data is going on, ignore changes on the data in the meantime.
+                                if (weakSelf.refreshGroupFirstTime || weakSelf.refreshControl.isRefreshing) {
+                                    return;
+                                }
+                                if (incrementalChanges) {
+                                    [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
+                                } else {
+                                    [weakSelf.collectionView reloadData];
+                                }
+                            }];
 }
 
 - (void)setOptions:(WPMediaPickerOptions *)options {
