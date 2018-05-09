@@ -110,15 +110,7 @@ static CGFloat SelectAnimationTime = 0.2;
     //setup data
     [self.dataSource setMediaTypeFilter:self.options.filter];
     [self.dataSource setAscendingOrdering:!self.options.showMostRecentFirst];
-    __weak __typeof__(self) weakSelf = self;
-    self.changesObserver = [self.dataSource registerChangeObserverBlock:
-                            ^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray *moves) {
-                                if (incrementalChanges && !weakSelf.refreshGroupFirstTime) {
-                                    [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
-                                } else {
-                                    [weakSelf.collectionView reloadData];
-                                }
-                            }];
+    [self registerDataSourceObservers];
 
     if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithForceTouchCapability:UIForceTouchCapabilityAvailable]]) {
         [self registerForPreviewingWithDelegate:self sourceView:self.view];
@@ -130,6 +122,22 @@ static CGFloat SelectAnimationTime = 0.2;
         self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
     }
     [self refreshDataAnimated:NO];
+}
+
+- (void)registerDataSourceObservers {
+    __weak __typeof__(self) weakSelf = self;
+    self.changesObserver = [self.dataSource registerChangeObserverBlock:
+                            ^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray *moves) {
+                                // If a refresh of data is going on, ignore changes on the data in the meantime.
+                                if (weakSelf.refreshGroupFirstTime || weakSelf.refreshControl.isRefreshing) {
+                                    return;
+                                }
+                                if (incrementalChanges) {
+                                    [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
+                                } else {
+                                    [weakSelf.collectionView reloadData];
+                                }
+                            }];
 }
 
 - (void)setOptions:(WPMediaPickerOptions *)options {
@@ -591,24 +599,21 @@ static CGFloat SelectAnimationTime = 0.2;
         if (inserted) {
             [self.collectionView insertItemsAtIndexPaths:[self indexPathsFromIndexSet:inserted section:0]];
         }
+        NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
+        for (NSIndexPath *indexPath in indexPaths) {
+            WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+            [self configureCell:cell forIndexPath:indexPath];
+        }
+        for (id<WPMediaMove> move in moves) {
+            [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
+                                         toIndexPath:[NSIndexPath indexPathForItem:[move to] inSection:0]];
+            if (self.assetIndexInPreview.row == move.from) {
+                self.assetIndexInPreview = [NSIndexPath indexPathForItem:move.to inSection:0];
+            }
+        }
     } completion:^(BOOL finished) {
-        [self.collectionView performBatchUpdates:^{
-            NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
-            for (NSIndexPath *indexPath in indexPaths) {
-                WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-                [self configureCell:cell forIndexPath:indexPath];
-            }
-            for (id<WPMediaMove> move in moves) {
-                [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
-                                             toIndexPath:[NSIndexPath indexPathForItem:[move to] inSection:0]];
-                if (self.assetIndexInPreview.row == move.from) {
-                    self.assetIndexInPreview = [NSIndexPath indexPathForItem:move.to inSection:0];
-                }
-            }
-        } completion:^(BOOL finished) {
-            [self refreshSelection];
-            [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForSelectedItems];
-        }];
+        [self refreshSelection];
+        [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForSelectedItems];        
     }];
 
 }
