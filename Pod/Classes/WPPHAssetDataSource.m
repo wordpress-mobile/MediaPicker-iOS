@@ -95,13 +95,11 @@
                 [moves addObject:[[WPIndexMove alloc] init:fromIdx to:toIdx]];
             }];
         }
-        if (incrementalChanges) {
-            self.assets = assetsChangeDetails.fetchResultAfterChanges;
-        }
+
         // Capture inserted indexes *after* fetching results after changes.
         // The adjustedIndex depends on the *new* asset count.
-        NSIndexSet *insertedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.insertedIndexes];
-
+        NSIndexSet *insertedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.insertedIndexes forCount:assetsChangeDetails.fetchResultAfterChanges.count];
+        self.assets = assetsChangeDetails.fetchResultAfterChanges;
         [self.observers enumerateKeysAndObjectsUsingBlock:^(NSUUID *key, WPMediaChangesBlock block, BOOL *stop) {
             block(incrementalChanges, removedIndexes, insertedIndexes, changedIndexes, moves);
         }];
@@ -322,6 +320,12 @@
 
 - (NSInteger)adjustedIndexForIndex:(NSInteger)index
 {
+    NSInteger count = [self numberOfAssets];
+    return [self adjustedIndexForIndex:index forCount: count];
+}
+
+- (NSInteger)adjustedIndexForIndex:(NSInteger)index forCount:(NSInteger)count
+{
     if (self.ascendingOrdering) {
         return index;
     }
@@ -329,15 +333,20 @@
     // Adjust the index so items are returned in reverse order.
     // We do this, rather than specifying the sort order in PHFetchOptions,
     // to preserve the sort order of assets in the Photos app (only in reverse).
-    NSInteger count = [self numberOfAssets];
     return (count - 1) - index;
 }
 
 - (NSIndexSet *)adjustedIndexesForIndexSet:(NSIndexSet *)indexes
 {
+    NSInteger count = [self numberOfAssets];
+    return [self adjustedIndexesForIndexSet:indexes forCount: count];
+}
+
+- (NSIndexSet *)adjustedIndexesForIndexSet:(NSIndexSet *)indexes forCount:(NSInteger)count
+{
     NSMutableIndexSet *adjustedSet = [NSMutableIndexSet new];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-        [adjustedSet addIndex:[self adjustedIndexForIndex:idx]];
+        [adjustedSet addIndex:[self adjustedIndexForIndex:idx forCount: count]];
     }];
 
     // Returns a non-mutable copy.
