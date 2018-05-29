@@ -1,5 +1,6 @@
 @import UIKit;
 #import "WPMediaCollectionDataSource.h"
+#import "WPBadgeView.h"
 
 @interface WPMediaCollectionViewCell : UICollectionViewCell
 
@@ -18,6 +19,8 @@
 @property (nonatomic, assign) BOOL hiddenSelectionIndicator;
 
 @property (nonatomic, strong) UIView *overlayView;
+
+@property (nonatomic, strong) WPBadgeView* badgeView;
 
 @end
 

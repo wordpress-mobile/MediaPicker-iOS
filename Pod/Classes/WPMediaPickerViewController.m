@@ -814,6 +814,8 @@ static CGFloat SelectAnimationTime = 0.2;
     cell.asset = asset;
     NSUInteger position = [self positionOfAssetInSelection:asset];
     cell.hiddenSelectionIndicator = !self.options.allowMultipleSelection;
+    cell.badgeView.label.text = @"GIF";
+    cell.badgeView.hidden = NO;
     if (position != NSNotFound) {
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         if (self.options.allowMultipleSelection) {
