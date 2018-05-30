@@ -114,17 +114,11 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
 
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    blurEffectView.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0.4]; //Adds clarity on vibrancy effect.
 
-    UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
-    UIVisualEffectView *vibranciView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
-
-    [blurEffectView.contentView addSubview:vibranciView];
-    _contentView = vibranciView.contentView;
+    _contentView = blurEffectView.contentView;
     _blurEffectView = blurEffectView;
     
     [self addSubview:blurEffectView];
-    [self constraintEffectView:vibranciView];
     [self constraintEffectView:blurEffectView];
 }
 
