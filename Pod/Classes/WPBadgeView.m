@@ -1,12 +1,19 @@
 
 #import "WPBadgeView.h"
 
+static const CGFloat kDefaultShadowRadius = 2.f;
+static const CGFloat kDefaultShadowOpacity = 0.5f;
+static const CGFloat kDefaultCornerRadius = 6.f;
+static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
+
 @interface WPBadgeView()
 @property (nonatomic, strong) NSLayoutConstraint *topConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 @property (nonatomic, strong) NSLayoutConstraint* leadingConstraint;
 @property (nonatomic, strong) NSLayoutConstraint* trailingConstraint;
+
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
 @end
 
 @implementation WPBadgeView
@@ -34,6 +41,7 @@
     [self addBlur];
     [self layoutLabel];
     [self style];
+    [self dropShadow];
 }
 
 - (void)layoutLabel
@@ -73,20 +81,30 @@
     [self setNeedsLayout];
 }
 
+- (void)setCornerRadius:(CGFloat)cornerRadius
+{
+    _cornerRadius = cornerRadius;
+    self.blurEffectView.layer.cornerRadius = cornerRadius;
+    self.blurEffectView.layer.masksToBounds = YES;
+    [self setNeedsDisplay];
+}
+
 #pragma mark - Helpers
 
 - (void)style
 {
-    self.contentView.layer.cornerRadius = 6.f;
-    self.contentView.layer.borderWidth = 0.f;
-    self.contentView.clipsToBounds = YES;
-    self.layer.cornerRadius = 6.f;
-    self.layer.borderWidth = 0.f;
-    self.layer.masksToBounds = YES;
-
     self.label.font = [UIFont systemFontOfSize:14.f weight:UIFontWeightSemibold];
     self.label.textColor = UIColor.whiteColor;
-    self.insets = UIEdgeInsetsMake(3.f, 6.f, 3.f, 6.f);
+    self.insets = kDefaultEdgeInsets;
+    self.cornerRadius = kDefaultCornerRadius;
+}
+
+- (void)dropShadow
+{
+    self.layer.masksToBounds = NO;
+    self.layer.shadowOffset = CGSizeZero;
+    self.layer.shadowRadius = kDefaultShadowRadius;
+    self.layer.shadowOpacity = kDefaultShadowOpacity;
 }
 
 - (void)addBlur
@@ -95,14 +113,15 @@
 
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    blurEffectView.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0.4];
+    blurEffectView.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0.4]; //Adds clarity on vibrancy effect.
 
     UIVibrancyEffect *vibrancyEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
     UIVisualEffectView *vibranciView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
 
     [blurEffectView.contentView addSubview:vibranciView];
-    self.contentView = vibranciView.contentView;
-
+    _contentView = vibranciView.contentView;
+    _blurEffectView = blurEffectView;
+    
     [self addSubview:blurEffectView];
     [self constraintEffectView:vibranciView];
     [self constraintEffectView:blurEffectView];
