@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "WPMediaPickerOptions.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @implementation WPMediaPickerOptions
 
@@ -14,6 +15,7 @@
         _scrollVertically = YES;
         _showSearchBar = NO;
         _showActionBar = YES;
+        _badgedUTTypes = @[];
     }
     return self;
 }
@@ -28,6 +30,7 @@
     options.scrollVertically = self.scrollVertically;
     options.showSearchBar = self.showSearchBar;
     options.showActionBar = self.showActionBar;
+    options.badgedUTTypes = [self.badgedUTTypes copy];
 
     return options;
 }

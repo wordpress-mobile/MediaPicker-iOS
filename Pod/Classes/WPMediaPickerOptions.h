@@ -43,4 +43,10 @@
  */
 @property (nonatomic, assign) BOOL showActionBar;
 
+
+/**
+ A list of UTTypes where the picker cell should show a badge showing the file type. (i.e. UTTypeGif)
+ */
+@property (nonatomic, strong) NSArray<NSString *> *badgedUTTypes;
+
 @end

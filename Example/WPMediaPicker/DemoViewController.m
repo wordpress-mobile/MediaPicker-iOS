@@ -5,6 +5,7 @@
 #import "PostProcessingViewController.h"
 #import "SampleCellOverlayView.h"
 #import <WPMediaPicker/WPMediaPicker.h>
+@import MobileCoreServices;
 
 @interface DemoViewController () <WPMediaPickerViewControllerDelegate, OptionsViewControllerDelegate, UITextFieldDelegate>
 
@@ -257,6 +258,7 @@
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
     options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
     options.showActionBar = [self.options[MediaPickerOptionsShowActionBar] boolValue];
+    options.badgedUTTypes = @[(NSString *)kUTTypeGIF];
     return options;
 }
 
