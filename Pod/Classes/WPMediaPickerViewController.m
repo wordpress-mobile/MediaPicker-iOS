@@ -1151,6 +1151,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (UIViewController *)previewViewControllerForAsset:(id <WPMediaAsset>)asset
 {
+    UIViewController *previewVC;
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {
 
         NSInteger index = [self.internalSelectedAssets indexOfObject:asset];
@@ -1160,13 +1161,16 @@ referenceSizeForFooterInSection:(NSInteger)section
             index = 0;
         }
 
-        return [self.mediaPickerDelegate mediaPickerController:self
-                                previewViewControllerForAssets:selectedAssets
-                                                 selectedIndex:index];
-
+        previewVC = [self.mediaPickerDelegate mediaPickerController:self
+                                     previewViewControllerForAssets:selectedAssets
+                                                      selectedIndex:index];
     }
 
-    return [self defaultPreviewViewControllerForAsset:asset];
+    if (!previewVC) {
+        previewVC = [self defaultPreviewViewControllerForAsset:asset];
+    }
+
+    return previewVC;
 }
 
 - (nonnull UIViewController *)defaultPreviewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset
