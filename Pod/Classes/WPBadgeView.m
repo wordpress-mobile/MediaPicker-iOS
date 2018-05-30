@@ -22,7 +22,7 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self initialSetup];
+        [self commonInit];
     }
     return self;
 }
@@ -31,17 +31,17 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
 {
     self = [super initWithFrame:(CGRectZero)];
     if (self) {
-        [self initialSetup];
+        [self commonInit];
     }
     return self;
 }
 
-- (void)initialSetup
+- (void)commonInit
 {
-    [self addBlur];
+    [self setupBlur];
     [self layoutLabel];
-    [self style];
-    [self dropShadow];
+    [self setupStyle];
+    [self setupShadow];
 }
 
 - (void)layoutLabel
@@ -63,6 +63,7 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
 }
 
 #pragma mark - Getters / setters
+
 - (UILabel *)label
 {
     if (_label == nil) {
@@ -91,7 +92,7 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
 
 #pragma mark - Helpers
 
-- (void)style
+- (void)setupStyle
 {
     self.label.font = [UIFont systemFontOfSize:14.f weight:UIFontWeightSemibold];
     self.label.textColor = UIColor.whiteColor;
@@ -99,7 +100,7 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     self.cornerRadius = kDefaultCornerRadius;
 }
 
-- (void)dropShadow
+- (void)setupShadow
 {
     self.layer.masksToBounds = NO;
     self.layer.shadowOffset = CGSizeZero;
@@ -107,7 +108,7 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     self.layer.shadowOpacity = kDefaultShadowOpacity;
 }
 
-- (void)addBlur
+- (void)setupBlur
 {
     self.backgroundColor = [UIColor clearColor];
 
