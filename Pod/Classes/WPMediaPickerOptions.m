@@ -15,7 +15,7 @@
         _scrollVertically = YES;
         _showSearchBar = NO;
         _showActionBar = YES;
-        _badgedUTTypes = @[];
+        _badgedUTTypes = [NSSet set];
     }
     return self;
 }

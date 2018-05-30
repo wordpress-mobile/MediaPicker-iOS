@@ -46,6 +46,6 @@
 /**
  A list of UTTypes where the picker cell should show a badge showing the file type. (i.e. UTTypeGif)
  */
-@property (nonatomic, strong) NSArray<NSString *> *badgedUTTypes;
+@property (nonatomic, strong, nonnull) NSSet<NSString *> *badgedUTTypes;
 
 @end

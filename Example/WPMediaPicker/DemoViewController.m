@@ -258,7 +258,7 @@
     options.scrollVertically = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
     options.showSearchBar = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
     options.showActionBar = [self.options[MediaPickerOptionsShowActionBar] boolValue];
-    options.badgedUTTypes = @[(NSString *)kUTTypeGIF];
+    options.badgedUTTypes = [NSSet setWithObject: (NSString *)kUTTypeGIF];
     return options;
 }
 
