@@ -560,7 +560,10 @@
 
 - (nullable NSString *)UTTypeIdentifier
 {
-    return [self valueForKey:@"uniformTypeIdentifier"];
+    if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
+        return [self valueForKey:@"uniformTypeIdentifier"];
+    }
+    return nil;
 }
 
 @end
