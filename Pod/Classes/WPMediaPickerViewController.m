@@ -814,6 +814,9 @@ static CGFloat SelectAnimationTime = 0.2;
     cell.asset = asset;
     NSUInteger position = [self positionOfAssetInSelection:asset];
     cell.hiddenSelectionIndicator = !self.options.allowMultipleSelection;
+
+    [self configureBadgeViewForCell:cell withAsset:asset];
+
     if (position != NSNotFound) {
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         if (self.options.allowMultipleSelection) {
@@ -825,6 +828,25 @@ static CGFloat SelectAnimationTime = 0.2;
     } else {
         [cell setPosition:NSNotFound];
         cell.selected = NO;
+    }
+}
+
+- (void)configureBadgeViewForCell:(WPMediaCollectionViewCell *)cell withAsset:(id<WPMediaAsset>)asset
+{
+    if (![asset respondsToSelector:@selector(UTTypeIdentifier)]) {
+        cell.badgeView.hidden = YES;
+        return;
+    }
+
+    NSString *uttype = [asset UTTypeIdentifier];
+
+    if ([self.options.badgedUTTypes containsObject:uttype]) {
+        NSString *tagName = (__bridge NSString *)(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uttype, kUTTagClassFilenameExtension));
+        cell.badgeView.label.text = [tagName uppercaseString];
+        cell.badgeView.hidden = NO;
+        return;
+    } else {
+        cell.badgeView.hidden = YES;
     }
 }
 
