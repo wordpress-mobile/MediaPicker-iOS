@@ -108,6 +108,12 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     self.layer.shadowOpacity = kDefaultShadowOpacity;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:kDefaultCornerRadius].CGPath;
+}
+
 - (void)setupBlur
 {
     self.backgroundColor = [UIColor clearColor];
