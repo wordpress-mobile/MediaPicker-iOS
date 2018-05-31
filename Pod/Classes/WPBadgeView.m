@@ -76,7 +76,6 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     self.bottomConstraint.constant = -insets.bottom;
     self.leadingConstraint.constant = insets.left;
     self.trailingConstraint.constant = -insets.right;
-    [self setNeedsLayout];
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
@@ -84,7 +83,6 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     _cornerRadius = cornerRadius;
     self.blurEffectView.layer.cornerRadius = cornerRadius;
     self.blurEffectView.layer.masksToBounds = YES;
-    [self setNeedsLayout];
 }
 
 #pragma mark - Helpers
