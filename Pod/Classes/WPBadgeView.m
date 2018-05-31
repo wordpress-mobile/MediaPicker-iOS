@@ -1,8 +1,6 @@
 
 #import "WPBadgeView.h"
 
-static const CGFloat kDefaultShadowRadius = 2.f;
-static const CGFloat kDefaultShadowOpacity = 0.5f;
 static const CGFloat kDefaultCornerRadius = 6.f;
 static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
 
@@ -41,7 +39,6 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     [self setupBlur];
     [self layoutLabel];
     [self setupStyle];
-    [self setupShadow];
 }
 
 - (void)layoutLabel
@@ -87,7 +84,7 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     _cornerRadius = cornerRadius;
     self.blurEffectView.layer.cornerRadius = cornerRadius;
     self.blurEffectView.layer.masksToBounds = YES;
-    [self setNeedsDisplay];
+    [self setNeedsLayout];
 }
 
 #pragma mark - Helpers
@@ -98,20 +95,6 @@ static const UIEdgeInsets kDefaultEdgeInsets = {3.f, 6.f, 3.f, 6.f};
     self.label.textColor = UIColor.whiteColor;
     self.insets = kDefaultEdgeInsets;
     self.cornerRadius = kDefaultCornerRadius;
-}
-
-- (void)setupShadow
-{
-    self.layer.masksToBounds = NO;
-    self.layer.shadowOffset = CGSizeZero;
-    self.layer.shadowRadius = kDefaultShadowRadius;
-    self.layer.shadowOpacity = kDefaultShadowOpacity;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:kDefaultCornerRadius].CGPath;
 }
 
 - (void)setupBlur
