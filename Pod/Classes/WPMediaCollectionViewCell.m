@@ -170,6 +170,20 @@ static const CGFloat LabelRegularFontSize = 13;
     [self.contentView addSubview:wrapper];
     wrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [wrapper addArrangedSubview:_placeholderStackView];
+
+    _badgeView = [WPBadgeView new];
+    [self layoutBadge];
+}
+
+- (void)layoutBadge
+{
+    self.badgeView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.badgeView.hidden = YES;
+    [self.contentView addSubview:self.badgeView];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.badgeView.topAnchor constraintEqualToAnchor:self.topAnchor constant:10.f],
+                                              [self.badgeView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:10.f]
+                                              ]];
 }
 
 - (void)configureAccessibility

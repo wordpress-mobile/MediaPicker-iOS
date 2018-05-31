@@ -558,6 +558,14 @@
     return [[[[PHAssetResource assetResourcesForAsset:self] firstObject] originalFilename] pathExtension];
 }
 
+- (nullable NSString *)UTTypeIdentifier
+{
+    if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
+        return [self valueForKey:@"uniformTypeIdentifier"];
+    }
+    return nil;
+}
+
 @end
 
 #pragma mark - WPPHAssetCollection

@@ -171,6 +171,11 @@ typedef int32_t WPMediaRequestID;
  */
 - (nullable NSString *)fileExtension;
 
+/**
+ *  @return The uniform type identifier for this asset. Optional.
+ */
+- (nullable NSString *)UTTypeIdentifier;
+
 @end
 
 /**
