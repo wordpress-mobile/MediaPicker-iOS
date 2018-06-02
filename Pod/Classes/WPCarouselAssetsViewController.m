@@ -107,18 +107,30 @@
 
 - (NSInteger)indexForViewController:(UIViewController *)viewController
 {
-    if (![viewController isKindOfClass:[WPAssetViewController class]]) {
-        NSAssert(NO, @"Pages need to be of class `WPAssetViewController`");
-        return 0;
+    id<WPMediaAsset> asset;
+    if ([viewController isKindOfClass:[WPAssetViewController class]]) {
+        WPAssetViewController *assetController = (WPAssetViewController *)viewController;
+        asset = assetController.asset;
+    } else if ([self.carouselDelegate respondsToSelector:@selector(assetForViewController:)]) {
+        asset = [self.carouselDelegate assetForViewController:viewController];
+    } else {
+        NSAssert(NO, @"No asset found");
     }
-    WPAssetViewController *assetController = (WPAssetViewController *)viewController;
-    id<WPMediaAsset> asset = assetController.asset;
+
     return [self.assets indexOfObject:asset];
 }
 
 - (UIViewController *)viewControllerAtIndex:(NSInteger)index
 {
     id<WPMediaAsset> asset = [self.assets objectAtIndex:index];
+
+    if ([self.carouselDelegate respondsToSelector:@selector(viewControllerForAsset:)]) {
+        UIViewController *viewController = [self.carouselDelegate viewControllerForAsset:asset];
+        if (viewController) {
+            return viewController;
+        }
+    }
+
     WPAssetViewController *fullScreenImageVC = [[WPAssetViewController alloc] init];
     fullScreenImageVC.asset = asset;
     fullScreenImageVC.delegate = self;

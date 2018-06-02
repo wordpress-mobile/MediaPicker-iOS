@@ -2,12 +2,18 @@
 #import "WPMediaCollectionDataSource.h"
 #import "WPAssetViewController.h"
 
-@interface WPCarouselAssetsViewController : UIPageViewController
-
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol WPCarouselAssetsViewControllerDelegate<NSObject>
+- (nullable UIViewController *)viewControllerForAsset:(id<WPMediaAsset>)asset;
+- (id<WPMediaAsset>)assetForViewController:(UIViewController *)viewController;
+@end
+
+@interface WPCarouselAssetsViewController : UIPageViewController
 
 @property (nonatomic, weak, nullable) id<WPAssetViewControllerDelegate> assetViewDelegate;
 
+@property (nonatomic, weak, nullable) id<WPCarouselAssetsViewControllerDelegate> carouselDelegate;
 
 /**
  Init a WPCarouselAssetsViewController with the list of assets to preview.
@@ -26,6 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setPreviewingAssetAtIndex:(NSInteger)index animated:(BOOL)animated;
 
-NS_ASSUME_NONNULL_END
-
 @end
+
+NS_ASSUME_NONNULL_END
