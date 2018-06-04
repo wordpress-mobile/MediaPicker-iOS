@@ -4,10 +4,27 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class WPCarouselAssetsViewController;
+
+
+/**
+ A protocol that has to be implemented when the carousel controller needs to present a custom external view controller
+ to show an specific asset.
+ */
 @protocol WPCarouselAssetsViewControllerDelegate<NSObject>
-- (nullable UIViewController *)viewControllerForAsset:(id<WPMediaAsset>)asset;
-- (id<WPMediaAsset>)assetForViewController:(UIViewController *)viewController;
+/**
+ Asks the delegate for a view controller to be presented, showing the given asset.
+
+ @return The view controller to show, or nil to use the default internal WPAssetViewController.
+ */
+- (nullable UIViewController *)carouselController:(WPCarouselAssetsViewController *)controller viewControllerForAsset:(id<WPMediaAsset>)asset;
+
+/**
+ Asks the delegate for the asset object related to the given view controller.
+ */
+- (id<WPMediaAsset>)carouselController:(WPCarouselAssetsViewController *)controller assetForViewController:(UIViewController *)viewController;
 @end
+
 
 @interface WPCarouselAssetsViewController : UIPageViewController
 

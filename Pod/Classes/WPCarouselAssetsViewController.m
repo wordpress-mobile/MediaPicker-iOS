@@ -111,8 +111,8 @@
     if ([viewController isKindOfClass:[WPAssetViewController class]]) {
         WPAssetViewController *assetController = (WPAssetViewController *)viewController;
         asset = assetController.asset;
-    } else if ([self.carouselDelegate respondsToSelector:@selector(assetForViewController:)]) {
-        asset = [self.carouselDelegate assetForViewController:viewController];
+    } else if ([self.carouselDelegate respondsToSelector:@selector(carouselController:assetForViewController:)]) {
+        asset = [self.carouselDelegate carouselController:self assetForViewController:viewController];
     } else {
         NSAssert(NO, @"No asset found");
     }
@@ -124,8 +124,8 @@
 {
     id<WPMediaAsset> asset = [self.assets objectAtIndex:index];
 
-    if ([self.carouselDelegate respondsToSelector:@selector(viewControllerForAsset:)]) {
-        UIViewController *viewController = [self.carouselDelegate viewControllerForAsset:asset];
+    if ([self.carouselDelegate respondsToSelector:@selector(carouselController:viewControllerForAsset:)]) {
+        UIViewController *viewController = [self.carouselDelegate carouselController:self viewControllerForAsset:asset];
         if (viewController) {
             return viewController;
         }
