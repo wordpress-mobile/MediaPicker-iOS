@@ -833,24 +833,21 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)configureBadgeViewForCell:(WPMediaCollectionViewCell *)cell withAsset:(id<WPMediaAsset>)asset
 {
-    cell.badgeView.label.text = @"BADGE!";
-    cell.badgeView.hidden = NO;
+    if (![asset respondsToSelector:@selector(UTTypeIdentifier)]) {
+        cell.badgeView.hidden = YES;
+        return;
+    }
 
-//    if (![asset respondsToSelector:@selector(UTTypeIdentifier)]) {
-//        cell.badgeView.hidden = YES;
-//        return;
-//    }
-//
-//    NSString *uttype = [asset UTTypeIdentifier];
-//
-//    if ([self.options.badgedUTTypes containsObject:uttype]) {
-//        NSString *tagName = (__bridge NSString *)(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uttype, kUTTagClassFilenameExtension));
-//        cell.badgeView.label.text = [tagName uppercaseString];
-//        cell.badgeView.hidden = NO;
-//        return;
-//    } else {
-//        cell.badgeView.hidden = YES;
-//    }
+    NSString *uttype = [asset UTTypeIdentifier];
+
+    if ([self.options.badgedUTTypes containsObject:uttype]) {
+        NSString *tagName = (__bridge NSString *)(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uttype, kUTTagClassFilenameExtension));
+        cell.badgeView.label.text = [tagName uppercaseString];
+        cell.badgeView.hidden = NO;
+        return;
+    } else {
+        cell.badgeView.hidden = YES;
+    }
 }
 
 - (void)configureOverlayViewForCell:(WPMediaCollectionViewCell *)cell
