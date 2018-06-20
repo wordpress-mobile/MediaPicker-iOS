@@ -134,8 +134,8 @@
 
 /**
  *  Asks the delegate for a view controller to push when previewing the selected assets.
- *  If this method isn't implemented, the default view controller will be used.
- *  If it returns nil, no preview will be displayed.
+ *  If this method isn't implemented, the default preview view controller will be used.
+ *  If it returns nil, the default preview view controller will be displayed.
  *
  *  @param picker The controller object managing the assets picker interface.
  *  @param assets The selected assets.
