@@ -24,9 +24,9 @@ All notable changes to this project will be documented in this file.
 ## [1.1](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.1)
 Released on 2018-06-21. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.1).
   
-  ### Added
-  - Added the possibility to configure a badge on the top left of the media cells. Good to display extra info about the media object. #295 #296 #299
-  - It's now possible to configure the display of the each media on the carrousel view. #300
+### Added
+- Added the possibility to configure a badge on the top left of the media cells. Good to display extra info about the media object. #295 #296 #299
+- It's now possible to configure the display of the each media on the carrousel view. #300
 
 ---
 ## [1.0](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.0)
