@@ -189,7 +189,7 @@ static CGFloat SelectAnimationTime = 0.2;
     UICollectionViewFlowLayout *layout = self.layout;
     CGFloat frameWidth = self.view.frame.size.width;
     CGFloat frameHeight = self.view.frame.size.width - self.topLayoutGuide.length;
-    CGFloat dimensionToUse = frameWidth;
+    CGFloat dimensionToUse;
     if (self.options.scrollVertically) {
         dimensionToUse = frameWidth;
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -814,6 +814,9 @@ static CGFloat SelectAnimationTime = 0.2;
     cell.asset = asset;
     NSUInteger position = [self positionOfAssetInSelection:asset];
     cell.hiddenSelectionIndicator = !self.options.allowMultipleSelection;
+
+    [self configureBadgeViewForCell:cell withAsset:asset];
+
     if (position != NSNotFound) {
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         if (self.options.allowMultipleSelection) {
@@ -825,6 +828,25 @@ static CGFloat SelectAnimationTime = 0.2;
     } else {
         [cell setPosition:NSNotFound];
         cell.selected = NO;
+    }
+}
+
+- (void)configureBadgeViewForCell:(WPMediaCollectionViewCell *)cell withAsset:(id<WPMediaAsset>)asset
+{
+    if (![asset respondsToSelector:@selector(UTTypeIdentifier)]) {
+        cell.badgeView.hidden = YES;
+        return;
+    }
+
+    NSString *uttype = [asset UTTypeIdentifier];
+
+    if ([self.options.badgedUTTypes containsObject:uttype]) {
+        NSString *tagName = (__bridge_transfer NSString *)(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uttype, kUTTagClassFilenameExtension));
+        cell.badgeView.label.text = [tagName uppercaseString];
+        cell.badgeView.hidden = NO;
+        return;
+    } else {
+        cell.badgeView.hidden = YES;
     }
 }
 
@@ -1151,6 +1173,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 - (UIViewController *)previewViewControllerForAsset:(id <WPMediaAsset>)asset
 {
+    UIViewController *previewVC;
     if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {
 
         NSInteger index = [self.internalSelectedAssets indexOfObject:asset];
@@ -1160,13 +1183,16 @@ referenceSizeForFooterInSection:(NSInteger)section
             index = 0;
         }
 
-        return [self.mediaPickerDelegate mediaPickerController:self
-                                previewViewControllerForAssets:selectedAssets
-                                                 selectedIndex:index];
-
+        previewVC = [self.mediaPickerDelegate mediaPickerController:self
+                                     previewViewControllerForAssets:selectedAssets
+                                                      selectedIndex:index];
     }
 
-    return [self defaultPreviewViewControllerForAsset:asset];
+    if (!previewVC) {
+        previewVC = [self defaultPreviewViewControllerForAsset:asset];
+    }
+
+    return previewVC;
 }
 
 - (nonnull UIViewController *)defaultPreviewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset
