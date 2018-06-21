@@ -189,7 +189,7 @@ static CGFloat SelectAnimationTime = 0.2;
     UICollectionViewFlowLayout *layout = self.layout;
     CGFloat frameWidth = self.view.frame.size.width;
     CGFloat frameHeight = self.view.frame.size.width - self.topLayoutGuide.length;
-    CGFloat dimensionToUse = frameWidth;
+    CGFloat dimensionToUse;
     if (self.options.scrollVertically) {
         dimensionToUse = frameWidth;
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -841,7 +841,7 @@ static CGFloat SelectAnimationTime = 0.2;
     NSString *uttype = [asset UTTypeIdentifier];
 
     if ([self.options.badgedUTTypes containsObject:uttype]) {
-        NSString *tagName = (__bridge NSString *)(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uttype, kUTTagClassFilenameExtension));
+        NSString *tagName = (__bridge_transfer NSString *)(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)uttype, kUTTagClassFilenameExtension));
         cell.badgeView.label.text = [tagName uppercaseString];
         cell.badgeView.hidden = NO;
         return;
