@@ -200,6 +200,13 @@ static NSString *const ArrowDown = @"\u25be";
     return picker.defaultEmptyView;
 }
 
+- (UIViewController *)emptyViewControllerForMediaPickerController:(WPMediaPickerViewController *)picker {
+    if ([self.delegate respondsToSelector:@selector(emptyViewControllerForMediaPickerController:)]) {
+        return [self.delegate emptyViewControllerForMediaPickerController:picker];
+    }
+    return picker.defaultEmptyViewController;
+}
+
 - (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker didFinishPickingAssets:(nonnull NSArray<WPMediaAsset> *)assets {
     if ([self.delegate respondsToSelector:@selector(mediaPickerController:didFinishPickingAssets:)]) {
         [self.delegate mediaPickerController:picker didFinishPickingAssets:assets];

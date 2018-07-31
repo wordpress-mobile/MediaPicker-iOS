@@ -198,6 +198,19 @@
  */
 - (nullable UIView *)emptyViewForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
 
+/**
+ *  Asks the delegate for an empty view to show when there are no assets
+ *  to be displayed. If no empty view is required, you have to implement this
+ *  method and return `nil`.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @return An empty view controller to display or `nil` to not display any.
+ *
+ *  If this method is not implemented, a default ViewController with a default
+ *  UILabel will be displayed.
+ */
+- (nullable UIViewController *)emptyViewControllerForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
+
 @end
 
 
@@ -234,9 +247,16 @@
 @property (nonatomic, strong, readonly, nullable) UISearchBar *searchBar;
 
 /**
- The default empty view. When `emptyViewForMediaPickerController:` is not implemented, use this property to style the mensaje.
+ The default empty view. When `emptyViewForMediaPickerController:` is not implemented,
+ use this property to style the message.
  */
 @property (nonatomic, strong, readonly, nonnull) UILabel *defaultEmptyView;
+
+/**
+ The default empty view controller. When `emptyViewControllerForMediaPickerController:` is not implemented,
+ use this property to style the message.
+ */
+@property (nonatomic, strong, readonly, nonnull) UIViewController *defaultEmptyViewController;
 
 /**
  A localized string that reflect the action that will be done when the user finishes picking assets.

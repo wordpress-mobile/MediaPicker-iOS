@@ -49,6 +49,9 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, strong) UILabel *defaultEmptyView;
+@property (nonatomic, strong) UIViewController *emptyViewController;
+@property (nonatomic, strong) UIViewController *defaultEmptyViewController;
+
 
 @property (nonatomic, strong) WPActionBar *accessoryActionBar;
 @property (nonatomic, strong) UIButton *selectedActionButton;
@@ -553,6 +556,8 @@ static CGFloat SelectAnimationTime = 0.2;
     return;
 }
 
+#pragma mark - Empty View support
+
 - (UIView *)emptyView
 {
     if (_emptyView) {
@@ -570,8 +575,12 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)addEmptyViewToView
 {
-    if (self.emptyView.superview == nil) {
-        [self.collectionView addSubview:_emptyView];
+    if ([self usingEmptyViewController]) {
+        [self addEmptyViewControllerToView];
+    } else {
+        if (self.emptyView.superview == nil) {
+            [self.collectionView addSubview:_emptyView];
+        }
     }
 }
 
@@ -584,6 +593,63 @@ static CGFloat SelectAnimationTime = 0.2;
     _defaultEmptyView.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
     [_defaultEmptyView sizeToFit];
     return _defaultEmptyView;
+}
+
+#pragma mark - Empty View Controller support
+
+- (void)addEmptyViewControllerToView
+{
+    if (self.emptyViewController.view.superview == nil) {
+        [self.collectionView addSubview:self.emptyViewController.view];
+        _emptyViewController.view.frame = self.collectionView.frame;
+        [self addChildViewController:_emptyViewController];
+        [_emptyViewController didMoveToParentViewController:self];
+    }
+}
+
+- (void)removeEmptyViewControllerFromView
+{
+    [_emptyViewController willMoveToParentViewController:nil];
+    [_emptyViewController.view removeFromSuperview];
+    [_emptyViewController removeFromParentViewController];
+}
+
+- (UIViewController *)emptyViewController
+{
+    if (_emptyViewController) {
+        return _emptyViewController;
+    }
+    
+    if ([self usingEmptyViewController]) {
+        _emptyViewController = [self.mediaPickerDelegate emptyViewControllerForMediaPickerController:self];
+    }
+    else {
+        _emptyViewController = self.defaultEmptyViewController;
+    }
+    
+    return _emptyViewController;
+}
+
+- (UIViewController *)defaultEmptyViewController
+{
+    if (_defaultEmptyViewController) {
+        return _defaultEmptyViewController;
+    }
+
+    _defaultEmptyViewController = [[UIViewController alloc] init];
+
+    UILabel *emptyViewLabel = [[UILabel alloc] init];
+    emptyViewLabel.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
+    [emptyViewLabel sizeToFit];
+    emptyViewLabel.center = _defaultEmptyViewController.view.center;
+    [[_defaultEmptyViewController view] addSubview:emptyViewLabel];
+
+    return _defaultEmptyViewController;
+}
+
+- (BOOL)usingEmptyViewController
+{
+    return [self.mediaPickerDelegate respondsToSelector:@selector(emptyViewControllerForMediaPickerController:)];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -782,10 +848,24 @@ static CGFloat SelectAnimationTime = 0.2;
         [self.mediaPickerDelegate mediaPickerController:self didUpdateSearchWithAssetCount:numberOfAssets];
     }
 
-    [self.emptyView setHidden:(numberOfAssets != 0)];
+    [self toggleEmptyViewFor:numberOfAssets];
 
     return numberOfAssets;
 }
+
+- (void)toggleEmptyViewFor:(NSInteger)numberOfAssets
+{
+    if ([self usingEmptyViewController]) {
+        if (numberOfAssets > 0) {
+            [self removeEmptyViewControllerFromView];
+        } else {
+            [self addEmptyViewControllerToView];
+        }
+    } else {
+        [self.emptyView setHidden:(numberOfAssets != 0)];
+    }
+}
+
 
 - (id<WPMediaAsset>)assetForPosition:(NSIndexPath *)indexPath
 {
@@ -1342,22 +1422,38 @@ referenceSizeForFooterInSection:(NSInteger)section
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
-
 /**
  Centers the empty view taking into account the collection view height and content insets.
  */
 - (void)centerEmptyView
 {
-    self.emptyView.center = self.collectionView.center;
+    if (self.emptyViewController) {
+        CGRect emptyViewFrame = [self getEmptyViewFrame];
+        emptyViewFrame.origin.y -= self.searchBar.frame.size.height/2;
+        self.emptyViewController.view.frame = emptyViewFrame;
+    } else {
+        self.emptyView.center = self.collectionView.center;
+        self.emptyView.frame = [self getEmptyViewFrame];
+    }
+}
 
-    CGRect emptyViewFrame = self.emptyView.frame;
+- (CGRect)getEmptyViewFrame
+{
+    CGRect emptyViewFrame;
+
+    if (_emptyViewController) {
+        emptyViewFrame = self.collectionView.frame;
+    } else {
+        emptyViewFrame = self.emptyView.frame;
+    }
+
     CGFloat superviewHeight = self.collectionView.frame.size.height;
     CGFloat totalInsets = self.collectionView.contentInset.top + self.collectionView.contentInset.bottom;
 
     superviewHeight = superviewHeight - totalInsets > 0 ? superviewHeight - totalInsets : superviewHeight;
     emptyViewFrame.origin.y = (superviewHeight / 2.0) - (emptyViewFrame.size.height / 2.0) + self.collectionView.frame.origin.y;
 
-    self.emptyView.frame = emptyViewFrame;
+    return emptyViewFrame;
 }
 
 #pragma mark - UIViewControllerPreviewingDelegate
