@@ -604,6 +604,7 @@ static CGFloat SelectAnimationTime = 0.2;
         _emptyViewController.view.frame = self.collectionView.frame;
         [self addChildViewController:_emptyViewController];
         [_emptyViewController didMoveToParentViewController:self];
+        [self centerEmptyView];
     }
 }
 
