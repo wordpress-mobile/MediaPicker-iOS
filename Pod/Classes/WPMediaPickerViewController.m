@@ -637,10 +637,7 @@ static CGFloat SelectAnimationTime = 0.2;
     }
 
     _defaultEmptyViewController = [[UIViewController alloc] init];
-
-    UILabel *emptyViewLabel = [[UILabel alloc] init];
-    emptyViewLabel.text = NSLocalizedString(@"Nothing to show", @"Default message for empty media picker");
-    [emptyViewLabel sizeToFit];
+    UILabel *emptyViewLabel = self.defaultEmptyView;
     emptyViewLabel.center = _defaultEmptyViewController.view.center;
     [[_defaultEmptyViewController view] addSubview:emptyViewLabel];
 
@@ -1430,7 +1427,7 @@ referenceSizeForFooterInSection:(NSInteger)section
     if (self.emptyViewController) {
         CGRect emptyViewFrame = [self getEmptyViewFrame];
         emptyViewFrame.origin.y -= self.searchBar.frame.size.height/2;
-        self.emptyViewController.view.frame = emptyViewFrame;
+        _emptyViewController.view.frame = emptyViewFrame;
     } else {
         self.emptyView.center = self.collectionView.center;
         self.emptyView.frame = [self getEmptyViewFrame];

@@ -253,12 +253,6 @@
 @property (nonatomic, strong, readonly, nonnull) UILabel *defaultEmptyView;
 
 /**
- The default empty view controller. When `emptyViewControllerForMediaPickerController:` is not implemented,
- use this property to style the message.
- */
-@property (nonatomic, strong, readonly, nonnull) UIViewController *defaultEmptyViewController;
-
-/**
  A localized string that reflect the action that will be done when the user finishes picking assets.
  This string can contain a a placeholder for a numeric value that will indicate the number of media items selected.
  If this is nil the default value will be used. The default the value is 'Add %@'
@@ -312,6 +306,13 @@
  @return a view controller to preview the asset
  */
 - (nonnull UIViewController *)defaultPreviewViewControllerForAsset:(nonnull id<WPMediaAsset>)asset;
+
+/**
+ Return a View Controller to present `defaultEmptyView`.
+ 
+ @return a view controller to present the empty view.
+ */
+- (UIViewController *)defaultEmptyViewController;
 
 /**
  Calculates the appropriate cell height/width given the desired number of cells per line, desired space
