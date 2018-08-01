@@ -1397,9 +1397,10 @@ referenceSizeForFooterInSection:(NSInteger)section
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
 
-    [self centerEmptyView];
-
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self centerEmptyView];
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    }];
 }
 
 - (void)keyboardWillHideNotification:(NSNotification *)notification
@@ -1415,9 +1416,10 @@ referenceSizeForFooterInSection:(NSInteger)section
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
 
-    [self centerEmptyView];
-
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self centerEmptyView];
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    }];
 }
 
 /**
