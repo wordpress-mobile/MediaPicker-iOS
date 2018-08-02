@@ -697,7 +697,11 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)refreshDataAnimated:(BOOL)animated
 {
-    [self.refreshControl beginRefreshing];
+    // Don't show the refreshControl if emptyViewController is being displayed.
+    if (! _emptyViewController) {
+        [self.refreshControl beginRefreshing];
+    }
+
     self.collectionView.allowsSelection = NO;
     self.collectionView.allowsMultipleSelection = NO;
     self.collectionView.scrollEnabled = NO;
