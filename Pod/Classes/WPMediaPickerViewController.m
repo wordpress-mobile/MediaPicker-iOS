@@ -599,7 +599,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)addEmptyViewControllerToView
 {
-    if (self.emptyViewController.view.superview == nil) {
+    if (self.emptyViewController && _emptyViewController.view.superview == nil) {
         [self.collectionView addSubview:self.emptyViewController.view];
         _emptyViewController.view.frame = self.collectionView.frame;
         [self addChildViewController:_emptyViewController];
