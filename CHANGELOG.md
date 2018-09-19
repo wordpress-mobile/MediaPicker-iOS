@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 `WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
 
 #### Releases
-- `1.1` Release  - [1.0](#1.1)
+- `1.3` Release  - [1.3](#1.3)
+- `1.2` Release  - [1.2](#1.2)
+- `1.1` Release  - [1.1](#1.1)
 - `1.0` Release  - [1.0](#1.0)
 - `0.28` Release  - [0.28](#28)
 - `0.27` Release  - [0.27](#27)
@@ -19,6 +21,21 @@ All notable changes to this project will be documented in this file.
 - `0.17` Releases - [0.17](#17)
 - `0.16` Releases - [0.16](#16)
 - `0.15` Releases - [0.15](#15)
+
+---
+## [1.3](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.3)
+Released on 2018-06-21. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.3).
+
+### Fixed
+- Check for nil for empty View Controller. #304 
+
+---
+## [1.2](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.2)
+Released on 2018-06-21. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.2).
+
+### Added
+- Added the possibility to use a View Controller for the empty state. #303
+
 
 ---
 ## [1.1](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.1)
