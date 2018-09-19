@@ -24,9 +24,9 @@ It allows:
 
 WPMediaPicker is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
-
+```
 pod "WPMediaPicker"
-
+```
 ## Usage
 
 To use the picker do the following:
@@ -85,7 +85,7 @@ Just use the standard appearance methods from UIKit. Here is an example how to c
 
 ### How to use a custom data source for the picker
 
-If you have a custom database of media and you want to display it using the WPMediaPicker you need to to implement the following protocols around your data:
+If you have a custom database of media and you want to display it using the WPMediaPicker you need to implement the following protocols around your data:
 
  * [WPMediaCollectionDataSource](Pod/Classes/WPMediaCollectionDataSource.h)
  * [WPMediaGroup](Pod/Classes/WPMediaCollectionDataSource.h)
@@ -101,7 +101,7 @@ mediaPicker.dataSource = self.customDataSource;
 
 ### Sample Project
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, and run `pod install` from the `Example` directory first.
 
 ## Requirements
 
