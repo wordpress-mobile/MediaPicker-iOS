@@ -56,6 +56,7 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
 @property (nonatomic, strong) WPActionBar *accessoryActionBar;
 @property (nonatomic, strong) UIButton *selectedActionButton;
 @property (nonatomic, strong) UIButton *previewActionButton;
+@property (nonatomic, assign) NSInteger numberOfAssets;
 
 /**
  The size of the camera preview cell
@@ -656,11 +657,18 @@ static CGFloat SelectAnimationTime = 0.2;
     if ([removed containsIndex:self.assetIndexInPreview.item]){
         self.assetIndexInPreview = nil;
     }
+    // In an attemopt to fix a crash that happens in performBatchUpdates we are
+    // saving the number of assets locally and updating it according to the action (insert/ remove).
+    // This value will be returned from numberOfItems delegate method to fit the updates.
+    self.numberOfAssets = self.dataSource.numberOfAssets;
+
     [self.collectionView performBatchUpdates:^{
         if (removed) {
+            self.numberOfAssets -= removed.count;
             [self.collectionView deleteItemsAtIndexPaths:[self indexPathsFromIndexSet:removed section:0]];
         }
         if (inserted) {
+            self.numberOfAssets += inserted.count;
             [self.collectionView insertItemsAtIndexPaths:[self indexPathsFromIndexSet:inserted section:0]];
         }
         NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
@@ -844,7 +852,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSInteger numberOfAssets = [self.dataSource numberOfAssets];
+    NSInteger numberOfAssets = self.numberOfAssets;
 
     if (self.searchBar.text && [self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:didUpdateSearchWithAssetCount:)]) {
         [self.mediaPickerDelegate mediaPickerController:self didUpdateSearchWithAssetCount:numberOfAssets];
