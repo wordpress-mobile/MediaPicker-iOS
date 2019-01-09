@@ -15,7 +15,7 @@
             message = NSLocalizedString(@"This app needs permission to access your device media library in order to add photos and/or video to your posts. Please change the privacy settings if you wish to allow this.",
                                         @"Explaining to the user why the app needs access to the device media library.");
         } else if (error.code == WPMediaPickerErrorCodeRestricted) {
-            message = NSLocalizedString(@"Your app is not authorized to access photo data possibly due to active restrictions such as parental controls. Please check your parental control settings in this device.",
+            message = NSLocalizedString(@"Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device.",
                                         @"Explaining to the user why the app needs access to the device media library.");
         }
     }
