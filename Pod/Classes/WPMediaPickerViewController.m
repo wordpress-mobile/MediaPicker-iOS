@@ -7,6 +7,7 @@
 #import "WPMediaCapturePresenter.h"
 #import "WPInputMediaPickerViewController.h"
 #import "WPCarouselAssetsViewController.h"
+#import "UIViewController+MediaAdditions.h"
 
 @import MobileCoreServices;
 @import AVFoundation;
@@ -763,38 +764,11 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.allowsSelection = YES;
     self.collectionView.scrollEnabled = YES;
     [self.collectionView reloadData];
-    NSString *title = NSLocalizedString(@"Media Library", @"Title for alert when a generic error happened when loading media");
-    NSString *message = NSLocalizedString(@"There was a problem when trying to access your media. Please try again later.",  @"Explaining to the user there was an generic error accesing media.");
-    NSString *cancelText = NSLocalizedString(@"OK", "");
-    NSString *otherButtonTitle = nil;
-    if (error.domain == WPMediaPickerErrorDomain &&
-        error.code == WPMediaErrorCodePermissionsFailed) {
-        otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
-        title = NSLocalizedString(@"Media Library", @"Title for alert when access to the media library is not granted by the user");
-        message = NSLocalizedString(@"This app needs permission to access your device media library in order to add photos and/or video to your posts. Please change the privacy settings if you wish to allow this.",
-                                    @"Explaining to the user why the app needs access to the device media library.");
-    }
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:cancelText
-                                                       style:UIAlertActionStyleCancel
-                                                     handler:^(UIAlertAction *action) {
+    [self wpm_showAlertWithError:error okActionHandler:^(UIAlertAction * _Nonnull action) {
         if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerControllerDidCancel:)]) {
             [self.mediaPickerDelegate mediaPickerControllerDidCancel:self];
         }
     }];
-    [alertController addAction:okAction];
-
-    if (otherButtonTitle) {
-        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            [[UIApplication sharedApplication] openURL:settingsURL options:@{} completionHandler:nil];
-        }];
-        [alertController addAction:otherAction];
-    }
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)setSelectedAssets:(NSArray *)selectedAssets {
