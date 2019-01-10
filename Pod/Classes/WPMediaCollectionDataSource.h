@@ -11,9 +11,10 @@ typedef NS_OPTIONS(NSInteger, WPMediaType){
 static NSString * _Nonnull const WPMediaPickerErrorDomain = @"WPMediaPickerErrorDomain";
 
 typedef NS_ENUM(NSInteger, WPMediaPickerErrorCode){
-    WPMediaErrorCodePermissionsFailed,
-    WPMediaErrorCodePermissionsUnknow,
-    WPMediaErrorCodeVideoURLNotAvailable
+    WPMediaPickerErrorCodePermissionDenied,
+    WPMediaPickerErrorCodeRestricted,
+    WPMediaPickerErrorCodeUnknown,
+    WPMediaPickerErrorCodeVideoURLNotAvailable
 };
 
 @protocol WPMediaMove <NSObject>

@@ -113,10 +113,17 @@
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     switch (status) {
         case PHAuthorizationStatusRestricted:
+        {
+            if (failureBlock) {
+                NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodeRestricted userInfo:nil];
+                failureBlock(error);
+            }
+            return;
+        }
         case PHAuthorizationStatusDenied:
         {
             if (failureBlock) {
-                NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaErrorCodePermissionsFailed userInfo:nil];
+                NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodePermissionDenied userInfo:nil];
                 failureBlock(error);
             }
             return;
