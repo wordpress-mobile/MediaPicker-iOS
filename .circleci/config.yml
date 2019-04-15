@@ -2,18 +2,20 @@ version: 2.1
 
 orbs:
   # This uses the iOS Orb located at https://github.com/wordpress-mobile/circleci-orbs
-  ios: wordpress-mobile/ios@0.0.22
+  ios: wordpress-mobile/ios@0.0.25
 
 workflows:
   test_and_validate:
     jobs:
       - ios/test:
           name: Test
+          xcode-version: "10.2.0"
           cocoapods-working-directory: Example
           workspace: Example/WPMediaPicker.xcworkspace
           scheme: WPMediaPicker-Example
           device: iPhone XS
-          ios-version: "12.1"
+          ios-version: "12.2"
       - ios/validate-podspec:
           name: Validate Podspec
+          xcode-version: "10.2.0"
           podspec-path: WPMediaPicker.podspec

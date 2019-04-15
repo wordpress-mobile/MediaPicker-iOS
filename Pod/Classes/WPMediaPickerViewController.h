@@ -312,7 +312,7 @@
  
  @return a view controller to present the empty view.
  */
-- (UIViewController *)defaultEmptyViewController;
+- (nonnull UIViewController *)defaultEmptyViewController;
 
 /**
  Calculates the appropriate cell height/width given the desired number of cells per line, desired space
