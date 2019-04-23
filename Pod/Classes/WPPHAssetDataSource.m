@@ -75,7 +75,7 @@
 
         if (!groupChangeDetails && !assetsChangeDetails && !albumChangeDetails) {
             [self.observers enumerateKeysAndObjectsUsingBlock:^(NSUUID *key, WPMediaChangesBlock block, BOOL *stop) {
-                block(true, [NSIndexSet new], [NSIndexSet new], [NSIndexSet new], @[]);
+                block(false, [NSIndexSet new], [NSIndexSet new], [NSIndexSet new], @[]);
             }];
             return;
         }
