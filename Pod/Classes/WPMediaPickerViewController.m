@@ -91,9 +91,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)dealloc
 {
-    if (_changesObserver) {
-        [_dataSource unregisterChangeObserver:_changesObserver];
-    }
+    [self unregisterDataSourceObservers];
 }
 
 - (void)viewDidLoad
@@ -114,7 +112,6 @@ static CGFloat SelectAnimationTime = 0.2;
     //setup data
     [self.dataSource setMediaTypeFilter:self.options.filter];
     [self.dataSource setAscendingOrdering:!self.options.showMostRecentFirst];
-    [self registerDataSourceObservers];
 
     if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithForceTouchCapability:UIForceTouchCapabilityAvailable]]) {
         [self registerForPreviewingWithDelegate:self sourceView:self.view];
@@ -132,8 +129,8 @@ static CGFloat SelectAnimationTime = 0.2;
     __weak __typeof__(self) weakSelf = self;
     self.changesObserver = [self.dataSource registerChangeObserverBlock:
                             ^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray *moves) {
-                                // If a refresh of data is going on, ignore changes on the data in the meantime.
-                                if (weakSelf.refreshGroupFirstTime || weakSelf.refreshControl.isRefreshing) {
+                                // If the view is not loaded or a refresh of data is going on, ignore changes on the data in the meantime.
+                                if (!weakSelf.isViewLoaded || weakSelf.refreshGroupFirstTime || weakSelf.refreshControl.isRefreshing) {
                                     return;
                                 }
                                 if (incrementalChanges) {
@@ -142,6 +139,18 @@ static CGFloat SelectAnimationTime = 0.2;
                                     [weakSelf.collectionView reloadData];
                                 }
                             }];
+}
+
+- (void)unregisterDataSourceObservers {
+    if (_changesObserver) {
+        [_dataSource unregisterChangeObserver:_changesObserver];
+    }
+}
+
+- (void)setDataSource:(id<WPMediaCollectionDataSource>)dataSource {
+    [self unregisterDataSourceObservers];
+    _dataSource = dataSource;
+    [self registerDataSourceObservers];
 }
 
 - (void)setOptions:(WPMediaPickerOptions *)options {
