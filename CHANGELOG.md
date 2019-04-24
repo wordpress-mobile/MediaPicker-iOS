@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 `WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
 
 #### Releases
+- `1.3.4` Release  - [1.3.4](#1.3.4)
 - `1.3` Release  - [1.3](#1.3)
 - `1.2` Release  - [1.2](#1.2)
 - `1.1` Release  - [1.1](#1.1)
@@ -21,6 +22,13 @@ All notable changes to this project will be documented in this file.
 - `0.17` Releases - [0.17](#17)
 - `0.16` Releases - [0.16](#16)
 - `0.15` Releases - [0.15](#15)
+
+---
+## [1.3.4](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.3.4)
+Released on 2019-04-24. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.3.4).
+
+### Fixed
+- If no details of the changes are made available on PHDataSource send a change notification with the proper variable state set. Make sure observers are removed and readded when datasource changes. #305 #321
 
 ---
 ## [1.3](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.3)
