@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSArray<PHAssetCollectionForWPMediaGroup *> *cachedCollections;
 @property (nonatomic, assign) WPMediaType mediaTypeFilter;
 @property (nonatomic, strong) NSMutableDictionary *observers;
+@property (nonatomic, strong) NSMutableDictionary *groupObservers;
 @property (nonatomic, assign) BOOL refreshGroups;
 @property (nonatomic, assign) BOOL ascendingOrdering;
 @property (nonatomic, strong) dispatch_queue_t imageGenerationQueue;
@@ -42,6 +43,7 @@
     }
     _mediaTypeFilter = WPMediaTypeVideo | WPMediaTypeImage;
     _observers = [[NSMutableDictionary alloc] init];
+    _groupObservers = [[NSMutableDictionary alloc] init];
     _refreshGroups = YES;
     _cachedCollections = [[NSMutableArray alloc] init];
     _imageGenerationQueue = dispatch_queue_create("org.wordpress.wpmediapicker.WPPHAssetDataSource", DISPATCH_QUEUE_SERIAL);
@@ -72,16 +74,27 @@
         PHFetchResultChangeDetails *groupChangeDetails = [changeInstance changeDetailsForFetchResult:self.assetsCollections];
         PHFetchResultChangeDetails *assetsChangeDetails = [changeInstance changeDetailsForFetchResult:self.assets];
         PHFetchResultChangeDetails *albumChangeDetails = [changeInstance changeDetailsForFetchResult:self.albums];
+        PHObjectChangeDetails *selectedObjectDetails = [changeInstance changeDetailsForObject:self.activeAssetsCollection];
 
-        if (!groupChangeDetails && !assetsChangeDetails && !albumChangeDetails) {
-            [self.observers enumerateKeysAndObjectsUsingBlock:^(NSUUID *key, WPMediaChangesBlock block, BOOL *stop) {
-                block(false, [NSIndexSet new], [NSIndexSet new], [NSIndexSet new], @[]);
+        // Let's check if there is any changes to the groups of the data source
+        if (groupChangeDetails || albumChangeDetails || selectedObjectDetails) {
+            // if the current selected group is changed we need to invalidate it's cache to make sure it's updated.
+            if (selectedObjectDetails) {
+                self.activeAssetsCollection = [selectedObjectDetails objectAfterChanges];
+                self->_selectedGroup = nil;
+            }
+            [self.groupObservers enumerateKeysAndObjectsUsingBlock:^(NSUUID *key, WPMediaGroupChangesBlock block, BOOL *stop) {
+                block();
             }];
+            // redo the group list.
+            [self loadGroupsWithSuccess:nil failure:nil];
+        }
+
+        // If there is no change in the assets we can simple stop the process here.
+        if (!assetsChangeDetails) {
             return;
         }
 
-        [self loadGroupsWithSuccess:nil failure:nil];
-        
         BOOL incrementalChanges = assetsChangeDetails.hasIncrementalChanges;
         // Capture removed, changed, and moved indexes before fetching results for incremental chaanges.
         // The adjustedIndex depends on the *old* asset count.
@@ -372,8 +385,15 @@
     NSUUID *blockKey = [NSUUID UUID];
     [self.observers setObject:[callback copy] forKey:blockKey];
     return blockKey;
-    
 }
+
+- (id<NSObject>)registerGroupChangeObserverBlock:(WPMediaGroupChangesBlock)callback
+{
+    NSUUID *blockKey = [NSUUID UUID];
+    [self.groupObservers setObject:[callback copy] forKey:blockKey];
+    return blockKey;
+}
+
 
 - (void)unregisterChangeObserver:(id<NSObject>)blockKey
 {
@@ -381,6 +401,14 @@
         [self.observers removeObjectForKey:blockKey];
     }
 }
+
+- (void)unregisterGroupChangeObserver:(id<NSObject>)blockKey
+{
+    if (blockKey) {
+        [self.groupObservers removeObjectForKey:blockKey];
+    }
+}
+
 
 - (void)addImage:(UIImage *)image
         metadata:(NSDictionary *)metadata
