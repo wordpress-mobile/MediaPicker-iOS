@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, WPMediaLoadOptions){
 
 @protocol WPMediaAsset;
 
+typedef void (^WPMediaGroupChangesBlock)(void);
 typedef void (^WPMediaChangesBlock)(BOOL incrementalChanges, NSIndexSet * _Nonnull removed, NSIndexSet * _Nonnull inserted, NSIndexSet * _Nonnull changed, NSArray<id<WPMediaMove>> * _Nonnull moves);
 typedef void (^WPMediaSuccessBlock)(void);
 typedef void (^WPMediaFailureBlock)(NSError * _Nullable error);
@@ -255,12 +256,32 @@ typedef int32_t WPMediaRequestID;
 - (nonnull id<NSObject>)registerChangeObserverBlock:(nonnull WPMediaChangesBlock)callback;
 
 /**
+ *  Asks the data source to be notify about changes on the media library group/albums using the given callback block.
+ *
+ *  @discussion the callback object is retained by the data source so it needs to
+ * be unregistered on the end to avoid leaks or retain cycles.
+ *
+ *  @param callback a WPMediaGroupChangessBlock that is invoked every time a change is detected.
+ *
+ *  @return an opaque object that identifies the callback register. This should be used to later unregister the block
+ */
+- (nonnull id<NSObject>)registerGroupChangeObserverBlock:(nonnull WPMediaGroupChangesBlock)callback;
+
+/**
  *  Asks the data source to unregister the block that is identified by the block key.
  *
  *  @param blockKey the unique identifier of the block. This must have been obtained 
- * by a call to registerChangesObserverBlock
+ * by a call to registerChangeObserverBlock
  */
 - (void)unregisterChangeObserver:(nonnull id<NSObject>)blockKey;
+
+/**
+ *  Asks the data source to unregister the group observer block that is identified by the block key.
+ *
+ *  @param blockKey the unique identifier of the block. This must have been obtained
+ * by a call to registerGroupChangesObserverBlock
+ */
+- (void)unregisterGroupChangeObserver:(nonnull id<NSObject>)blockKey;
 
 /**
  *  Asks the data source to reload the data available of the media library. This should be invoked after changing the 
