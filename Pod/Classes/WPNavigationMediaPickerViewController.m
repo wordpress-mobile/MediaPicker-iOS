@@ -321,6 +321,7 @@ static NSString *const ArrowDown = @"\u25be";
                                                             style:UIBarButtonItemStyleDone
                                                            target:self
                                                            action:@selector(finishPicker:)];
+    rightButtonItem.accessibilityIdentifier = @"SelectedActionButton";
     self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = rightButtonItem;
 }
 
