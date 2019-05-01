@@ -27,9 +27,9 @@
 {
     [super viewDidLoad];
     
-    self.title = @"WPMediaPicker";
+    self.title = NSLocalizedString(@"WPMediaPicker", @"");
     //setup nav buttons
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(showOptions:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", @"") style:UIBarButtonItemStylePlain target:self action:@selector(showOptions:)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showPicker:)];
 
@@ -99,13 +99,13 @@
     cell.tag = requestID;
     cell.titleLabel.text = [self.dateFormatter stringFromDate:[asset date]];
     if ([asset assetType] == WPMediaTypeImage) {
-        cell.countLabel.text = @"Image";
+        cell.countLabel.text = NSLocalizedString(@"Image", @"");
     } else if ([asset assetType] == WPMediaTypeVideo) {
-        cell.countLabel.text = @"Video";
+        cell.countLabel.text = NSLocalizedString(@"Video", @"");
     } else if ([asset assetType] == WPMediaTypeAudio) {
-        cell.countLabel.text = @"Audio";
+        cell.countLabel.text = NSLocalizedString(@"Audio", @"");
     } else {
-        cell.countLabel.text = @"Other";
+        cell.countLabel.text = NSLocalizedString(@"Other", @"");
     }
     
     return cell;
@@ -128,7 +128,7 @@
         return _quickInputTextField;
     }
     _quickInputTextField = [[UITextField alloc] initWithFrame:CGRectInset(CGRectMake(0, 0, self.view.frame.size.width, 44), 5, 2)];
-    _quickInputTextField.placeholder = @"Tap here to quick select assets";
+    _quickInputTextField.placeholder = NSLocalizedString(@"Tap here to quick select assets", @"");
     _quickInputTextField.borderStyle = UITextBorderStyleRoundedRect;
     _quickInputTextField.delegate = self;
 
