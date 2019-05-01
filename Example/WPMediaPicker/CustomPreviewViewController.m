@@ -19,7 +19,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Preview";
+    self.title = NSLocalizedString(@"Preview", @"");
 
     self.view.backgroundColor = [UIColor greenColor];
 

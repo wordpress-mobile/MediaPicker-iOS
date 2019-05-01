@@ -60,27 +60,27 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     self.showMostRecentFirstCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.showMostRecentFirstCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.showMostRecentFirstCell.accessoryView).on = [self.options[MediaPickerOptionsShowMostRecentFirst] boolValue];
-    self.showMostRecentFirstCell.textLabel.text = @"Show Most Recent First";
+    self.showMostRecentFirstCell.textLabel.text = NSLocalizedString(@"Show Most Recent First", @"");
 
     self.showCameraCaptureCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.showCameraCaptureCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.showCameraCaptureCell.accessoryView).on = [self.options[MediaPickerOptionsShowCameraCapture] boolValue];
-    self.showCameraCaptureCell.textLabel.text = @"Show Capture Cell";
+    self.showCameraCaptureCell.textLabel.text = NSLocalizedString(@"Show Capture Cell", @"");
 
     self.preferFrontCameraCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.preferFrontCameraCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.preferFrontCameraCell.accessoryView).on = [self.options[MediaPickerOptionsPreferFrontCamera] boolValue];
-    self.preferFrontCameraCell.textLabel.text = @"Prefer Front Camera";
+    self.preferFrontCameraCell.textLabel.text = NSLocalizedString(@"Prefer Front Camera", @"");
     
     self.allowMultipleSelectionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.allowMultipleSelectionCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.allowMultipleSelectionCell.accessoryView).on = [self.options[MediaPickerOptionsAllowMultipleSelection] boolValue];
-    self.allowMultipleSelectionCell.textLabel.text = @"Allow Multiple Selection";
+    self.allowMultipleSelectionCell.textLabel.text = NSLocalizedString(@"Allow Multiple Selection", @"");
     
     self.postProcessingStepCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.postProcessingStepCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.postProcessingStepCell.accessoryView).on = [self.options[MediaPickerOptionsPostProcessingStep] boolValue];
-    self.postProcessingStepCell.textLabel.text = @"Shows Post Processing Step";
+    self.postProcessingStepCell.textLabel.text = NSLocalizedString(@"Shows Post Processing Step", @"");
 
     self.filterMediaCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[@"Photos", @"Videos", @"Photos & Videos"]];
@@ -93,32 +93,32 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     } else {
         segment.selectedSegmentIndex = 1;
     }
-    self.filterMediaCell.textLabel.text = @"Media Type";
+    self.filterMediaCell.textLabel.text = NSLocalizedString(@"Media Type", @"");
 
     self.customPreviewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.customPreviewCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.customPreviewCell.accessoryView).on = [self.options[MediaPickerOptionsCustomPreview] boolValue];
-    self.customPreviewCell.textLabel.text = @"Use Custom Preview Controller";
+    self.customPreviewCell.textLabel.text = NSLocalizedString(@"Use Custom Preview Controller", @"");
 
     self.scrollInputPickerCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.scrollInputPickerCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.scrollInputPickerCell.accessoryView).on = [self.options[MediaPickerOptionsScrollInputPickerVertically] boolValue];
-    self.scrollInputPickerCell.textLabel.text = @"Scroll Input Picker Vertically";
+    self.scrollInputPickerCell.textLabel.text = NSLocalizedString(@"Scroll Input Picker Vertically", @"");
 
     self.cellOverlaysCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.cellOverlaysCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.cellOverlaysCell.accessoryView).on = [self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue];
-    self.cellOverlaysCell.textLabel.text = @"Show Sample Cell Overlays";
+    self.cellOverlaysCell.textLabel.text = NSLocalizedString(@"Show Sample Cell Overlays", @"");
 
     self.showSearchBarCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.showSearchBarCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.showSearchBarCell.accessoryView).on = [self.options[MediaPickerOptionsShowSearchBar] boolValue];
-    self.showSearchBarCell.textLabel.text = @"Show Search Bar";
+    self.showSearchBarCell.textLabel.text = NSLocalizedString(@"Show Search Bar", @"");
 
     self.showActionBarCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     self.showActionBarCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.showActionBarCell.accessoryView).on = [self.options[MediaPickerOptionsShowActionBar] boolValue];
-    self.showActionBarCell.textLabel.text = @"Show Action Bar";
+    self.showActionBarCell.textLabel.text = NSLocalizedString(@"Show Action Bar", @"");
 }
 
 #pragma mark - Table view data source
