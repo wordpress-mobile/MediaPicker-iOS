@@ -40,6 +40,7 @@ static CGFloat const WPMediaGroupCellHeight = 86.0f;
     }
     [self.tableView registerClass:[WPMediaGroupTableViewCell class] forCellReuseIdentifier:NSStringFromClass([WPMediaGroupTableViewCell class])];
     self.tableView.rowHeight = WPMediaGroupCellHeight;
+    self.tableView.accessibilityIdentifier = @"AlbumTable";
 
     //Setup navigation
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];

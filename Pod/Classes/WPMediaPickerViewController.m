@@ -320,6 +320,8 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceHorizontal = !self.options.scrollVertically;
     self.collectionView.alwaysBounceVertical = self.options.scrollVertically;
+
+    self.collectionView.accessibilityIdentifier = @"MediaCollection";
     
     // Register cell classes
     [self.collectionView registerClass:[WPMediaCollectionViewCell class]
@@ -419,6 +421,7 @@ static CGFloat SelectAnimationTime = 0.2;
     _previewActionButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
     [_previewActionButton addTarget:self action:@selector(onPreviewButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [_previewActionButton setTitle:self.previewActionTitle forState:UIControlStateNormal];
+    _previewActionButton.accessibilityIdentifier = @"PreviewButton";
 
     return _previewActionButton;
 }
@@ -434,6 +437,7 @@ static CGFloat SelectAnimationTime = 0.2;
     _selectedActionButton.titleLabel.font = [UIFont boldSystemFontOfSize:font.pointSize];
     [_selectedActionButton addTarget:self action:@selector(onAddButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [_selectedActionButton setTitle:self.selectionActionTitle forState:UIControlStateNormal];
+    _selectedActionButton.accessibilityIdentifier = @"SelectedActionButton";
 
     return _selectedActionButton;
 }
