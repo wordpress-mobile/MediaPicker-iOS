@@ -23,9 +23,7 @@ static CGFloat const WPMediaGroupCellHeight = 86.0f;
 
 - (void)dealloc
 {
-    if (_changesObserver) {
-        [_dataSource unregisterChangeObserver:_changesObserver];
-    }
+    [self unregisterDataSourceObservers];
 }
 
 - (void)viewDidLoad
@@ -43,11 +41,30 @@ static CGFloat const WPMediaGroupCellHeight = 86.0f;
 
     //Setup navigation
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
-    __weak __typeof__(self) weakSelf = self;
-    self.changesObserver = [self.dataSource registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *deleted, NSIndexSet *inserted, NSIndexSet *reload, NSArray *moves) {
-            [weakSelf loadData];            
-        }];
+
     [self loadData];
+}
+
+- (void)setDataSource:(id<WPMediaCollectionDataSource>)dataSource {
+    [self unregisterDataSourceObservers];
+    _dataSource = dataSource;
+    [self registerDataSourceObservers];
+}
+
+- (void)registerDataSourceObservers {
+    __weak __typeof__(self) weakSelf = self;
+    self.changesObserver = [self.dataSource registerGroupChangeObserverBlock:^() {
+        if (weakSelf.isViewLoaded) {
+            [weakSelf loadData];
+        }
+    }];
+}
+
+- (void)unregisterDataSourceObservers {
+    if (_changesObserver) {
+        [_dataSource unregisterGroupChangeObserver:_changesObserver];
+        _changesObserver = nil;
+    }
 }
 
 - (void)loadData

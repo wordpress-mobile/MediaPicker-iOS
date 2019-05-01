@@ -12,6 +12,7 @@ UIPopoverPresentationControllerDelegate
 @property (nonatomic, strong) UINavigationController *internalNavigationController;
 @property (nonatomic, strong) WPMediaPickerViewController *mediaPicker;
 @property (nonatomic, strong) WPMediaGroupPickerViewController *groupViewController;
+@property (nonatomic, strong) NSObject *changesObserver;
 @end
 
 @implementation WPNavigationMediaPickerViewController
@@ -46,8 +47,15 @@ static NSString *const ArrowDown = @"\u25be";
 
 - (void)commonInitWithOptions:(WPMediaPickerOptions *)options {
     _mediaPicker = [[WPMediaPickerViewController alloc] initWithOptions:options];
+    _mediaPicker.mediaPickerDelegate = self;
+    _groupViewController = [[WPMediaGroupPickerViewController alloc] init];
+    _groupViewController.delegate = self;
     _showGroupSelector = YES;
     _startOnGroupSelector = YES;
+}
+
+- (void)dealloc {
+    [self unregisterDataSourceObservers];
 }
 
 - (void)viewDidLoad
@@ -80,13 +88,6 @@ static NSString *const ArrowDown = @"\u25be";
     if (!self.dataSource) {
         self.dataSource = [WPPHAssetDataSource sharedInstance];
     }
-    self.mediaPicker.dataSource = self.dataSource;
-    self.mediaPicker.mediaPickerDelegate = self;
-
-    self.groupViewController = [[WPMediaGroupPickerViewController alloc] init];
-    self.groupViewController.delegate = self;
-    self.groupViewController.dataSource = self.dataSource;
-    self.dataSource.mediaTypeFilter = self.mediaPicker.options.filter;
 
     UIViewController *rootController = self.groupViewController;
     if (!self.showGroupSelector) {
@@ -110,6 +111,31 @@ static NSString *const ArrowDown = @"\u25be";
 
     if (self.mediaPicker.options.allowMultipleSelection) {
         [self updateSelectionAction];
+    }
+}
+
+- (void)setDataSource:(id<WPMediaCollectionDataSource>)dataSource {
+    [self unregisterDataSourceObservers];
+    _dataSource = dataSource;
+    _dataSource.mediaTypeFilter = self.mediaPicker.options.filter;
+    self.mediaPicker.dataSource = _dataSource;
+    self.groupViewController.dataSource = _dataSource;
+    [self registerDataSourceObservers];
+}
+
+- (void)registerDataSourceObservers {
+    __weak __typeof__(self) weakSelf = self;
+    self.changesObserver = [self.dataSource registerGroupChangeObserverBlock:^() {
+        if (weakSelf.isViewLoaded) {
+            weakSelf.mediaPicker.navigationItem.title = weakSelf.dataSource.selectedGroup.name;
+        }
+    }];
+}
+
+- (void)unregisterDataSourceObservers {
+    if (_changesObserver) {
+        [_dataSource unregisterGroupChangeObserver:_changesObserver];
+        _changesObserver = nil;
     }
 }
 
