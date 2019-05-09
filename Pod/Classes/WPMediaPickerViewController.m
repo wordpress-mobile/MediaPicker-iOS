@@ -391,6 +391,10 @@ static CGFloat SelectAnimationTime = 0.2;
      ];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return self.options.preferredStatusBarStyle;
+}
+
 #pragma mark - Action bar
 
 - (UIView *)actionBar

@@ -48,4 +48,9 @@
  */
 @property (nonatomic, strong, nonnull) NSSet<NSString *> *badgedUTTypes;
 
+/**
+ The status bar style to use for the media picker.
+ */
+@property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
+
 @end
