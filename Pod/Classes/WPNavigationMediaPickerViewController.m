@@ -73,9 +73,13 @@ static NSString *const ArrowDown = @"\u25be";
     // Dispose of any resources that can be recreated.
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.mediaPicker preferredStatusBarStyle];
+}
+
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return self.internalNavigationController.topViewController;
+    return nil;
 }
 
 - (UIViewController *)childViewControllerForHomeIndicatorAutoHidden

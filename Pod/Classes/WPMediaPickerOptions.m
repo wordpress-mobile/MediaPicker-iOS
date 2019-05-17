@@ -16,6 +16,7 @@
         _showSearchBar = NO;
         _showActionBar = YES;
         _badgedUTTypes = [NSSet set];
+        _preferredStatusBarStyle = UIStatusBarStyleDefault;
     }
     return self;
 }
@@ -31,6 +32,7 @@
     options.showSearchBar = self.showSearchBar;
     options.showActionBar = self.showActionBar;
     options.badgedUTTypes = [self.badgedUTTypes copy];
+    options.preferredStatusBarStyle = self.preferredStatusBarStyle;
 
     return options;
 }
