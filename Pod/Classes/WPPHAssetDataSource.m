@@ -214,9 +214,10 @@
 
     PHFetchOptions *albumOptions = [[PHFetchOptions alloc] init];
     albumOptions.predicate = [NSPredicate predicateWithFormat:@"(estimatedAssetCount != 0)"];
+    albumOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"localizedTitle" ascending:YES]];
     self.albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
                                                            subtype:PHAssetCollectionSubtypeAny
-                                                           options:nil];
+                                                           options:albumOptions];
 
     [collectionsArray addObjectsFromArray:[self.albums objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.albums.count)]]];
 
