@@ -67,6 +67,7 @@ static const CGFloat LabelRegularFontSize = 13;
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.gradientView.layer.sublayers.firstObject.frame = self.gradientView.bounds;
+    self.selectionFrame.frame = self.backgroundView.frame;
 }
 
 - (void)commonInit
