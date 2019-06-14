@@ -54,13 +54,8 @@
     self.mediaPicker.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.mediaPicker.view];
     
-    NSLayoutAnchor *leadingAnchor = self.view.leadingAnchor;
-    NSLayoutAnchor *trailingAnchor = self.view.trailingAnchor;
-
-    if (@available(iOS 11.0, *)) {
-        leadingAnchor = self.view.safeAreaLayoutGuide.leadingAnchor;
-        trailingAnchor = self.view.safeAreaLayoutGuide.trailingAnchor;
-    }
+    NSLayoutAnchor *leadingAnchor = self.view.safeAreaLayoutGuide.leadingAnchor;
+    NSLayoutAnchor *trailingAnchor = self.view.safeAreaLayoutGuide.trailingAnchor;    
 
     [NSLayoutConstraint activateConstraints:
      @[

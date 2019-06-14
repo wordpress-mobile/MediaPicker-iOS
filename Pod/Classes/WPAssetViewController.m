@@ -109,9 +109,8 @@
     _imageView.backgroundColor = [UIColor blackColor];
     _imageView.userInteractionEnabled = YES;
     [_imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnAsset:)]];
-    if (@available(iOS 11.0, *)) {
-        _imageView.accessibilityIgnoresInvertColors = YES;
-    }
+    _imageView.accessibilityIgnoresInvertColors = YES;
+
     return _imageView;
 }
 
@@ -228,10 +227,7 @@
         __weak __typeof(self) weakSelf = self;
         [self.videoView setControlToolbarHidden:hidden animated:YES completion:^{
             [weakSelf setNeedsStatusBarAppearanceUpdate];
-
-            if (@available(iOS 11.0, *)) {
-                [weakSelf setNeedsUpdateOfHomeIndicatorAutoHidden];
-            }
+            [weakSelf setNeedsUpdateOfHomeIndicatorAutoHidden];
         }];
     }
 }

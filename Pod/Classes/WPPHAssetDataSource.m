@@ -177,22 +177,17 @@
 }
 
 - (NSArray *)smartAlbumsToShow {
-    NSMutableArray *smartAlbumsOrder = [NSMutableArray arrayWithArray:@[
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumFavorites),
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumPanoramas),
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumVideos),
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumSlomoVideos),
-                                                                        @(PHAssetCollectionSubtypeSmartAlbumTimelapses),
-                                                                        ]];
-    // Add iOS 9's new albums
-    NSOperatingSystemVersion iOS9 = {9,0,0};
-    if ( [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:iOS9]) {
-        [smartAlbumsOrder insertObject:@(PHAssetCollectionSubtypeSmartAlbumSelfPortraits) atIndex:3];
-        [smartAlbumsOrder addObject:@(PHAssetCollectionSubtypeSmartAlbumScreenshots)];
-    }
-    return [NSArray arrayWithArray:smartAlbumsOrder];
+    return @[
+             @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
+             @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
+             @(PHAssetCollectionSubtypeSmartAlbumFavorites),
+             @(PHAssetCollectionSubtypeSmartAlbumSelfPortraits),
+             @(PHAssetCollectionSubtypeSmartAlbumPanoramas),
+             @(PHAssetCollectionSubtypeSmartAlbumVideos),
+             @(PHAssetCollectionSubtypeSmartAlbumSlomoVideos),
+             @(PHAssetCollectionSubtypeSmartAlbumTimelapses),
+             @(PHAssetCollectionSubtypeSmartAlbumScreenshots)
+             ];    
 }
 
 - (void)loadGroupsWithSuccess:(WPMediaSuccessBlock)successBlock

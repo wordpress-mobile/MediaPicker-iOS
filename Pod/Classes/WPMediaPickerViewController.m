@@ -119,9 +119,8 @@ static CGFloat SelectAnimationTime = 0.2;
         [self.view addGestureRecognizer:self.longPressGestureRecognizer];
     }
 
-    if (@available(iOS 11.0, *)) {
-        self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
-    }
+    self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
+    
     [self refreshDataAnimated:NO];
 }
 
@@ -201,7 +200,7 @@ static CGFloat SelectAnimationTime = 0.2;
     CGFloat photoSize;
     UICollectionViewFlowLayout *layout = self.layout;
     CGFloat frameWidth = self.view.frame.size.width;
-    CGFloat frameHeight = self.view.frame.size.width - self.topLayoutGuide.length;
+    CGFloat frameHeight = self.view.frame.size.width - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top;
     CGFloat dimensionToUse;
     if (self.options.scrollVertically) {
         dimensionToUse = frameWidth;
@@ -229,18 +228,9 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)resetContentInset
 {
-    if (@available(iOS 11.0, *)) {
-        CGFloat searchBarHeight = self.searchBar.bounds.size.height;
-        self.additionalSafeAreaInsets = UIEdgeInsetsMake(searchBarHeight, 0, 0, 0);
-        self.searchBarTopConstraint.constant = self.view.safeAreaInsets.top - searchBarHeight;
-    } else {
-        UIEdgeInsets inset = self.collectionView.contentInset;
-        inset.top = self.searchBar.bounds.size.height + self.topLayoutGuide.length;
-        inset.bottom = self.bottomLayoutGuide.length;
-        self.collectionView.contentInset = inset;
-        self.collectionView.scrollIndicatorInsets = inset;
-        self.searchBarTopConstraint.constant = self.topLayoutGuide.length;
-    }
+    CGFloat searchBarHeight = self.searchBar.bounds.size.height;
+    self.additionalSafeAreaInsets = UIEdgeInsetsMake(searchBarHeight, 0, 0, 0);
+    self.searchBarTopConstraint.constant = self.view.safeAreaInsets.top - searchBarHeight;
 }
 
 - (CGFloat)cellSizeForPhotosPerLineCount:(NSUInteger)photosPerLine photoSpacing:(CGFloat)photoSpacing frameWidth:(CGFloat)frameWidth
@@ -748,9 +738,6 @@ static CGFloat SelectAnimationTime = 0.2;
                     [strongSelf.refreshControl endRefreshing];
                 }];
             }
-            if (@available(iOS 11, *)) {} else { // Just on iOS 10
-                [self resetContentInset]; //Fix top content inset when refresh control dissapear.
-            }
 
             // Scroll to the correct position
             if (refreshGroupFirstTime){
@@ -986,11 +973,7 @@ referenceSizeForFooterInSection:(NSInteger)section
         CGSize fixedSize = self.cameraPreviewSize;
         UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         if (layout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-            if (@available(iOS 11, *)) {
-                fixedSize.height = self.view.frame.size.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - self.collectionView.contentInset.bottom;
-            } else {
-                fixedSize.height = self.view.frame.size.height - self.collectionView.contentInset.top - self.collectionView.contentInset.bottom;
-            }
+            fixedSize.height = self.view.frame.size.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - self.collectionView.contentInset.bottom;
         } else {
             fixedSize.width = self.view.frame.size.width;
         }
@@ -1401,13 +1384,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 - (void)keyboardWillHideNotification:(NSNotification *)notification
 {
     UIEdgeInsets contentInset = self.collectionView.contentInset;
-
-    if (@available(iOS 11, *)) {
-        contentInset.bottom = 0.f;
-    } else {
-        contentInset.bottom = self.bottomLayoutGuide.length;
-    }
-
+    contentInset.bottom = 0.f;
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
 
