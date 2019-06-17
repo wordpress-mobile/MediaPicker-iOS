@@ -31,7 +31,8 @@ Released on 2019-06-14. All issues associated with this milestone can be found u
 
 ### Fixed
 - Sorting of user albums alphabetically. #329
-
+- Fix selection frame when rotating device. #332
+- Fix asset display on device. #333
 
 ---
 ## [1.4](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.4.0)
