@@ -36,15 +36,15 @@
     self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.imageView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.imageView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor].active = YES;
-    [self.imageView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.topAnchor].active = YES;
-    [self.imageView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.bottomAnchor].active = YES;
+    [self.imageView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.bottomAnchor].active = YES;
+    [self.imageView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.topAnchor].active = YES;
 
     [self.view addSubview:self.videoView];
     self.videoView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.videoView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.videoView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor].active = YES;
-    [self.videoView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.topAnchor].active = YES;
-    [self.videoView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.bottomAnchor].active = YES;
+    [self.videoView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.bottomAnchor].active = YES;
+    [self.videoView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.topAnchor].active = YES;
     self.videoView.delegate = self;
 
     [self.view addSubview:self.activityIndicatorView];
