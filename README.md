@@ -110,6 +110,14 @@ To run the example project, clone the repo, and run `pod install` from the `Exam
  * XCode 10 or above
  * iOS 11 or above
 
+## Contributing
+
+Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, contributing code, and more ways to contribute.
+
+## Getting in Touch
+
+If you have questions about getting setup or just want to say hi, join the [WordPress Slack](https://chat.wordpress.org) and drop a message on the `#mobile` channel.
+
 ## Author
 
 WordPress, mobile@automattic.com
