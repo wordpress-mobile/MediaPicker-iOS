@@ -81,9 +81,8 @@ static const CGFloat LabelRegularFontSize = 13;
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
     _imageView.clipsToBounds = YES;
     _imageView.backgroundColor = self.backgroundColor;
-    if (@available(iOS 11.0, *)) {
-        _imageView.accessibilityIgnoresInvertColors = YES;
-    }
+    _imageView.accessibilityIgnoresInvertColors = YES;
+    
     self.backgroundView = _imageView;
 
     _selectionFrame = [[UIView alloc] initWithFrame:self.backgroundView.frame];

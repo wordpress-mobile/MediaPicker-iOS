@@ -36,15 +36,15 @@
     self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.imageView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.imageView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor].active = YES;
-    [self.imageView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.bottomAnchor].active = YES;
-    [self.imageView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.topAnchor].active = YES;
+    [self.imageView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor].active = YES;
+    [self.imageView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor].active = YES;
 
     [self.view addSubview:self.videoView];
     self.videoView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.videoView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.videoView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor].active = YES;
-    [self.videoView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.bottomAnchor].active = YES;
-    [self.videoView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.topAnchor].active = YES;
+    [self.videoView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor].active = YES;
+    [self.videoView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor].active = YES;
     self.videoView.delegate = self;
 
     [self.view addSubview:self.activityIndicatorView];
@@ -109,9 +109,8 @@
     _imageView.backgroundColor = [UIColor blackColor];
     _imageView.userInteractionEnabled = YES;
     [_imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnAsset:)]];
-    if (@available(iOS 11.0, *)) {
-        _imageView.accessibilityIgnoresInvertColors = YES;
-    }
+    _imageView.accessibilityIgnoresInvertColors = YES;
+
     return _imageView;
 }
 
@@ -228,10 +227,7 @@
         __weak __typeof(self) weakSelf = self;
         [self.videoView setControlToolbarHidden:hidden animated:YES completion:^{
             [weakSelf setNeedsStatusBarAppearanceUpdate];
-
-            if (@available(iOS 11.0, *)) {
-                [weakSelf setNeedsUpdateOfHomeIndicatorAutoHidden];
-            }
+            [weakSelf setNeedsUpdateOfHomeIndicatorAutoHidden];
         }];
     }
 }

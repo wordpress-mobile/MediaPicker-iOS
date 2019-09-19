@@ -107,8 +107,8 @@ To run the example project, clone the repo, and run `pod install` from the `Exam
 
  * ARC 
  * Photos, AVFoundation, ImageIO
- * XCode 9 or above
- * iOS 10 or above
+ * XCode 10 or above
+ * iOS 11 or above
 
 ## Contributing
 
