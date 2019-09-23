@@ -55,9 +55,7 @@ static CGFloat toolbarHeight = 44;
         [weakSelf updateVideoDuration];
     }];
 
-    if (@available(iOS 11.0, *)) {
-        self.accessibilityIgnoresInvertColors = YES;
-    }
+    self.accessibilityIgnoresInvertColors = YES;
 }
 
 - (void)dealloc {
@@ -223,9 +221,7 @@ static CGFloat toolbarHeight = 44;
 - (void)updateToolbarPosition:(BOOL)hidden
 {
     CGFloat height = toolbarHeight;
-    if (@available(iOS 11.0, *)) {
-        height += self.safeAreaInsets.bottom;
-    }
+    height += self.safeAreaInsets.bottom;
 
     CGFloat position = hidden ? 0 : height;
     self.controlToolbar.frame = CGRectMake(0, self.frame.size.height - position, self.frame.size.width, toolbarHeight);
