@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # This uses the iOS Orb located at https://github.com/wordpress-mobile/circleci-orbs
-  ios: wordpress-mobile/ios@0.0.34
+  ios: wordpress-mobile/ios@0.0.35
 
 workflows:
   test_and_validate:
@@ -19,3 +19,13 @@ workflows:
           name: Validate Podspec
           xcode-version: "11.0"
           podspec-path: WPMediaPicker.podspec
+      - ios/publish-podspec:
+          name: Publish to Trunk
+          xcode-version: "11.0"
+          podspec-path: WPMediaPicker.podspec
+          post-to-slack: true
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
