@@ -199,7 +199,7 @@
 - (nullable UIView *)emptyViewForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
 
 /**
- *  Asks the delegate for an empty view to show when there are no assets
+ *  Asks the delegate for an empty view controller to show when there are no assets
  *  to be displayed. If no empty view is required, you have to implement this
  *  method and return `nil`.
  *
@@ -210,6 +210,15 @@
  *  UILabel will be displayed.
  */
 - (nullable UIViewController *)emptyViewControllerForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
+
+/** Asks the delegate to handle an error found by the picker
+ *  If the method is not implemented or it returns NO the media picker will default to showing an alert with the an generic error message
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @param error The error to show
+ *  @return YES if the error was handled by the delegate
+ */
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nonnull NSError *)error;
 
 @end
 
