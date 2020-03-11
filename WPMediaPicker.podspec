@@ -16,7 +16,6 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/wordpress-mobile/MediaPicker-iOS.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '11.0'
-  s.requires_arc = true
   s.swift_version = '5.0'
 
   s.source_files = 'Pod/Classes'
