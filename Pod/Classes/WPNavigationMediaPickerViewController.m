@@ -215,6 +215,14 @@ static NSString *const ArrowDown = @"\u25be";
     }
 }
 
+- (BOOL)mediaGroupPickerViewController:(WPMediaGroupPickerViewController *)picker handleError:(NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:handleError:)]) {
+        return [self.delegate mediaPickerController:self.mediaPicker handleError:error];
+    } else {
+        return NO;
+    }
+}
+
 #pragma mark - WPMediaPickerViewControllerDelegate
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount {
@@ -340,6 +348,14 @@ static NSString *const ArrowDown = @"\u25be";
         [self.delegate mediaPickerController:picker selectionChanged:assets];
     }
     [self updateSelectionAction];
+}
+
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nonnull NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:handleError:)]) {
+        return [self.delegate mediaPickerController:picker handleError:error];        
+    } else {
+        return NO;
+    }
 }
 
 - (void)updateSelectionAction {
