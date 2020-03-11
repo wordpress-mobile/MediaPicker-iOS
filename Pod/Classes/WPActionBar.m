@@ -83,6 +83,16 @@ static const UIEdgeInsets ButtonsBarEdgeInsets = {0, 20, 0, 20}; //top, left, bo
 
 #pragma mark - public methods
 
+- (UIColor *)barBackgroundColor
+{
+    return self.backgroundColor;
+}
+
+- (void)setBarBackgroundColor:(UIColor *)barBackgroundColor
+{
+    self.backgroundColor = barBackgroundColor;
+}
+
 - (UIColor *)lineColor
 {
     return self.lineView.backgroundColor;
