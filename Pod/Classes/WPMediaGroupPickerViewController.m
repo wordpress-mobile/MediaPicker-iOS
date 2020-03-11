@@ -84,6 +84,11 @@ static CGFloat const WPMediaGroupCellHeight = 86.0f;
 - (void)showError:(NSError *)error {
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
+    if ([self.delegate respondsToSelector:@selector(mediaGroupPickerViewController:handleError:)]) {
+        if ([self.delegate mediaGroupPickerViewController:self handleError:error]) {
+            return;
+        }
+    }
     [self wpm_showAlertWithError:error okActionHandler:^(UIAlertAction * _Nonnull action) {
         if ([self.delegate respondsToSelector:@selector(mediaGroupPickerViewControllerDidCancel:)]) {
             [self.delegate mediaGroupPickerViewControllerDidCancel:self];
