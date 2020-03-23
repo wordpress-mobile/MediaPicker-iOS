@@ -768,6 +768,11 @@ static CGFloat SelectAnimationTime = 0.2;
     self.collectionView.allowsSelection = YES;
     self.collectionView.scrollEnabled = YES;
     [self.collectionView reloadData];
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:handleError:)]) {
+        if ([self.mediaPickerDelegate mediaPickerController:self handleError:error]) {
+            return;
+        }
+    }
     [self wpm_showAlertWithError:error okActionHandler:^(UIAlertAction * _Nonnull action) {
         if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerControllerDidCancel:)]) {
             [self.mediaPickerDelegate mediaPickerControllerDidCancel:self];

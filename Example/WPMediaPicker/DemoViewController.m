@@ -240,6 +240,10 @@
     }
 }
 
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nonnull NSError *)error {
+    return error.domain != WPMediaPickerErrorDomain;    
+}
+
 #pragma - Actions
 
 - (void) clearSelection:(id) sender

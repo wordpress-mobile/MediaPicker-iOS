@@ -42,4 +42,13 @@
  */
 - (void)mediaGroupPickerViewControllerDidCancel:(WPMediaGroupPickerViewController *)picker;
 
+/** Asks the delegate to handle an error found by the picker
+ *  If the method is not implemented or it returns NO the media picker will default to showing an alert with the an generic error message
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @param error The error to show
+ *  @return YES if the error was handled by the delegate
+ */
+- (BOOL)mediaGroupPickerViewController:(WPMediaGroupPickerViewController *)picker handleError:(NSError *)error;
+
 @end

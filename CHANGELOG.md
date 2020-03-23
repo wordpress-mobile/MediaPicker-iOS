@@ -3,9 +3,9 @@ All notable changes to this project will be documented in this file.
 `WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
 
 #### Releases
-- `1.6.0` Release  - [1.5](#1.6.0)
+- `1.6.0` Release  - [1.6](#1.6.0)
 - `1.5.0` Release  - [1.5](#1.5.0)
-- `1.4.2` Release  - [1.4](#1.4.2)
+- `1.4.2` Release  - [1.4.2](#1.4.2)
 - `1.4` Release  - [1.4](#1.4)
 - `1.3.4` Release  - [1.3.4](#1.3.4)
 - `1.3` Release  - [1.3](#1.3)
