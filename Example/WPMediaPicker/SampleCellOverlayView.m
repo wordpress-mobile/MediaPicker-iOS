@@ -79,4 +79,9 @@
     return self.label.text;
 }
 
+- (void)prepareForReuse
+{
+    self.label.text = nil;
+}
+
 @end

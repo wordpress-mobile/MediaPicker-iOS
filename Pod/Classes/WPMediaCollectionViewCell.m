@@ -62,6 +62,10 @@ static const CGFloat LabelRegularFontSize = 13;
     self.documentNameLabel.text = nil;
 
     self.overlayView.hidden = YES;
+    if ( [self.overlayView respondsToSelector:@selector(prepareForReuse)]) {
+        id<ReusableOverlayView> reuse = (id<ReusableOverlayView>)self.overlayView;
+        [reuse prepareForReuse];
+    }
 }
 
 - (void)layoutSubviews {
