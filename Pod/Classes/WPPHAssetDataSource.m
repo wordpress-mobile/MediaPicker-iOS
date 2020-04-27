@@ -362,7 +362,9 @@
 {
     NSMutableIndexSet *adjustedSet = [NSMutableIndexSet new];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-        [adjustedSet addIndex:[self adjustedIndexForIndex:idx forCount: count]];
+        if (idx != NSNotFound) {
+            [adjustedSet addIndex:[self adjustedIndexForIndex:idx forCount: count]];
+        }
     }];
 
     // Returns a non-mutable copy.
