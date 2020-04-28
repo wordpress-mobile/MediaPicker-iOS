@@ -357,4 +357,3 @@
 - (void)hideSearchBar;
 
 @end
-
