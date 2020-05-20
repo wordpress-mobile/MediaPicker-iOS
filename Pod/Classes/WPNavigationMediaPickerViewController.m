@@ -13,6 +13,7 @@ UIPopoverPresentationControllerDelegate
 @property (nonatomic, strong) WPMediaPickerViewController *mediaPicker;
 @property (nonatomic, strong) WPMediaGroupPickerViewController *groupViewController;
 @property (nonatomic, strong) NSObject *changesObserver;
+@property (nonatomic, weak) UIViewController *afterSelectionViewController;
 @end
 
 @implementation WPNavigationMediaPickerViewController
@@ -359,6 +360,9 @@ static NSString *const ArrowDown = @"\u25be";
 }
 
 - (void)updateSelectionAction {
+    if (self.internalNavigationController.topViewController == self.afterSelectionViewController) {
+        return;
+    }
     if (self.mediaPicker.options.showActionBar || self.mediaPicker.selectedAssets.count == 0 || !self.mediaPicker.options.allowMultipleSelection) {
         self.internalNavigationController.topViewController.navigationItem.rightBarButtonItem = nil;
         return;
@@ -382,6 +386,7 @@ static NSString *const ArrowDown = @"\u25be";
 - (void)showAfterViewController:(UIViewController *)viewController
 {
     NSParameterAssert(viewController);
+    self.afterSelectionViewController = viewController;
     [self.internalNavigationController pushViewController:viewController animated:YES];
 }
 
