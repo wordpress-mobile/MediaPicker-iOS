@@ -119,61 +119,70 @@
     });
 }
 
+- (void)checkPermissionStatus:(void(^)(PHAuthorizationStatus status))handler {
+    if (@available(iOS 14, *)) {
+        [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:handler];
+    } else {
+        [PHPhotoLibrary requestAuthorization:handler];
+    }
+}
 - (void)loadDataWithOptions:(WPMediaLoadOptions)options
                     success:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock
 {
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-    switch (status) {
-        case PHAuthorizationStatusRestricted:
-        {
-            if (failureBlock) {
-                NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodeRestricted userInfo:nil];
-                failureBlock(error);
-            }
-            return;
-        }
-        case PHAuthorizationStatusDenied:
-        {
-            if (failureBlock) {
-                NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodePermissionDenied userInfo:nil];
-                failureBlock(error);
-            }
-            return;
-        }
-        case PHAuthorizationStatusNotDetermined:
-        {
-            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-                [self loadDataWithOptions:options success:successBlock failure:failureBlock];
-            }];
-            return;
-        }
-        case PHAuthorizationStatusAuthorized: {
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-                if (self.activeAssetsCollection == nil) {
-                    self.activeAssetsCollection = [[PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                                                            subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary
-                                                                                            options:nil] firstObject];
+    [self checkPermissionStatus:^(PHAuthorizationStatus status) {
+        switch (status) {
+            case PHAuthorizationStatusRestricted:
+            {
+                if (failureBlock) {
+                    NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodeRestricted userInfo:nil];
+                    failureBlock(error);
                 }
-                switch (options) {
-                    case (WPMediaLoadOptionsGroups): {
-                        [self loadGroupsWithSuccess:successBlock failure:failureBlock];
-                        return;
+                return;
+            }
+            case PHAuthorizationStatusDenied:
+            {
+                if (failureBlock) {
+                    NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodePermissionDenied userInfo:nil];
+                    failureBlock(error);
+                }
+                return;
+            }
+            case PHAuthorizationStatusNotDetermined:
+            {
+                [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                    [self loadDataWithOptions:options success:successBlock failure:failureBlock];
+                }];
+                return;
+            }
+            case PHAuthorizationStatusAuthorized:
+            case PHAuthorizationStatusLimited: {
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+                    if (self.activeAssetsCollection == nil) {
+                        self.activeAssetsCollection = [[PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                                                                subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary
+                                                                                                options:nil] firstObject];
                     }
-                    case (WPMediaLoadOptionsAssets): {
-                        [self loadAssetsWithSuccess:successBlock failure:failureBlock];
-                        return;
-                    }
-                    case (WPMediaLoadOptionsGroupsAndAssets): {
-                        [self loadGroupsWithSuccess:^{
+                    switch (options) {
+                        case (WPMediaLoadOptionsGroups): {
+                            [self loadGroupsWithSuccess:successBlock failure:failureBlock];
+                            return;
+                        }
+                        case (WPMediaLoadOptionsAssets): {
                             [self loadAssetsWithSuccess:successBlock failure:failureBlock];
-                        } failure:failureBlock];
+                            return;
+                        }
+                        case (WPMediaLoadOptionsGroupsAndAssets): {
+                            [self loadGroupsWithSuccess:^{
+                                [self loadAssetsWithSuccess:successBlock failure:failureBlock];
+                            } failure:failureBlock];
+                        }
                     }
-                }
-            });
-            return;
+                });
+                return;
+            }
         }
-    }
+    }];
 }
 
 - (NSArray *)smartAlbumsToShow {
@@ -229,7 +238,7 @@
                                                                                            dispatchQueue: self.imageGenerationQueue]];
     }
     self.cachedCollections = newCachedAssetCollection;
-    if (self.assetsCollections.count > 0){
+    if (self.assetsCollections != nil){
         if (!self.activeAssetsCollection || [self.assetsCollections indexOfObject:self.activeAssetsCollection] == NSNotFound) {
             self.activeAssetsCollection = [self.assetsCollections firstObject];
         }
