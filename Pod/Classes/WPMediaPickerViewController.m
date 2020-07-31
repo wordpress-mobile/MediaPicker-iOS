@@ -664,6 +664,7 @@ static CGFloat SelectAnimationTime = 0.2;
     if ([removed containsIndex:self.assetIndexInPreview.item]){
         self.assetIndexInPreview = nil;
     }
+    __weak __typeof__(self) weakSelf = self;
     [self.collectionView performBatchUpdates:^{
         if (removed) {
             [self.collectionView deleteItemsAtIndexPaths:[self indexPathsFromIndexSet:removed section:0]];
@@ -684,8 +685,8 @@ static CGFloat SelectAnimationTime = 0.2;
             }
         }
     } completion:^(BOOL finished) {
-        [self refreshSelection];
-        [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForSelectedItems];        
+        [weakSelf refreshSelection];
+        [weakSelf.collectionView reloadItemsAtIndexPaths:weakSelf.collectionView.indexPathsForSelectedItems];
     }];
 
 }
