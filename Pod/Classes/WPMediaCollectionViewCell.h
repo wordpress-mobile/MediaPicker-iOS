@@ -24,3 +24,11 @@
 
 @end
 
+@protocol ReusableOverlayView <NSObject>
+
+@optional
+
+- (void)prepareForReuse;
+
+@end
+
