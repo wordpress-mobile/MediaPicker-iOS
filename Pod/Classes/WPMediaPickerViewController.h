@@ -218,7 +218,7 @@
  *  @param error The error to show
  *  @return YES if the error was handled by the delegate
  */
-- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nonnull NSError *)error;
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nullable NSError *)error;
 
 @end
 

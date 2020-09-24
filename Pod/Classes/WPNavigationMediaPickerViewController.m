@@ -351,7 +351,7 @@ static NSString *const ArrowDown = @"\u25be";
     [self updateSelectionAction];
 }
 
-- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nonnull NSError *)error {
+- (BOOL)mediaPickerController:(nonnull WPMediaPickerViewController *)picker handleError:(nullable NSError *)error {
     if ([self.delegate respondsToSelector:@selector(mediaPickerController:handleError:)]) {
         return [self.delegate mediaPickerController:picker handleError:error];        
     } else {
