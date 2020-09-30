@@ -229,7 +229,7 @@
                                                                                            dispatchQueue: self.imageGenerationQueue]];
     }
     self.cachedCollections = newCachedAssetCollection;
-    if (self.assetsCollections.count > 0){
+    if (self.assetsCollections != nil){
         if (!self.activeAssetsCollection || [self.assetsCollections indexOfObject:self.activeAssetsCollection] == NSNotFound) {
             self.activeAssetsCollection = [self.assetsCollections firstObject];
         }
