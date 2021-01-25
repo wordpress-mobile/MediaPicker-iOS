@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
   s.screenshots      = "https://raw.githubusercontent.com/wordpress-mobile/WPMediaPicker/master/screenshots_1.jpg"
   s.license          = { :type => 'GPLv2', :file => 'LICENSE' }
   s.author           = { "WordPress" => "mobile@automattic.com", "Sérgio Estêvão" => "sergioestevao@gmail.com", "James Frost" => "james.frost@automattic.com" }
-  s.social_media_url = "http://twitter.com/WordPressiOS"
   s.source           = { :git => "https://github.com/wordpress-mobile/MediaPicker-iOS.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '11.0'
