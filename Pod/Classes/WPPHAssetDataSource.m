@@ -150,7 +150,7 @@
             }
             case PHAuthorizationStatusNotDetermined:
             {
-                [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                [self checkPermissionStatus:^(PHAuthorizationStatus status) {
                     [self loadDataWithOptions:options success:successBlock failure:failureBlock];
                 }];
                 return;
