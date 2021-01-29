@@ -110,7 +110,8 @@
                         CALayer *viewLayer = self.previewView.layer;
                         self.captureVideoPreviewLayer.frame = viewLayer.bounds;
                         self.captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-                        self.captureVideoPreviewLayer.connection.videoOrientation = [self videoOrientationForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+                        UIWindowScene *currentScene = [[[[UIApplication sharedApplication] windows] lastObject] windowScene];
+                        self.captureVideoPreviewLayer.connection.videoOrientation = [self videoOrientationForInterfaceOrientation:[currentScene interfaceOrientation]];
                         [viewLayer addSublayer:self.captureVideoPreviewLayer];
                 });
             }
@@ -121,7 +122,8 @@
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
     if (self.captureVideoPreviewLayer.connection.supportsVideoOrientation) {
-        self.captureVideoPreviewLayer.connection.videoOrientation = [self videoOrientationForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        UIWindowScene *currentScene = [[[[UIApplication sharedApplication] windows] lastObject] windowScene];
+        self.captureVideoPreviewLayer.connection.videoOrientation = [self videoOrientationForInterfaceOrientation:[currentScene interfaceOrientation]];
     }
 }
 
