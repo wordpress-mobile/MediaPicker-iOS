@@ -22,14 +22,3 @@ workflows:
           xcode-version: "12.1.0"
           podspec-path: WPMediaPicker.podspec
           bundle-install: true
-      - ios/publish-podspec:
-          name: Publish to Trunk
-          xcode-version: "14.1"
-          podspec-path: WPMediaPicker.podspec
-          bundle-install: true
-          post-to-slack: true
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore: /.*/
