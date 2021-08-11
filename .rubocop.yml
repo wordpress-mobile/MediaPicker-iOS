@@ -6,4 +6,3 @@ AllCops:
 Naming/FileName:
   Exclude:
     - 'WPMediaPicker.podspec'
-
