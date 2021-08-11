@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
 target 'WPMediaPicker' do
-  pod "WPMediaPicker", :path => "../"
+  pod 'WPMediaPicker', path: '../'
 
   target 'Tests' do
     inherit! :search_paths

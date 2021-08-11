@@ -1,0 +1,9 @@
+# Opt in to new cops by default
+AllCops:
+  NewCops: enable
+
+# Allow the Podspec filename to match the project
+Naming/FileName:
+  Exclude:
+    - 'WPMediaPicker.podspec'
+
