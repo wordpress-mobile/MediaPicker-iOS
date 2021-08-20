@@ -25,7 +25,6 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
  UICollectionViewDelegate,
  UIImagePickerControllerDelegate,
  UINavigationControllerDelegate,
- UIContextMenuInteractionDelegate,
  UICollectionViewDelegateFlowLayout,
  UISearchBarDelegate
 >
