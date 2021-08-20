@@ -25,9 +25,8 @@ static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
  UICollectionViewDelegate,
  UIImagePickerControllerDelegate,
  UINavigationControllerDelegate,
- UIPopoverPresentationControllerDelegate,
+ UIContextMenuInteractionDelegate,
  UICollectionViewDelegateFlowLayout,
- UIViewControllerPreviewingDelegate,
  UISearchBarDelegate
 >
 
@@ -113,11 +112,7 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.dataSource setMediaTypeFilter:self.options.filter];
     [self.dataSource setAscendingOrdering:!self.options.showMostRecentFirst];
 
-    if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithForceTouchCapability:UIForceTouchCapabilityAvailable]]) {
-        [self registerForPreviewingWithDelegate:self sourceView:self.view];
-    } else {
-        [self.view addGestureRecognizer:self.longPressGestureRecognizer];
-    }
+    [self.view addGestureRecognizer:self.longPressGestureRecognizer];
 
     self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
     
@@ -1438,26 +1433,6 @@ referenceSizeForFooterInSection:(NSInteger)section
     emptyViewFrame.origin.y = (superviewHeight / 2.0) - (emptyViewFrame.size.height / 2.0) + self.collectionView.frame.origin.y;
 
     return emptyViewFrame;
-}
-
-#pragma mark - UIViewControllerPreviewingDelegate
-
-- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
-{
-    CGPoint convertedLocation = [self.collectionView convertPoint:location fromView:self.view];
-    self.assetIndexInPreview = [self.collectionView indexPathForItemAtPoint:convertedLocation];
-    if (self.assetIndexInPreview) {
-        UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:self.assetIndexInPreview];
-        CGRect rect = [self.view convertRect:attributes.frame fromView:self.collectionView];
-        [previewingContext setSourceRect:rect];
-    }
-
-    return [self previewControllerForTouchLocation:convertedLocation];
-}
-
-- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
-{
-    [self displayPreviewController:viewControllerToCommit];
 }
 
 #pragma mark - WPAssetViewControllerDelegate
