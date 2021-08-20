@@ -1,22 +1,24 @@
 Pod::Spec.new do |s|
-  s.name             = "WPMediaPicker"
-  s.version          = "1.7.3"
-  s.summary          = "WPMediaPicker is an iOS controller that allows capture and picking of media assets."
-  s.description      = <<-DESC
-                       WPMediaPicker is an iOS controller that allows capture and picking of media assets.
-                       It allows:
-                       * Multiple selection of media.
-                       * Capture of new media while selecting
-                       DESC
-  s.homepage         = "https://github.com/wordpress-mobile/MediaPicker-iOS"
-  s.screenshots      = "https://raw.githubusercontent.com/wordpress-mobile/WPMediaPicker/master/screenshots_1.jpg"
-  s.license          = { :type => 'GPLv2', :file => 'LICENSE' }
-  s.author           = { "WordPress" => "mobile@automattic.com", "Sérgio Estêvão" => "sergioestevao@gmail.com", "James Frost" => "james.frost@automattic.com" }
-  s.source           = { :git => "https://github.com/wordpress-mobile/MediaPicker-iOS.git", :tag => s.version.to_s }
+  s.name          = "WPMediaPicker"
+  s.version       = "1.7.2"
 
-  s.platform     = :ios, '13.0'
+  s.summary       = "WPMediaPicker is an iOS controller that allows capture and picking of media assets."
+  s.description   = <<-DESC
+                    WPMediaPicker is an iOS controller that allows capture and picking of media assets.
+                    It allows:
+                    * Multiple selection of media.
+                    * Capture of new media while selecting
+                  DESC
+
+  s.homepage      = "https://github.com/wordpress-mobile/MediaPicker-iOS"
+  s.screenshots   = "https://raw.githubusercontent.com/wordpress-mobile/WPMediaPicker/trunk/screenshots_1.jpg"
+  s.license       = { :type => 'GPLv2', :file => 'LICENSE' }
+  s.author        = { "The WordPress Mobile Team" => "mobile@wordpress.org" }
+
+  s.platform      = :ios, '13.0'
   s.swift_version = '5.0'
 
+  s.source        = { :git => "https://github.com/wordpress-mobile/MediaPicker-iOS.git", :tag => s.version.to_s }
   s.source_files = 'Pod/Classes'
   s.resource_bundles = {
     'WPMediaPicker' => ['Pod/Assets/*.png']
