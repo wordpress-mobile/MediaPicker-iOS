@@ -1,6 +1,6 @@
 # WPMediaPicker
 
-[![CircleCI](https://circleci.com/gh/wordpress-mobile/MediaPicker-iOS.svg?style=svg)](https://circleci.com/gh/wordpress-mobile/MediaPicker-iOS)
+[![Build status](https://badge.buildkite.com/1481d0f2f974ca8b80d09a9151bfb89af748508e6c5dca27c7.svg)](https://buildkite.com/wordpress-mobile/mediapicker-ios)
 [![Version](https://img.shields.io/cocoapods/v/WPMediaPicker.svg?style=flat)](http://cocoadocs.org/docsets/WPMediaPicker)
 [![License](https://img.shields.io/cocoapods/l/WPMediaPicker.svg?style=flat)](http://cocoadocs.org/docsets/WPMediaPicker)
 [![Platform](https://img.shields.io/cocoapods/p/WPMediaPicker.svg?style=flat)](http://cocoadocs.org/docsets/WPMediaPicker)
