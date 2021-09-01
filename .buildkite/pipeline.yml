@@ -11,7 +11,7 @@ steps:
   ################
   # Build and Test
   ################
-  - label: "🧪 Build and Test iOS"
+  - label: "🧪 Build and Test"
     key: "test"
     command: "build_and_test_pod"
     env: *common_env
@@ -21,7 +21,7 @@ steps:
   #################
   # Validate Podspec
   #################
-  - label: "🔬 Validating Podspec"
+  - label: "🔬 Validate Podspec"
     key: "validate"
     command: "validate_podspec"
     env: *common_env
