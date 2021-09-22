@@ -210,7 +210,11 @@ static const CGFloat LabelRegularFontSize = 13;
             accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Audio, %@", @"Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio."), formattedDate];
             break;
         case WPMediaTypeOther:
-            accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Document: %@", @"Accessibility label for other media items in the media collection view. The parameter is the filename file."), [_asset filename]];
+            if([_asset respondsToSelector:@selector(filename)]) {
+                accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Document: %@", @"Accessibility label for other media items in the media collection view. The parameter is the filename file."), [_asset filename]];
+            } else {
+                accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Document, %@", @"Accessibility label for other media items in the media collection view. The parameter is the creation date of the document."), formattedDate];
+            }
             break;
         default:
             break;
