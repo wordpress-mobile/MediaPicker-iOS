@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 `WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
 
 #### Releases
+- `1.8.0` Release  - [1.8](#1.8.0)
 - `1.7.0` Release  - [1.7](#1.7.0)
 - `1.6.0` Release  - [1.6](#1.6.0)
 - `1.5.0` Release  - [1.5](#1.5.0)
@@ -27,6 +28,13 @@ All notable changes to this project will be documented in this file.
 - `0.17` Releases - [0.17](#17)
 - `0.16` Releases - [0.16](#16)
 - `0.15` Releases - [0.15](#15)
+
+---
+## [1.8.0](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.0)
+Released on 2021-10-22. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.8.0).
+
+### Changes
+- Update minimum version of supported iOS to be iOS 13.0
 
 ---
 ## [1.7.0](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.7.0)

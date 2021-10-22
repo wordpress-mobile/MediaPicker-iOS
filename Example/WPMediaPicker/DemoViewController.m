@@ -7,6 +7,8 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 @import MobileCoreServices;
 
+static CGFloat const CellHeight = 100.0f;
+
 @interface DemoViewController () <WPMediaPickerViewControllerDelegate, OptionsViewControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) NSArray * assets;
@@ -27,6 +29,8 @@
 {
     [super viewDidLoad];
     
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
+    self.tableView.rowHeight = CellHeight;
     self.title = NSLocalizedString(@"WPMediaPicker", @"");
     //setup nav buttons
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", @"") style:UIBarButtonItemStylePlain target:self action:@selector(showOptions:)];
@@ -86,7 +90,7 @@
     
     id<WPMediaAsset> asset = self.assets[indexPath.row];
     __block WPMediaRequestID requestID = 0;
-    requestID = [asset imageWithSize:CGSizeMake(100,100) completionHandler:^(UIImage *result, NSError *error) {
+    requestID = [asset imageWithSize:CGSizeMake(CellHeight * UIScreen.mainScreen.scale,CellHeight * UIScreen.mainScreen.scale) completionHandler:^(UIImage *result, NSError *error) {
         if (error) {
             return;
         }
@@ -112,10 +116,14 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *viewHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0,0, self.view.frame.size.width, 44)];
+    UIView *viewHeaderView = [[UITableViewHeaderFooterView alloc] init];    
     [viewHeaderView addSubview:self.quickInputTextField];
-    self.quickInputTextField.frame = CGRectInset(viewHeaderView.frame, 2, 2);
-    self.quickInputTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [self.quickInputTextField.leadingAnchor constraintEqualToAnchor:viewHeaderView.leadingAnchor],
+        [self.quickInputTextField.trailingAnchor constraintEqualToAnchor:viewHeaderView.trailingAnchor]
+    ]];
+    
     return viewHeaderView;
 }
 
@@ -131,7 +139,7 @@
     _quickInputTextField.placeholder = NSLocalizedString(@"Tap here to quick select assets", @"");
     _quickInputTextField.borderStyle = UITextBorderStyleRoundedRect;
     _quickInputTextField.delegate = self;
-
+    _quickInputTextField.translatesAutoresizingMaskIntoConstraints = NO;
     return _quickInputTextField;
 }
 
