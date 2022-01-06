@@ -255,6 +255,25 @@ static CGFloat const CellHeight = 100.0f;
     return error.domain != WPMediaPickerErrorDomain;    
 }
 
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker configureCustomHeaderView:(UICollectionReusableView *)headerView {
+    if (![headerView isKindOfClass:[SampleCustomHeaderView class]]) {
+        return;
+    }
+
+    SampleCustomHeaderView *view = (SampleCustomHeaderView *)headerView;
+    view.backgroundColor = [UIColor greenColor];
+}
+
+- (BOOL)mediaPickerControllerShouldShowCustomHeaderView:(WPMediaPickerViewController *)picker
+{
+    return [self.options[MediaPickerOptionsShowCustomHeader] boolValue] == YES;
+}
+
+- (CGSize)mediaPickerControllerReferenceSizeForCustomHeaderView:(WPMediaPickerViewController *)picker
+{
+    return CGSizeMake(300, 200);
+}
+
 #pragma - Actions
 
 - (void) clearSelection:(id) sender
@@ -295,6 +314,10 @@ static CGFloat const CellHeight = 100.0f;
 
     if ([self.options[MediaPickerOptionsShowSampleCellOverlays] boolValue]) {
         [self.mediaPicker.mediaPicker registerClassForReusableCellOverlayViews:[SampleCellOverlayView class]];
+    }
+
+    if ([self.options[MediaPickerOptionsShowCustomHeader] boolValue]) {
+        [self.mediaPicker.mediaPicker registerClassForCustomHeaderView:[SampleCustomHeaderView class]];
     }
     
     [self presentViewController:self.mediaPicker animated:YES completion:nil];
