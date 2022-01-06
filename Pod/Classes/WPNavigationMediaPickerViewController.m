@@ -318,6 +318,31 @@ static NSString *const ArrowDown = @"\u25be";
     }
 }
 
+- (BOOL)mediaPickerControllerShouldShowCustomHeaderView:(WPMediaPickerViewController *)picker
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerControllerShouldShowCustomHeaderView:)]) {
+        return [self.delegate mediaPickerControllerShouldShowCustomHeaderView:picker];
+    }
+
+    return NO;
+}
+
+- (CGSize)mediaPickerControllerReferenceSizeForCustomHeaderView:(WPMediaPickerViewController *)picker
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerControllerReferenceSizeForCustomHeaderView:)]) {
+        return [self.delegate mediaPickerControllerReferenceSizeForCustomHeaderView:picker];
+    }
+
+    return CGSizeZero;
+}
+
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker configureCustomHeaderView:(UICollectionReusableView *)headerView
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:configureCustomHeaderView:)]) {
+        [self.delegate mediaPickerController:picker configureCustomHeaderView:headerView];
+    }
+}
+
 - (nullable UIViewController *)mediaPickerController:(WPMediaPickerViewController *)picker previewViewControllerForAssets:(nonnull NSArray<id<WPMediaAsset>> *)assets selectedIndex:(NSInteger)selected {
     UIViewController *previewVC;
     if ([self.delegate respondsToSelector:@selector(mediaPickerController:previewViewControllerForAssets:selectedIndex:)]) {

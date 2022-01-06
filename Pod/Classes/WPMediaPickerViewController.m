@@ -18,6 +18,7 @@ static CGFloat const IPhone7LandscapeWidth = 667.0f;
 static CGFloat const IPadPortraitWidth = 768.0f;
 static CGFloat const IPadLandscapeWidth = 1024.0f;
 static CGFloat const IPadPro12LandscapeWidth = 1366.0f;
+static NSString *const CustomHeaderReuseIdentifier = @"CustomHeaderReuseIdentifier";
 
 @interface WPMediaPickerViewController ()
 <
@@ -181,6 +182,15 @@ static CGFloat SelectAnimationTime = 0.2;
     NSParameterAssert([overlayClass isSubclassOfClass:[UIView class]]);
 
     self.overlayViewClass = overlayClass;
+}
+
+- (void)registerClassForCustomHeaderView:(Class)overlayClass
+{
+    NSParameterAssert([overlayClass isSubclassOfClass:[UICollectionReusableView class]]);
+
+    [self.collectionView registerClass:overlayClass
+            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                   withReuseIdentifier:CustomHeaderReuseIdentifier];
 }
 
 - (UICollectionViewFlowLayout *)layout
@@ -935,6 +945,12 @@ static CGFloat SelectAnimationTime = 0.2;
                   layout:(UICollectionViewLayout *)collectionViewLayout
 referenceSizeForHeaderInSection:(NSInteger)section
 {
+    if ([self shouldShowCustomHeaderView]) {
+        if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerControllerReferenceSizeForCustomHeaderView:)]) {
+            return [self.mediaPickerDelegate mediaPickerControllerReferenceSizeForCustomHeaderView:self];
+        }
+    }
+
     if ( [self isShowingCaptureCell] && self.options.showMostRecentFirst)
     {
         return self.cameraPreviewSize;
@@ -957,6 +973,15 @@ referenceSizeForFooterInSection:(NSInteger)section
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath
 {
+    // Custom header view support
+    if (kind == UICollectionElementKindSectionHeader && [self shouldShowCustomHeaderView]) {
+        if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerController:configureCustomHeaderView:)]) {
+            UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CustomHeaderReuseIdentifier forIndexPath:indexPath];
+            [self.mediaPickerDelegate mediaPickerController:self configureCustomHeaderView:view];
+            return view;
+        }
+    }
+
     if ((kind == UICollectionElementKindSectionHeader && self.options.showMostRecentFirst) ||
        (kind == UICollectionElementKindSectionFooter && !self.options.showMostRecentFirst))
     {
@@ -998,6 +1023,15 @@ referenceSizeForFooterInSection:(NSInteger)section
         WPMediaCollectionViewCell *mediaCell = (WPMediaCollectionViewCell *)cell;
         mediaCell.overlayView.hidden = YES;
     }
+}
+
+- (BOOL)shouldShowCustomHeaderView
+{
+    if ([self.mediaPickerDelegate respondsToSelector:@selector(mediaPickerControllerShouldShowCustomHeaderView:)]) {
+        return [self.mediaPickerDelegate mediaPickerControllerShouldShowCustomHeaderView:self];
+    }
+
+    return NO;
 }
 
 /**
