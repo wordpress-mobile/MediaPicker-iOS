@@ -4,7 +4,9 @@
 #import "OptionsViewController.h"
 #import "PostProcessingViewController.h"
 #import "SampleCellOverlayView.h"
+#import "SampleCustomHeaderView.h"
 #import <WPMediaPicker/WPMediaPicker.h>
+
 @import MobileCoreServices;
 
 static CGFloat const CellHeight = 100.0f;
@@ -51,7 +53,8 @@ static CGFloat const CellHeight = 100.0f;
                      MediaPickerOptionsCustomPreview:@(NO),
                      MediaPickerOptionsScrollInputPickerVertically:@(YES),
                      MediaPickerOptionsShowSampleCellOverlays:@(NO),
-                     MediaPickerOptionsShowSearchBar:@(YES)
+                     MediaPickerOptionsShowSearchBar:@(YES),
+                     MediaPickerOptionsShowCustomHeader:@(NO)
                      };
 
 }
