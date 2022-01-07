@@ -47,7 +47,6 @@
     _refreshGroups = YES;
     _cachedCollections = [[NSMutableArray alloc] init];
     _imageGenerationQueue = dispatch_queue_create("org.wordpress.wpmediapicker.WPPHAssetDataSource", DISPATCH_QUEUE_SERIAL);
-    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     return self;
 }
 
@@ -131,6 +130,13 @@
                     failure:(WPMediaFailureBlock)failureBlock
 {
     [self checkPermissionStatus:^(PHAuthorizationStatus status) {
+
+        /// Starting from iOS 15.2 we should do the registration
+        /// after asking user for permission
+        /// Solution proposed here - https://developer.apple.com/forums/thread/696804
+        ///
+        [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+
         switch (status) {
             case PHAuthorizationStatusRestricted:
             {
