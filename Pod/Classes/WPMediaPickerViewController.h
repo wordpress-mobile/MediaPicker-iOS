@@ -158,7 +158,7 @@
 /**
  *  Asks the delegate whether an overlay view should be shown for the cell for
  *  the specified media asset. If you return `YES` from this method, you must
- *  have registered a reuse class though `-[WPMediaPickerViewController registerClassForReusableCellOverlayViews:]`.
+ *  have registered a reuse class through `-[WPMediaPickerViewController registerClassForReusableCellOverlayViews:]`.
  *
  *  @param asset The asset to display an overlay view for.
  *  @return `YES` if an overlay view should be displayed, `NO`, if not.
@@ -177,6 +177,33 @@
  *  @param asset       The asset to configure the overlay for.
  */
 - (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker willShowOverlayView:(nonnull UIView *)overlayView forCellForAsset:(nonnull id<WPMediaAsset>)asset;
+
+/**
+ *  Asks the delegate to configure a custom header view. You must have registered a reuse class
+ *  through `-[WPMediaPickerViewController registerClassForCustomHeaderView:]` and returned `YES`
+ *  from `mediaPickerControllerShouldShowCustomHeaderView` otherwise this method will not be called.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @param headerView An instance of the custom header view type to configure.
+ */
+- (void)mediaPickerController:(nonnull WPMediaPickerViewController *)picker configureCustomHeaderView:(nonnull UICollectionReusableView *)headerView;
+
+/**
+ *  Asks the delegate whether a custom header view should be displayed.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @return `YES` if a custom header view should be shown, otherwise `NO`.
+ */
+- (BOOL)mediaPickerControllerShouldShowCustomHeaderView:(nonnull WPMediaPickerViewController *)picker;
+
+/**
+ *  Asks the delegate for a reference size for the registered custom header view, if one has been registered. This will only be called
+ *  if `mediaPickerControllerShouldShowCustomHeaderView` has been implemented and returns `YES`.
+ *
+ *  @param picker The controller object managing the assets picker interface.
+ *  @return A size for the header view to be displayed at.
+ */
+- (CGSize)mediaPickerControllerReferenceSizeForCustomHeaderView:(nonnull WPMediaPickerViewController *)picker;
 
 /**
  *  Gives the delegate an oportunity to react to a change in the number
@@ -340,6 +367,13 @@
  return `YES` from `mediaPickerController:shouldShowOverlayViewForCellForAsset:`
  */
 - (void)registerClassForReusableCellOverlayViews:(nonnull Class)overlayClass;
+
+/**
+ Register a `UICollectionReusableView` subclass to be displayed as an optional header at the top of the picker view.
+ For the header to be displayed, you must register a class using this method, and then
+ return a configured instance from `customHeaderViewForMediaPickerController:`
+ */
+- (void)registerClassForCustomHeaderView:(nonnull Class)overlayClass;
 
 /**
  Shows the search bar that was hidden by `hideSearchBar`. If the

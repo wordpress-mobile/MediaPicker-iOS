@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		173B215327873F2E00D4DD6B /* SampleCustomHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 173B215227873F2E00D4DD6B /* SampleCustomHeaderView.m */; };
 		17475FB81FB46DED00252689 /* SampleCellOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17475FB71FB46DED00252689 /* SampleCellOverlayView.m */; };
 		17F64FE01E6DDC74006C5A2B /* CustomPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F64FDF1E6DDC74006C5A2B /* CustomPreviewViewController.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -42,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		1120051BDDDC8A558883872E /* Pods-WPMediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPMediaPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-WPMediaPicker/Pods-WPMediaPicker.release.xcconfig"; sourceTree = "<group>"; };
+		173B215127873F2E00D4DD6B /* SampleCustomHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleCustomHeaderView.h; sourceTree = "<group>"; };
+		173B215227873F2E00D4DD6B /* SampleCustomHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SampleCustomHeaderView.m; sourceTree = "<group>"; };
 		17475FB61FB46DED00252689 /* SampleCellOverlayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleCellOverlayView.h; sourceTree = "<group>"; };
 		17475FB71FB46DED00252689 /* SampleCellOverlayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SampleCellOverlayView.m; sourceTree = "<group>"; };
 		17F64FDE1E6DDC74006C5A2B /* CustomPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPreviewViewController.h; sourceTree = "<group>"; };
@@ -155,6 +158,8 @@
 				17F64FDF1E6DDC74006C5A2B /* CustomPreviewViewController.m */,
 				17475FB61FB46DED00252689 /* SampleCellOverlayView.h */,
 				17475FB71FB46DED00252689 /* SampleCellOverlayView.m */,
+				173B215127873F2E00D4DD6B /* SampleCustomHeaderView.h */,
+				173B215227873F2E00D4DD6B /* SampleCustomHeaderView.m */,
 				6003F59C195388D20070C39A /* AppDelegate.h */,
 				6003F59D195388D20070C39A /* AppDelegate.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -387,6 +392,7 @@
 				B5FF3BEA1CAD8AB100C1D597 /* PostProcessingViewController.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
 				17475FB81FB46DED00252689 /* SampleCellOverlayView.m in Sources */,
+				173B215327873F2E00D4DD6B /* SampleCustomHeaderView.m in Sources */,
 				FF355D9E1FB5EB4A00244E6D /* WPPHAssetDataSource+Search.m in Sources */,
 				FFFFD8811A447E67000FC184 /* DemoViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,

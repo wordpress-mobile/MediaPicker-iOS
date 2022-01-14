@@ -13,6 +13,7 @@ NSString const *MediaPickerOptionsScrollInputPickerVertically = @"MediaPickerOpt
 NSString const *MediaPickerOptionsShowSampleCellOverlays = @"MediaPickerOptionsShowSampleCellOverlays";
 NSString const *MediaPickerOptionsShowSearchBar = @"MediaPickerOptionsShowSearchBar";
 NSString const *MediaPickerOptionsShowActionBar = @"MediaPickerOptionsShowActionBar";
+NSString const *MediaPickerOptionsShowCustomHeader = @"MediaPickerOptionsShowCustomHeader";
 
 
 typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
@@ -27,6 +28,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     OptionsViewControllerCellShowSampleCellOverlays,
     OptionsViewControllerCellShowSearchBar,
     OptionsViewControllerCellShowActionBar,
+    OptionsViewControllerCellShowCustomHeader,
     OptionsViewControllerCellTotal
 };
 
@@ -43,6 +45,7 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
 @property (nonatomic, strong) UITableViewCell *cellOverlaysCell;
 @property (nonatomic, strong) UITableViewCell *showSearchBarCell;
 @property (nonatomic, strong) UITableViewCell *showActionBarCell;
+@property (nonatomic, strong) UITableViewCell *showCustomHeaderCell;
 
 @end
 
@@ -119,6 +122,13 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
     self.showActionBarCell.accessoryView = [[UISwitch alloc] init];
     ((UISwitch *)self.showActionBarCell.accessoryView).on = [self.options[MediaPickerOptionsShowActionBar] boolValue];
     self.showActionBarCell.textLabel.text = NSLocalizedString(@"Show Action Bar", @"");
+
+    self.showCustomHeaderCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+    self.showCustomHeaderCell.accessoryView = [[UISwitch alloc] init];
+    ((UISwitch *)self.showCustomHeaderCell.accessoryView).on = [self.options[MediaPickerOptionsShowCustomHeader] boolValue];
+    self.showCustomHeaderCell.textLabel.text = NSLocalizedString(@"Show Custom Header", @"");
+    self.showCustomHeaderCell.detailTextLabel.text = NSLocalizedString(@"If custom header and capture cell are enabled, custom header takes precedence.", @"");
+    self.showCustomHeaderCell.detailTextLabel.numberOfLines = 2;
 }
 
 #pragma mark - Table view data source
@@ -166,6 +176,8 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
             return self.showSearchBarCell;
         case OptionsViewControllerCellShowActionBar:
             return self.showActionBarCell;
+        case OptionsViewControllerCellShowCustomHeader:
+            return self.showCustomHeaderCell;
         default:
             break;
     }
@@ -195,7 +207,8 @@ typedef NS_ENUM(NSInteger, OptionsViewControllerCell){
              MediaPickerOptionsScrollInputPickerVertically:@(((UISwitch *)self.scrollInputPickerCell.accessoryView).on),
              MediaPickerOptionsShowSampleCellOverlays:@(((UISwitch *)self.cellOverlaysCell.accessoryView).on),
              MediaPickerOptionsShowSearchBar:@(((UISwitch *)self.showSearchBarCell.accessoryView).on),
-             MediaPickerOptionsShowActionBar:@(((UISwitch *)self.showActionBarCell.accessoryView).on)
+             MediaPickerOptionsShowActionBar:@(((UISwitch *)self.showActionBarCell.accessoryView).on),
+             MediaPickerOptionsShowCustomHeader:@(((UISwitch *)self.showCustomHeaderCell.accessoryView).on)
              };
         
         [delegate optionsViewController:self changed:newOptions];

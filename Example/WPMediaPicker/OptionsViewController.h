@@ -11,6 +11,9 @@ extern NSString const *MediaPickerOptionsScrollInputPickerVertically;
 extern NSString const *MediaPickerOptionsShowSampleCellOverlays;
 extern NSString const *MediaPickerOptionsShowSearchBar;
 extern NSString const *MediaPickerOptionsShowActionBar;
+/// Note that a custom header cannot be displayed at the same time as the in-picker camera capture cell.
+/// If both are specified, the custom header will take precedence.
+extern NSString const *MediaPickerOptionsShowCustomHeader;
 
 @class OptionsViewController;
 
