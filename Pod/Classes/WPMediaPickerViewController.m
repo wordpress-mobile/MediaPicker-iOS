@@ -294,6 +294,18 @@ static CGFloat SelectAnimationTime = 0.2;
     [self unregisterForKeyboardNotifications];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if ([self shouldShowCustomHeaderView]) {
+        // If there's a custom header, we'll invalidate it so that it can adapt itself to dynamic type changes.
+        UICollectionViewFlowLayoutInvalidationContext *context  = [UICollectionViewFlowLayoutInvalidationContext new];
+        [context invalidateSupplementaryElementsOfKind:UICollectionElementKindSectionHeader atIndexPaths:@[ [NSIndexPath indexPathForRow:0 inSection:0] ]];
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    }
+}
+
 - (UIViewController *)viewControllerToUseToPresent
 {
     // viewControllerToUseToPresent defaults to self but could be set to nil. Reset to self if needed.
