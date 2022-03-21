@@ -131,11 +131,7 @@
 {
     [self checkPermissionStatus:^(PHAuthorizationStatus status) {
 
-        /// Starting from iOS 15.2 we should do the registration
-        /// after asking user for permission
-        /// Solution proposed here - https://developer.apple.com/forums/thread/696804
-        ///
-        [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+        [self registerPHChangeObserver];
 
         switch (status) {
             case PHAuthorizationStatusRestricted:
@@ -453,11 +449,7 @@
 
     [self checkPermissionStatus:^(PHAuthorizationStatus status) {
 
-        /// Starting from iOS 15.2 we should do the registration
-        /// after asking user for permission
-        /// Solution proposed here - https://developer.apple.com/forums/thread/696804
-        ///
-        [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+        [self registerPHChangeObserver];
 
         switch (status) {
             case PHAuthorizationStatusRestricted:
@@ -539,6 +531,16 @@
     _mediaTypeFilter = filter;
     //if we change the filter we need to update the groups to reflect the new filter
     _refreshGroups = YES;
+}
+
+- (void)registerPHChangeObserver
+{
+
+    /// Starting from iOS 15.2 we should do the registration
+    /// after asking user for permission
+    /// Solution proposed here - https://developer.apple.com/forums/thread/696804
+    ///
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
 @end
