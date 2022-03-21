@@ -1,7 +1,7 @@
-#import "WPMediaPickerHelper.h"
+#import "WPMediaPickerAlertHelper.h"
 #import "WPMediaCollectionDataSource.h"
 
-@implementation WPMediaPickerHelper
+@implementation WPMediaPickerAlertHelper
 
 + (UIAlertController *)buildAlertControllerWithError:(NSError *)error okActionHandler:(void (^ __nullable)(UIAlertAction *action))handler {
     NSString *title = NSLocalizedString(@"Media Library", @"Title for alert when a generic error happened when loading media");
