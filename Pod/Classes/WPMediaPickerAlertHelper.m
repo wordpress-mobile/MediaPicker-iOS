@@ -3,7 +3,8 @@
 
 @implementation WPMediaPickerAlertHelper
 
-+ (UIAlertController *)buildAlertControllerWithError:(NSError *)error okActionHandler:(void (^ __nullable)(UIAlertAction *action))handler {
++ (nonnull UIAlertController *)buildAlertControllerWithError:(NSError * _Nullable)error
+                                             okActionHandler:(void (^ __nullable)(UIAlertAction * _Nullable action))handler {
     NSString *title = NSLocalizedString(@"Media Library", @"Title for alert when a generic error happened when loading media");
     NSString *message = NSLocalizedString(@"There was a problem when trying to access your media. Please try again later.",  @"Explaining to the user there was an generic error accesing media.");
     NSString *cancelText = NSLocalizedString(@"OK", "");

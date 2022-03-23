@@ -2,6 +2,7 @@
 
 @interface WPMediaPickerAlertHelper : NSObject
 
-+ (UIAlertController *)buildAlertControllerWithError:(NSError *)error okActionHandler:(void (^ __nullable)(UIAlertAction *action))handler;
++ (nonnull UIAlertController *)buildAlertControllerWithError:(NSError * _Nullable)error
+                                             okActionHandler:(void (^ __nullable)(UIAlertAction * _Nullable action))handler;
 
 @end
