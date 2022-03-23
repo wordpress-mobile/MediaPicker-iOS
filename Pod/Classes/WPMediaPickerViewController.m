@@ -1193,6 +1193,7 @@ referenceSizeForFooterInSection:(NSInteger)section
     WPMediaAddedBlock completionBlock = ^(id<WPMediaAsset> media, NSError *error) {
         if (error || !media) {
             NSLog(@"Adding media failed: %@", [error localizedDescription]);
+            [self showError:error];
             return;
         }
         [self addMedia:media animated:YES];

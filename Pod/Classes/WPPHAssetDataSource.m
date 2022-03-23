@@ -131,11 +131,7 @@
 {
     [self checkPermissionStatus:^(PHAuthorizationStatus status) {
 
-        /// Starting from iOS 15.2 we should do the registration
-        /// after asking user for permission
-        /// Solution proposed here - https://developer.apple.com/forums/thread/696804
-        ///
-        [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+        [self registerPHChangeObserver];
 
         switch (status) {
             case PHAuthorizationStatusRestricted:
@@ -450,40 +446,82 @@
 {
     NSParameterAssert(changeRequestBlock);
     __block NSString * assetIdentifier = nil;
-    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        // Request creating an asset from the image.
-        PHAssetChangeRequest *createAssetRequest = changeRequestBlock();
-        PHObjectPlaceholder *assetPlaceholder = [createAssetRequest placeholderForCreatedAsset];
-        assetIdentifier = [assetPlaceholder localIdentifier];
-        if ([self.activeAssetsCollection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
-            // Request editing the album.
-            PHAssetCollectionChangeRequest *albumChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:self.activeAssetsCollection];
-            [albumChangeRequest addAssets:@[ assetPlaceholder ]];
-        }
-    } completionHandler:^(BOOL success, NSError *error) {
-        if (!success) {
-            if (completionBlock){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(nil, error);
-                });
+
+    [self checkPermissionStatus:^(PHAuthorizationStatus status) {
+
+        [self registerPHChangeObserver];
+
+        switch (status) {
+            case PHAuthorizationStatusRestricted:
+            {
+                if (completionBlock) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodeRestricted userInfo:nil];
+                        completionBlock(nil, error);
+                    });
+                }
+                return;
             }
-            return;
-        }
-        PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"(localIdentifier == %@)", assetIdentifier];
-        PHFetchResult * result = [PHAsset fetchAssetsWithOptions:fetchOptions];
-        if (result.count < 1){
-            if (completionBlock){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(nil, error);
-                });
+            case PHAuthorizationStatusDenied:
+            case PHAuthorizationStatusLimited:
+            {
+                if (completionBlock) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain code:WPMediaPickerErrorCodePermissionDenied userInfo:nil];
+                        completionBlock(nil, error);
+                    });
+                }
+                return;
             }
-            return;
-        }
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock([result firstObject], nil);
-            });
+            case PHAuthorizationStatusNotDetermined:
+            {
+                [self checkPermissionStatus:^(PHAuthorizationStatus status) {
+                    [self addAssetWithChangeRequest:changeRequestBlock completionBlock:completionBlock];
+                }];
+                return;
+            }
+            case PHAuthorizationStatusAuthorized:
+            {
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+                    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                        // Request creating an asset from the image.
+                        PHAssetChangeRequest *createAssetRequest = changeRequestBlock();
+                        PHObjectPlaceholder *assetPlaceholder = [createAssetRequest placeholderForCreatedAsset];
+                        assetIdentifier = [assetPlaceholder localIdentifier];
+                        if ([self.activeAssetsCollection canPerformEditOperation:PHCollectionEditOperationAddContent]) {
+                            // Request editing the album.
+                            PHAssetCollectionChangeRequest *albumChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:self.activeAssetsCollection];
+                            [albumChangeRequest addAssets:@[ assetPlaceholder ]];
+                        }
+                    } completionHandler:^(BOOL success, NSError *error) {
+                        if (!success) {
+                            if (completionBlock){
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    completionBlock(nil, error);
+                                });
+                            }
+                            return;
+                        }
+                        PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+                        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"(localIdentifier == %@)", assetIdentifier];
+                        PHFetchResult * result = [PHAsset fetchAssetsWithOptions:fetchOptions];
+                        if (result.count < 1){
+                            if (completionBlock){
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    completionBlock(nil, error);
+                                });
+                            }
+                            return;
+                        }
+                        if (completionBlock) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                completionBlock([result firstObject], nil);
+                            });
+                        }
+                    }];
+                });
+                return;
+            }
         }
     }];
 }
@@ -493,6 +531,16 @@
     _mediaTypeFilter = filter;
     //if we change the filter we need to update the groups to reflect the new filter
     _refreshGroups = YES;
+}
+
+- (void)registerPHChangeObserver
+{
+
+    /// Starting from iOS 15.2 we should do the registration
+    /// after asking user for permission
+    /// Solution proposed here - https://developer.apple.com/forums/thread/696804
+    ///
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
 @end
