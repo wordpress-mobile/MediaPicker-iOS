@@ -1451,10 +1451,9 @@ referenceSizeForFooterInSection:(NSInteger)section
 
         if ([self.searchBar.text isEqualToString:@""]) {
             emptyViewFrame.origin.y -= self.searchBar.frame.size.height/2;
-        } else {
-            emptyViewFrame.origin.y = self.searchBarTopConstraint.constant;
         }
-
+        emptyViewFrame.size.height -= self.view.layoutMargins.bottom;
+        emptyViewFrame.size.height -= self.view.layoutMargins.top;
         _emptyViewController.view.frame = emptyViewFrame;
     } else {
         self.emptyView.center = self.collectionView.center;
