@@ -49,6 +49,7 @@
 		17475FB71FB46DED00252689 /* SampleCellOverlayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SampleCellOverlayView.m; sourceTree = "<group>"; };
 		17F64FDE1E6DDC74006C5A2B /* CustomPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPreviewViewController.h; sourceTree = "<group>"; };
 		17F64FDF1E6DDC74006C5A2B /* CustomPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPreviewViewController.m; sourceTree = "<group>"; };
+		3F3E104528A0BAAE0041FA5A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		5709B45B57F590232B3E5DA7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* WPMediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WPMediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -189,6 +190,7 @@
 			children = (
 				6003F5BB195388D20070C39A /* WPDateTimeHelpersTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
+				3F3E104528A0BAAE0041FA5A /* UnitTests.xctestplan */,
 			);
 			path = Tests;
 			sourceTree = "<group>";

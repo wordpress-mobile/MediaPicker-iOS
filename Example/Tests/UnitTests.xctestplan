@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "0B1AE21B-1942-457C-8E85-D1D9F3281758",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WPMediaPicker.xcodeproj",
+        "identifier" : "6003F5AD195388D20070C39A",
+        "name" : "Tests"
+      }
+    }
+  ],
+  "version" : 1
+}
