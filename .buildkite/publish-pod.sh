@@ -4,10 +4,13 @@ PODSPEC_PATH="WPMediaPicker.podspec"
 SLACK_WEBHOOK=$PODS_SLACK_WEBHOOK
 
 echo "--- :rubygems: Setting up Gems"
+# See https://github.com/Automattic/bash-cache-buildkite-plugin/issues/16
+gem install bundler
+
 install_gems
 
 echo "--- :cocoapods: Publishing Pod to CocoaPods CDN"
 publish_pod $PODSPEC_PATH
 
 echo "--- :slack: Notifying Slack"
-slack_notify_pod_published $PODSPEC_PATH $SLACK_WEBHOOK
+slack_notify_pod_published $PODSPEC_PATH "$SLACK_WEBHOOK"
