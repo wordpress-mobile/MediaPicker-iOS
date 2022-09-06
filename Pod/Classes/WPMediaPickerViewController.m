@@ -682,16 +682,11 @@ static CGFloat SelectAnimationTime = 0.2;
     }
     __weak __typeof__(self) weakSelf = self;
     [self.collectionView performBatchUpdates:^{
-        if (removed) {
+        if ([removed count] > 0) {
             [self.collectionView deleteItemsAtIndexPaths:[self indexPathsFromIndexSet:removed section:0]];
         }
-        if (inserted) {
+        if ([inserted count] > 0) {
             [self.collectionView insertItemsAtIndexPaths:[self indexPathsFromIndexSet:inserted section:0]];
-        }
-        NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
-        for (NSIndexPath *indexPath in indexPaths) {
-            WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-            [self configureCell:cell forIndexPath:indexPath];
         }
         for (id<WPMediaMove> move in moves) {
             [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
@@ -702,7 +697,9 @@ static CGFloat SelectAnimationTime = 0.2;
         }
     } completion:^(BOOL finished) {
         [weakSelf refreshSelection];
-        [weakSelf.collectionView reloadItemsAtIndexPaths:weakSelf.collectionView.indexPathsForSelectedItems];
+        NSMutableSet<NSIndexPath *> *indexPaths = [NSMutableSet setWithArray:[weakSelf indexPathsFromIndexSet:changed section:0]];
+        [indexPaths addObjectsFromArray:weakSelf.collectionView.indexPathsForSelectedItems];
+        [weakSelf.collectionView reloadItemsAtIndexPaths:[indexPaths allObjects]];
     }];
 
 }
