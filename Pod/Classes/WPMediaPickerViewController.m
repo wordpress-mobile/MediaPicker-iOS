@@ -682,16 +682,14 @@ static CGFloat SelectAnimationTime = 0.2;
     }
     __weak __typeof__(self) weakSelf = self;
     [self.collectionView performBatchUpdates:^{
-        if (removed) {
+        if ([removed count] > 0) {
             [self.collectionView deleteItemsAtIndexPaths:[self indexPathsFromIndexSet:removed section:0]];
         }
-        if (inserted) {
+        if ([inserted count] > 0) {
             [self.collectionView insertItemsAtIndexPaths:[self indexPathsFromIndexSet:inserted section:0]];
         }
-        NSArray<NSIndexPath *> *indexPaths = [self indexPathsFromIndexSet:changed section:0];
-        for (NSIndexPath *indexPath in indexPaths) {
-            WPMediaCollectionViewCell *cell = (WPMediaCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-            [self configureCell:cell forIndexPath:indexPath];
+        if ([changed count] > 0) {
+            [self.collectionView reloadItemsAtIndexPaths:[self indexPathsFromIndexSet:changed section:0]];
         }
         for (id<WPMediaMove> move in moves) {
             [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]

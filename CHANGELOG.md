@@ -2,33 +2,10 @@
 All notable changes to this project will be documented in this file.
 `WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
 
-#### Releases
-- `1.8.1` Release  - [1.8.1](#1.8.1)
-- `1.8.0` Release  - [1.8](#1.8.0)
-- `1.7.0` Release  - [1.7](#1.7.0)
-- `1.6.0` Release  - [1.6](#1.6.0)
-- `1.5.0` Release  - [1.5](#1.5.0)
-- `1.4.2` Release  - [1.4.2](#1.4.2)
-- `1.4` Release  - [1.4](#1.4)
-- `1.3.4` Release  - [1.3.4](#1.3.4)
-- `1.3` Release  - [1.3](#1.3)
-- `1.2` Release  - [1.2](#1.2)
-- `1.1` Release  - [1.1](#1.1)
-- `1.0` Release  - [1.0](#1.0)
-- `0.28` Release  - [0.28](#28)
-- `0.27` Release  - [0.27](#27)
-- `0.26` Release  - [0.26](#26)
-- `0.25` Release  - [0.25](#25)
-- `0.24` Release  - [0.24](#24)
-- `0.23` Release  - [0.23](#23)
-- `0.22` Release  - [0.22](#22)
-- `0.21` Release  - [0.21](#21)
-- `0.20` Release  - [0.20](#20)
-- `0.19` Release  - [0.19](#19)
-- `0.18` Releases - [0.18](#18)
-- `0.17` Releases - [0.17](#17)
-- `0.16` Releases - [0.16](#16)
-- `0.15` Releases - [0.15](#15)
+---
+## [1.8.5](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.5)
+### Changes
+- Fix issue where incorrect thumbnails are displayed during incremental updates.
 
 ---
 ## [1.8.1](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.1)
