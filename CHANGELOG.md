@@ -1,6 +1,54 @@
-# Change Log
-All notable changes to this project will be documented in this file.
-`WPMediaPicker` adheres to [Semantic Versioning](http://semver.org/).
+# Changelog
+
+The format of this document is inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+<!-- This is a comment, you won't see it when GitHub renders the Markdown file.
+
+When releasing a new version:
+
+1. Remove any empty section (those with `_None._`)
+2. Update the `## Unreleased` header to `## [<version_number>](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/<version_number>)`
+3. Add a new "Unreleased" section for the next iteration, by copy/pasting the following template:
+
+## Unreleased
+
+### Breaking Changes
+
+_None._
+
+### New Features
+
+_None._
+
+### Bug Fixes
+
+_None._
+
+### Internal Changes
+
+_None._
+
+-->
+
+## Unreleased
+
+### Breaking Changes
+
+_None._
+
+### New Features
+
+_None._
+
+### Bug Fixes
+
+_None._
+
+### Internal Changes
+
+- Add this changelog file [#396]
+
+_Versions below this precede the Keep a Changelog-inspired formatting._
 
 ---
 ## [1.8.5](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.5)
@@ -70,7 +118,7 @@ Released on 2019-04-24. All issues associated with this milestone can be found u
 Released on 2018-06-21. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.3).
 
 ### Fixed
-- Check for nil for empty View Controller. #304 
+- Check for nil for empty View Controller. #304
 
 ---
 ## [1.2](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.2)
@@ -83,7 +131,7 @@ Released on 2018-06-21. All issues associated with this milestone can be found u
 ---
 ## [1.1](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.1)
 Released on 2018-06-21. All issues associated with this milestone can be found using this [filter](https://github.com/wordpress-mobile/MediaPicker-iOS/pulls?utf8=✓&q=is%3Apr%20is%3Aclosed%20milestone%3A1.1).
-  
+
 ### Added
 - Added the possibility to configure a badge on the top left of the media cells. Good to display extra info about the media object. #295 #296 #299
 - It's now possible to configure the display of the each media on the carrousel view. #300
