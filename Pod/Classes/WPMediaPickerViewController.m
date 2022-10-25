@@ -51,7 +51,7 @@ static NSString *const CustomHeaderReuseIdentifier = @"CustomHeaderReuseIdentifi
 @property (nonatomic, strong) UILabel *defaultEmptyView;
 @property (nonatomic, strong) UIViewController *emptyViewController;
 @property (nonatomic, strong) UIViewController *defaultEmptyViewController;
-
+@property (nonatomic, strong) NSLayoutConstraint *emptyViewBottomConstraint;
 
 @property (nonatomic, strong) WPActionBar *accessoryActionBar;
 @property (nonatomic, strong) UIButton *selectedActionButton;
@@ -97,15 +97,13 @@ static CGFloat SelectAnimationTime = 0.2;
 {
     [super viewDidLoad];
 
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
-    [self.collectionView addSubview:self.refreshControl];
-
     // Setup subviews
+    [self setupPullToRefresh];
     [self addCollectionViewToView];
-    [self addEmptyViewToView];
     [self setupCollectionView];
     [self setupSearchBar];
+    [self addEmptyViewToView];
+
     [self setupLayout];
 
     //setup data
@@ -117,6 +115,13 @@ static CGFloat SelectAnimationTime = 0.2;
     self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
     
     [self refreshDataAnimated:NO];
+}
+
+- (void)setupPullToRefresh
+{
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
 }
 
 - (void)registerDataSourceObservers {
@@ -623,13 +628,26 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)addEmptyViewControllerToView
 {
-    if (self.emptyViewController && self.emptyViewController.view.superview == nil) {
-        [self.collectionView addSubview:self.emptyViewController.view];
-        self.emptyViewController.view.frame = self.collectionView.frame;
-        [self addChildViewController:self.emptyViewController];
-        [self.emptyViewController didMoveToParentViewController:self];
-        [self centerEmptyView];
+    if (!self.emptyViewController && self.emptyViewController.view.superview != nil) {
+        return;
     }
+
+    [self addChildViewController:self.emptyViewController];
+    [self.emptyViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.collectionView addSubview:self.emptyViewController.view];
+
+    self.emptyViewBottomConstraint = [self.emptyViewController.view.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor];
+
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [self.emptyViewController.view.topAnchor constraintEqualToAnchor:self.collectionView.topAnchor],
+       self.emptyViewBottomConstraint,
+       [self.emptyViewController.view.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+       [self.emptyViewController.view.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+       ]
+     ];
+
+    [self.emptyViewController didMoveToParentViewController:self];
 }
 
 - (void)removeEmptyViewControllerFromView
@@ -1419,6 +1437,7 @@ referenceSizeForFooterInSection:(NSInteger)section
     }
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
+    [self.emptyViewBottomConstraint setConstant:-keyboardFrameEnd.size.height];
 
     [UIView animateWithDuration:0.2 animations:^{
         [self centerEmptyView];
@@ -1432,6 +1451,7 @@ referenceSizeForFooterInSection:(NSInteger)section
     contentInset.bottom = 0.f;
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
+    [self.emptyViewBottomConstraint setConstant:0.f];
 
     [UIView animateWithDuration:0.2 animations:^{
         [self centerEmptyView];
@@ -1445,35 +1465,18 @@ referenceSizeForFooterInSection:(NSInteger)section
 - (void)centerEmptyView
 {
     if (self.emptyViewController) {
-        CGRect emptyViewFrame = [self getEmptyViewFrame];
-
-        if ([self.searchBar.text isEqualToString:@""]) {
-            emptyViewFrame.origin.y -= self.searchBar.frame.size.height/2;
-        }
-        emptyViewFrame.size.height -= self.view.layoutMargins.bottom;
-        emptyViewFrame.size.height -= self.view.layoutMargins.top;
-        _emptyViewController.view.frame = emptyViewFrame;
+        [self.view layoutIfNeeded];
     } else {
         self.emptyView.center = self.collectionView.center;
         self.emptyView.frame = [self getEmptyViewFrame];
-    }
+   }
 }
 
 - (CGRect)getEmptyViewFrame
 {
-    CGRect emptyViewFrame;
+    CGRect emptyViewFrame = self.emptyView.frame;
 
-    if (_emptyViewController) {
-        emptyViewFrame = self.collectionView.frame;
-    } else {
-        emptyViewFrame = self.emptyView.frame;
-    }
-
-    CGFloat superviewHeight = self.collectionView.frame.size.height;
-    CGFloat totalInsets = self.collectionView.contentInset.top + self.collectionView.contentInset.bottom;
-
-    superviewHeight = superviewHeight - totalInsets > 0 ? superviewHeight - totalInsets : superviewHeight;
-    emptyViewFrame.origin.y = (superviewHeight / 2.0) - (emptyViewFrame.size.height / 2.0) + self.collectionView.frame.origin.y;
+    emptyViewFrame.origin.y = self.collectionView.frame.origin.y;
 
     return emptyViewFrame;
 }
