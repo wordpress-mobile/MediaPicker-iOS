@@ -46,6 +46,7 @@ static NSString *const CustomHeaderReuseIdentifier = @"CustomHeaderReuseIdentifi
 
 @property (nonatomic, strong, readwrite) UISearchBar *searchBar;
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopConstraint;
+@property (nonatomic, assign) CGFloat currentKeyboardHeight;
 
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, strong) UILabel *defaultEmptyView;
@@ -637,6 +638,7 @@ static CGFloat SelectAnimationTime = 0.2;
     [self.collectionView addSubview:self.emptyViewController.view];
 
     self.emptyViewBottomConstraint = [self.emptyViewController.view.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor];
+    [self.emptyViewBottomConstraint setConstant:-self.currentKeyboardHeight];
 
     [NSLayoutConstraint activateConstraints:
      @[
@@ -1441,7 +1443,8 @@ referenceSizeForFooterInSection:(NSInteger)section
     }
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
-    [self.emptyViewBottomConstraint setConstant:-keyboardFrameEnd.size.height];
+    self.currentKeyboardHeight = keyboardFrameEnd.size.height;
+    [self.emptyViewBottomConstraint setConstant:-self.currentKeyboardHeight];
 
     [UIView animateWithDuration:0.2 animations:^{
         [self centerEmptyView];
@@ -1455,7 +1458,8 @@ referenceSizeForFooterInSection:(NSInteger)section
     contentInset.bottom = 0.f;
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
-    [self.emptyViewBottomConstraint setConstant:0.f];
+    self.currentKeyboardHeight = 0.f;
+    [self.emptyViewBottomConstraint setConstant:self.currentKeyboardHeight];
 
     [UIView animateWithDuration:0.2 animations:^{
         [self centerEmptyView];
