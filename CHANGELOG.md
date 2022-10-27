@@ -46,9 +46,19 @@ _None._
 
 ### Internal Changes
 
-- Add this changelog file [#396]
+_None._
 
 _Versions below this precede the Keep a Changelog-inspired formatting._
+
+## [1.8.6](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.6)
+
+### Bug Fixes
+
+- Fix a crash that happens during an incremental update to a large media library. [#398]
+
+### Internal Changes
+
+- Add this changelog file [#396]
 
 ---
 ## [1.8.5](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.5)
