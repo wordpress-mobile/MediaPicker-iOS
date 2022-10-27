@@ -706,9 +706,6 @@ static CGFloat SelectAnimationTime = 0.2;
         if ([inserted count] > 0) {
             [self.collectionView insertItemsAtIndexPaths:[self indexPathsFromIndexSet:inserted section:0]];
         }
-        if ([changed count] > 0) {
-            [self.collectionView reloadItemsAtIndexPaths:[self indexPathsFromIndexSet:changed section:0]];
-        }
         for (id<WPMediaMove> move in moves) {
             [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:[move from] inSection:0]
                                          toIndexPath:[NSIndexPath indexPathForItem:[move to] inSection:0]];
@@ -717,8 +714,15 @@ static CGFloat SelectAnimationTime = 0.2;
             }
         }
     } completion:^(BOOL finished) {
+        if (weakSelf == nil) {
+            return;
+        }
         [weakSelf refreshSelection];
-        [weakSelf.collectionView reloadItemsAtIndexPaths:weakSelf.collectionView.indexPathsForSelectedItems];
+        // Reloading the changed items here rather than in the batch update block above to fix this issue:
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/19505
+        NSMutableSet<NSIndexPath *> *indexPaths = [NSMutableSet setWithArray:[weakSelf indexPathsFromIndexSet:changed section:0]];
+        [indexPaths addObjectsFromArray:weakSelf.collectionView.indexPathsForSelectedItems];
+        [weakSelf.collectionView reloadItemsAtIndexPaths:[indexPaths allObjects]];
     }];
 
 }
