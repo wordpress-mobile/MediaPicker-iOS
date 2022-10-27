@@ -54,7 +54,7 @@ _Versions below this precede the Keep a Changelog-inspired formatting._
 
 ### Bug Fixes
 
-- Fix an crash that happens during an incremental update to a large media library.
+- Fix a crash that happens during an incremental update to a large media library. [#398]
 
 ### Internal Changes
 
