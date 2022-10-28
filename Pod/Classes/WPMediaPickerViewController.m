@@ -588,6 +588,8 @@ static CGFloat SelectAnimationTime = 0.2;
 
 #pragma mark - Empty View support
 
+/** An empty view container to hold the emptyViewController or emptyView that comes from the delegate
+ */
 - (void)addContainerEmptyView
 {
     if (self.containerEmptyView != nil && self.containerEmptyView.superview != nil) {
@@ -629,6 +631,8 @@ static CGFloat SelectAnimationTime = 0.2;
     return _emptyView;
 }
 
+/** Checks if the parentViewController is providing a custom empty ViewController to be added, if not, add a provided custom emptyView
+ */
 - (void)selectEmptyView
 {
     if ([self usingEmptyViewController]) {
