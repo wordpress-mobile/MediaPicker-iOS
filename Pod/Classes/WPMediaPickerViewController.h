@@ -222,6 +222,9 @@
  *  @return An empty view to display or `nil` to not display any.
  *
  *  If this method is not implemented, a default UILabel will be displayed.
+ *
+ *  In case of (emptyViewControllerForMediaPickerController) and (emptyViewForMediaPickerController) are both implemented by a parent ViewController,
+ *  the first one has precedence over the second one to be presented to the user.
  */
 - (nullable UIView *)emptyViewForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
 
@@ -235,6 +238,9 @@
  *
  *  If this method is not implemented, a default ViewController with a default
  *  UILabel will be displayed.
+ *
+ *  In case of (emptyViewControllerForMediaPickerController) and (emptyViewForMediaPickerController) are both implemented by a parent ViewController,
+ *  the first one has precedence over the second one to be presented to the user.
  */
 - (nullable UIViewController *)emptyViewControllerForMediaPickerController:(nonnull WPMediaPickerViewController *)picker;
 
