@@ -593,6 +593,7 @@ static CGFloat SelectAnimationTime = 0.2;
 - (void)addContainerEmptyView
 {
     if (self.emptyViewContainer != nil && self.emptyViewContainer.superview != nil) {
+        self.emptyViewContainer.hidden = false;
         [self addEmptyViewToContainer];
         return;
     }
@@ -692,29 +693,6 @@ static CGFloat SelectAnimationTime = 0.2;
      ];
 
     [self.emptyViewController didMoveToParentViewController:self];
-}
-
-- (void)removeContainerEmptyView
-{
-    [self removeEmptyViewControllerFromView];
-    [self removeEmptyView];
-    [_emptyViewContainer removeFromSuperview];
-}
-
-- (void)removeEmptyView
-{
-    if(_emptyView) {
-        [_emptyView removeFromSuperview];
-    }
-}
-
-- (void)removeEmptyViewControllerFromView
-{
-    if (_emptyViewController) {
-        [_emptyViewController willMoveToParentViewController:nil];
-        [_emptyViewController.view removeFromSuperview];
-        [_emptyViewController removeFromParentViewController];
-    }
 }
 
 - (UIViewController *)emptyViewController
@@ -945,7 +923,7 @@ static CGFloat SelectAnimationTime = 0.2;
 - (void)toggleEmptyViewFor:(NSInteger)numberOfAssets
 {
     if (numberOfAssets > 0) {
-        [self removeContainerEmptyView];
+        self.emptyViewContainer.hidden = true;
     } else {
         [self addContainerEmptyView];
     }
