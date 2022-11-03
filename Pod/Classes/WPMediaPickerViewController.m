@@ -104,8 +104,8 @@ static CGFloat SelectAnimationTime = 0.2;
     [self addCollectionViewToView];
     [self setupCollectionView];
     [self setupSearchBar];
-
     [self setupLayout];
+    [self addEmptyViewContainer];
 
     //setup data
     [self.dataSource setMediaTypeFilter:self.options.filter];
@@ -590,14 +590,8 @@ static CGFloat SelectAnimationTime = 0.2;
 
 /** An empty view container to hold the emptyViewController or emptyView that comes from the delegate
  */
-- (void)addContainerEmptyView
+- (void)addEmptyViewContainer
 {
-    if (self.emptyViewContainer != nil && self.emptyViewContainer.superview != nil) {
-        self.emptyViewContainer.hidden = false;
-        [self addEmptyViewToContainer];
-        return;
-    }
-
     self.emptyViewContainer = [[UIView alloc] initWithFrame:self.collectionView.frame];
     [self.emptyViewContainer setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.collectionView addSubview:self.emptyViewContainer];
@@ -613,8 +607,6 @@ static CGFloat SelectAnimationTime = 0.2;
        [self.emptyViewContainer.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
        ]
      ];
-    
-    [self addEmptyViewToContainer];
 }
 
 - (UIView *)emptyView
@@ -634,12 +626,12 @@ static CGFloat SelectAnimationTime = 0.2;
 
 /** Checks if the parentViewController is providing a custom empty ViewController to be added, if not, add a provided custom emptyView
  */
-- (void)addEmptyViewToContainer
+- (void)populateEmptyViewContainer
 {
     if ([self usingEmptyViewController]) {
-        [self addEmptyViewControllerToView];
+        [self addEmptyViewControllerToContainer];
     } else {
-        [self addEmptyViewToView];
+        [self addEmptyViewToContainer];
     }
 }
 
@@ -654,7 +646,7 @@ static CGFloat SelectAnimationTime = 0.2;
     return _defaultEmptyView;
 }
 
-- (void)addEmptyViewToView
+- (void)addEmptyViewToContainer
 {
     if (self.emptyView != nil && self.emptyView.superview != nil) {
         return;
@@ -673,7 +665,7 @@ static CGFloat SelectAnimationTime = 0.2;
 
 #pragma mark - Empty View Controller support
 
-- (void)addEmptyViewControllerToView
+- (void)addEmptyViewControllerToContainer
 {
     if (self.emptyViewController != nil && self.emptyViewController.view.superview != nil) {
         return;
@@ -923,12 +915,12 @@ static CGFloat SelectAnimationTime = 0.2;
 - (void)toggleEmptyViewFor:(NSInteger)numberOfAssets
 {
     if (numberOfAssets > 0) {
-        self.emptyViewContainer.hidden = true;
+        [self.emptyViewContainer setHidden: YES];
     } else {
-        [self addContainerEmptyView];
+        [self.emptyViewContainer setHidden: NO];
+        [self populateEmptyViewContainer];
     }
 }
-
 
 - (id<WPMediaAsset>)assetForPosition:(NSIndexPath *)indexPath
 {
