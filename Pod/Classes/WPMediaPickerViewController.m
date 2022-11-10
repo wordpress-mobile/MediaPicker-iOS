@@ -46,12 +46,14 @@ static NSString *const CustomHeaderReuseIdentifier = @"CustomHeaderReuseIdentifi
 
 @property (nonatomic, strong, readwrite) UISearchBar *searchBar;
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopConstraint;
+@property (nonatomic, assign) CGFloat currentKeyboardHeight;
 
 @property (nonatomic, strong) UIView *emptyView;
+@property (nonatomic, strong) UIView *emptyViewContainer;
 @property (nonatomic, strong) UILabel *defaultEmptyView;
 @property (nonatomic, strong) UIViewController *emptyViewController;
 @property (nonatomic, strong) UIViewController *defaultEmptyViewController;
-
+@property (nonatomic, strong) NSLayoutConstraint *emptyViewBottomConstraint;
 
 @property (nonatomic, strong) WPActionBar *accessoryActionBar;
 @property (nonatomic, strong) UIButton *selectedActionButton;
@@ -97,16 +99,13 @@ static CGFloat SelectAnimationTime = 0.2;
 {
     [super viewDidLoad];
 
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
-    [self.collectionView addSubview:self.refreshControl];
-
     // Setup subviews
+    [self setupPullToRefresh];
     [self addCollectionViewToView];
-    [self addEmptyViewToView];
     [self setupCollectionView];
     [self setupSearchBar];
     [self setupLayout];
+    [self addEmptyViewContainer];
 
     //setup data
     [self.dataSource setMediaTypeFilter:self.options.filter];
@@ -117,6 +116,13 @@ static CGFloat SelectAnimationTime = 0.2;
     self.layout.sectionInsetReference = UICollectionViewFlowLayoutSectionInsetFromSafeArea;
     
     [self refreshDataAnimated:NO];
+}
+
+- (void)setupPullToRefresh
+{
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
 }
 
 - (void)registerDataSourceObservers {
@@ -227,7 +233,7 @@ static CGFloat SelectAnimationTime = 0.2;
     layout.minimumInteritemSpacing = photoSpacing;
 
     [self resetContentInset];
-    [self centerEmptyView];
+    [self.view layoutIfNeeded];
 }
 
 - (void)resetContentInset
@@ -582,6 +588,27 @@ static CGFloat SelectAnimationTime = 0.2;
 
 #pragma mark - Empty View support
 
+/** An empty view container to hold the emptyViewController or emptyView that comes from the delegate
+ */
+- (void)addEmptyViewContainer
+{
+    self.emptyViewContainer = [[UIView alloc] initWithFrame:self.collectionView.frame];
+    [self.emptyViewContainer setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.collectionView addSubview:self.emptyViewContainer];
+    
+    self.emptyViewBottomConstraint = [self.emptyViewContainer.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor];
+    [self.emptyViewBottomConstraint setConstant:-self.currentKeyboardHeight];
+
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [self.emptyViewContainer.topAnchor constraintEqualToAnchor:self.collectionView.topAnchor],
+       self.emptyViewBottomConstraint,
+       [self.emptyViewContainer.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+       [self.emptyViewContainer.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+       ]
+     ];
+}
+
 - (UIView *)emptyView
 {
     if (_emptyView) {
@@ -597,14 +624,14 @@ static CGFloat SelectAnimationTime = 0.2;
     return _emptyView;
 }
 
-- (void)addEmptyViewToView
+/** Checks if the parentViewController is providing a custom empty ViewController to be added, if not, add a provided custom emptyView
+ */
+- (void)populateEmptyViewContainer
 {
     if ([self usingEmptyViewController]) {
-        [self addEmptyViewControllerToView];
+        [self addEmptyViewControllerToContainer];
     } else {
-        if (self.emptyView.superview == nil) {
-            [self.collectionView addSubview:_emptyView];
-        }
+        [self addEmptyViewToContainer];
     }
 }
 
@@ -619,24 +646,45 @@ static CGFloat SelectAnimationTime = 0.2;
     return _defaultEmptyView;
 }
 
-#pragma mark - Empty View Controller support
-
-- (void)addEmptyViewControllerToView
+- (void)addEmptyViewToContainer
 {
-    if (self.emptyViewController && self.emptyViewController.view.superview == nil) {
-        [self.collectionView addSubview:self.emptyViewController.view];
-        self.emptyViewController.view.frame = self.collectionView.frame;
-        [self addChildViewController:self.emptyViewController];
-        [self.emptyViewController didMoveToParentViewController:self];
-        [self centerEmptyView];
+    if (self.emptyView != nil && self.emptyView.superview != nil) {
+        return;
     }
+
+    [self.emptyView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.emptyViewContainer addSubview:self.emptyView];
+    
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [self.emptyView.centerYAnchor constraintEqualToAnchor:self.emptyViewContainer.centerYAnchor],
+       [self.emptyView.centerXAnchor constraintEqualToAnchor:self.emptyViewContainer.centerXAnchor]
+       ]
+     ];
 }
 
-- (void)removeEmptyViewControllerFromView
+#pragma mark - Empty View Controller support
+
+- (void)addEmptyViewControllerToContainer
 {
-    [_emptyViewController willMoveToParentViewController:nil];
-    [_emptyViewController.view removeFromSuperview];
-    [_emptyViewController removeFromParentViewController];
+    if (self.emptyViewController != nil && self.emptyViewController.view.superview != nil) {
+        return;
+    }
+
+    [self addChildViewController:self.emptyViewController];
+    [self.emptyViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.emptyViewContainer addSubview:self.emptyViewController.view];
+
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [self.emptyViewController.view.topAnchor constraintEqualToAnchor:self.emptyViewContainer.topAnchor],
+       [self.emptyViewController.view.bottomAnchor constraintEqualToAnchor:self.emptyViewContainer.bottomAnchor],
+       [self.emptyViewController.view.leadingAnchor constraintEqualToAnchor:self.emptyViewContainer.leadingAnchor],
+       [self.emptyViewController.view.trailingAnchor constraintEqualToAnchor:self.emptyViewContainer.trailingAnchor]
+       ]
+     ];
+
+    [self.emptyViewController didMoveToParentViewController:self];
 }
 
 - (UIViewController *)emptyViewController
@@ -663,8 +711,15 @@ static CGFloat SelectAnimationTime = 0.2;
 
     _defaultEmptyViewController = [[UIViewController alloc] init];
     UILabel *emptyViewLabel = self.defaultEmptyView;
-    emptyViewLabel.center = _defaultEmptyViewController.view.center;
+    [emptyViewLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [[_defaultEmptyViewController view] addSubview:emptyViewLabel];
+
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [emptyViewLabel.centerYAnchor constraintEqualToAnchor:self.defaultEmptyViewController.view.centerYAnchor],
+       [emptyViewLabel.centerXAnchor constraintEqualToAnchor:self.defaultEmptyViewController.view.centerXAnchor]
+       ]
+     ];
 
     return _defaultEmptyViewController;
 }
@@ -859,17 +914,13 @@ static CGFloat SelectAnimationTime = 0.2;
 
 - (void)toggleEmptyViewFor:(NSInteger)numberOfAssets
 {
-    if ([self usingEmptyViewController]) {
-        if (numberOfAssets > 0) {
-            [self removeEmptyViewControllerFromView];
-        } else {
-            [self addEmptyViewControllerToView];
-        }
+    if (numberOfAssets > 0) {
+        [self.emptyViewContainer setHidden: YES];
     } else {
-        [self.emptyView setHidden:(numberOfAssets != 0)];
+        [self.emptyViewContainer setHidden: NO];
+        [self populateEmptyViewContainer];
     }
 }
-
 
 - (id<WPMediaAsset>)assetForPosition:(NSIndexPath *)indexPath
 {
@@ -1423,9 +1474,11 @@ referenceSizeForFooterInSection:(NSInteger)section
     }
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
+    self.currentKeyboardHeight = keyboardFrameEnd.size.height;
+    [self.emptyViewBottomConstraint setConstant:-self.currentKeyboardHeight];
 
     [UIView animateWithDuration:0.2 animations:^{
-        [self centerEmptyView];
+        [self.view layoutIfNeeded];
         [self.collectionView.collectionViewLayout invalidateLayout];
     }];
 }
@@ -1436,50 +1489,13 @@ referenceSizeForFooterInSection:(NSInteger)section
     contentInset.bottom = 0.f;
     self.collectionView.contentInset = contentInset;
     self.collectionView.scrollIndicatorInsets = contentInset;
+    self.currentKeyboardHeight = 0.f;
+    [self.emptyViewBottomConstraint setConstant:-self.currentKeyboardHeight];
 
     [UIView animateWithDuration:0.2 animations:^{
-        [self centerEmptyView];
+        [self.view layoutIfNeeded];
         [self.collectionView.collectionViewLayout invalidateLayout];
     }];
-}
-
-/**
- Centers the empty view taking into account the collection view height and content insets.
- */
-- (void)centerEmptyView
-{
-    if (self.emptyViewController) {
-        CGRect emptyViewFrame = [self getEmptyViewFrame];
-
-        if ([self.searchBar.text isEqualToString:@""]) {
-            emptyViewFrame.origin.y -= self.searchBar.frame.size.height/2;
-        }
-        emptyViewFrame.size.height -= self.view.layoutMargins.bottom;
-        emptyViewFrame.size.height -= self.view.layoutMargins.top;
-        _emptyViewController.view.frame = emptyViewFrame;
-    } else {
-        self.emptyView.center = self.collectionView.center;
-        self.emptyView.frame = [self getEmptyViewFrame];
-    }
-}
-
-- (CGRect)getEmptyViewFrame
-{
-    CGRect emptyViewFrame;
-
-    if (_emptyViewController) {
-        emptyViewFrame = self.collectionView.frame;
-    } else {
-        emptyViewFrame = self.emptyView.frame;
-    }
-
-    CGFloat superviewHeight = self.collectionView.frame.size.height;
-    CGFloat totalInsets = self.collectionView.contentInset.top + self.collectionView.contentInset.bottom;
-
-    superviewHeight = superviewHeight - totalInsets > 0 ? superviewHeight - totalInsets : superviewHeight;
-    emptyViewFrame.origin.y = (superviewHeight / 2.0) - (emptyViewFrame.size.height / 2.0) + self.collectionView.frame.origin.y;
-
-    return emptyViewFrame;
 }
 
 #pragma mark - WPAssetViewControllerDelegate
