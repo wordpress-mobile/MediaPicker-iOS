@@ -48,6 +48,12 @@ _None._
 
 _None._
 
+## [1.8.7](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.7)
+
+### Bug Fixes
+
+- Fix empty view position to avoid message disappearing when keyboard shows up. [#399]
+
 _Versions below this precede the Keep a Changelog-inspired formatting._
 
 ## [1.8.6](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.6)
