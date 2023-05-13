@@ -696,7 +696,8 @@ static CGFloat SelectAnimationTime = 0.2;
     if ([self usingEmptyViewController]) {
         _emptyViewController = [self.mediaPickerDelegate emptyViewControllerForMediaPickerController:self];
     }
-    else {
+
+    if (_emptyViewController == nil) {
         _emptyViewController = self.defaultEmptyViewController;
     }
     
