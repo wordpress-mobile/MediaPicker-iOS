@@ -48,7 +48,13 @@ _None._
 
 _None._
 
-## [1.8.7](https://github.com/wordpress-mobile/MediaPicker-iOS/releases/tag/1.8.7)
+## 1.8.8
+
+### Bug Fixes
+
+- Fix a possible crash when displaying an empty view [#409]
+
+## 1.8.7
 
 ### Bug Fixes
 
