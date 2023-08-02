@@ -134,7 +134,11 @@ static CGFloat SelectAnimationTime = 0.2;
                                     return;
                                 }
                                 if (incrementalChanges) {
-                                    [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
+                                    @try {
+                                        [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
+                                    } @catch (NSException *exception) {
+                                        [weakSelf.collectionView reloadData];
+                                    }
                                 } else {
                                     [weakSelf.collectionView reloadData];
                                 }
