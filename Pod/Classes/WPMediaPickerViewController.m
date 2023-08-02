@@ -134,7 +134,24 @@ static CGFloat SelectAnimationTime = 0.2;
                                     return;
                                 }
                                 if (incrementalChanges) {
-                                    [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
+                                    /// Avoid NSInternalInconsistencyException crash by wrapping performBatchUpdates in the try catch block.
+                                    ///
+                                    /// Apple documentation indicates if the collection view’s layout isn’t up to date before you call performBatchUpdates,
+                                    /// additional reload may occur that can cause problems. Developers should update the data model inside the updates
+                                    /// block or ensure the layout is updated before calling performBatchUpdates.
+                                    /// However, MediaLibraryPickerDataSource reloads the data source before view controller gets informed about updates,
+                                    /// creating a possibility for a crash.
+                                    /// https://developer.apple.com/documentation/uikit/uicollectionview/1618045-performbatchupdates
+                                    ///
+                                    /// Apple engineers reiterate this fact and point out the best way to avoid this issue is to adopt
+                                    /// UICollectionViewDiffableDataSource which requires refactoring of the current solution
+                                    /// https://developer.apple.com/forums/thread/728797?answerId=751887022#751887022
+                                    
+                                    @try {
+                                        [weakSelf updateDataWithRemoved:removed inserted:inserted changed:changed moved:moves];
+                                    } @catch (NSException *exception) {
+                                        [weakSelf.collectionView reloadData];
+                                    }
                                 } else {
                                     [weakSelf.collectionView reloadData];
                                 }

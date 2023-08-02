@@ -48,6 +48,12 @@ _None._
 
 _None._
 
+## 1.8.9
+
+### Bug Fixes
+
+- Fix WPMediaPickerViewController crash when performing batch updates [#412]
+
 ## 1.8.8
 
 ### Bug Fixes
