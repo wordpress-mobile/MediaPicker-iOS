@@ -52,7 +52,7 @@ _None._
 
 ### Bug Fixes
 
-- Fix WPMediaPickerViewController crash when performing batch updates [#412]
+- Fix `WPMediaPickerViewController` crash when performing batch updates [#412]
 
 ## 1.8.8
 
