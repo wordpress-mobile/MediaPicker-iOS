@@ -773,11 +773,16 @@ static CGFloat SelectAnimationTime = 0.2;
             return;
         }
         [weakSelf refreshSelection];
-        // Reloading the changed items here rather than in the batch update block above to fix this issue:
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/19505
-        NSMutableSet<NSIndexPath *> *indexPaths = [NSMutableSet setWithArray:[weakSelf indexPathsFromIndexSet:changed section:0]];
-        [indexPaths addObjectsFromArray:weakSelf.collectionView.indexPathsForSelectedItems];
-        [weakSelf.collectionView reloadItemsAtIndexPaths:[indexPaths allObjects]];
+
+        @try {
+            // Reloading the changed items here rather than in the batch update block above to fix this issue:
+            // https://github.com/wordpress-mobile/WordPress-iOS/issues/19505
+            NSMutableSet<NSIndexPath *> *indexPaths = [NSMutableSet setWithArray:[weakSelf indexPathsFromIndexSet:changed section:0]];
+            [indexPaths addObjectsFromArray:weakSelf.collectionView.indexPathsForSelectedItems];
+            [weakSelf.collectionView reloadItemsAtIndexPaths:[indexPaths allObjects]];
+        } @catch (NSException *exception) {
+            [weakSelf.collectionView reloadData];
+        }
     }];
 
 }
