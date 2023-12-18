@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/cocoapods/l/WPMediaPicker.svg?style=flat)](http://cocoadocs.org/docsets/WPMediaPicker)
 [![Platform](https://img.shields.io/cocoapods/p/WPMediaPicker.svg?style=flat)](http://cocoadocs.org/docsets/WPMediaPicker)
 
+⚠️ **The WPMediaFramework was decommissioned on Nov 27, 2023, and is no longer maintained.**
+
 WPMediaPicker is an iOS controller that allows capture and picking of media assets.
 It allows:
  * Allows selection of multiple media objects in one go.
