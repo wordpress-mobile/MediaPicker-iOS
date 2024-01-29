@@ -463,7 +463,6 @@
                 return;
             }
             case PHAuthorizationStatusDenied:
-            case PHAuthorizationStatusLimited:
             {
                 if (completionBlock) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -481,6 +480,7 @@
                 return;
             }
             case PHAuthorizationStatusAuthorized:
+            case PHAuthorizationStatusLimited:
             {
                 dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
                     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
