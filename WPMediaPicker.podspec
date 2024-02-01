@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name          = 'WPMediaPicker'
-  s.version       = '1.8.11-beta.1'
+  s.version       = '1.8.10'
 
   s.summary       = 'WPMediaPicker is an iOS controller that allows capture and picking of media assets.'
   s.description   = <<-DESC
