@@ -42,7 +42,7 @@ _None._
 
 ### Bug Fixes
 
-_None._
+- Allow camera use when limited photo library permission is granted [#419]
 
 ### Internal Changes
 
