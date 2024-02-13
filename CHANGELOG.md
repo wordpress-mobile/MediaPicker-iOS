@@ -42,11 +42,17 @@ _None._
 
 ### Bug Fixes
 
-- Allow camera use when limited photo library permission is granted [#419]
+_None._
 
 ### Internal Changes
 
 _None._
+
+## 1.8.11
+
+### Bug Fixes
+
+- Allow camera use when limited photo library permission is granted [#419]
 
 ## 1.8.10
 
