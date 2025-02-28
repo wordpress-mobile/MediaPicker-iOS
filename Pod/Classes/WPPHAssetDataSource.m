@@ -378,7 +378,10 @@
     NSMutableIndexSet *adjustedSet = [NSMutableIndexSet new];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
         if (idx < count) {
-            [adjustedSet addIndex:[self adjustedIndexForIndex:idx forCount: count]];
+            NSInteger adjustedIndex = [self adjustedIndexForIndex:idx forCount: count];
+            if (adjustedIndex < NSNotFound) {
+                [adjustedSet addIndex:adjustedIndex];
+            }
         }
     }];
 
