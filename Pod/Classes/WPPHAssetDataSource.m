@@ -97,8 +97,9 @@
         BOOL incrementalChanges = assetsChangeDetails.hasIncrementalChanges;
         // Capture removed, changed, and moved indexes before fetching results for incremental chaanges.
         // The adjustedIndex depends on the *old* asset count.
-        NSIndexSet *removedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.removedIndexes];
-        NSIndexSet *changedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.changedIndexes];
+        NSInteger oldCount = assetsChangeDetails.fetchResultBeforeChanges.count;
+        NSIndexSet *removedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.removedIndexes forCount:oldCount];
+        NSIndexSet *changedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.changedIndexes forCount:oldCount];
         NSMutableArray *moves = [NSMutableArray array];
         if  (assetsChangeDetails.hasMoves) {
             [assetsChangeDetails enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex) {
