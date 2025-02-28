@@ -360,7 +360,11 @@
     // Adjust the index so items are returned in reverse order.
     // We do this, rather than specifying the sort order in PHFetchOptions,
     // to preserve the sort order of assets in the Photos app (only in reverse).
-    return (count - 1) - index;
+    if (index < count) {
+        return (count - 1) - index;
+    } else {
+        @throw NSRangeException;
+    }
 }
 
 - (NSIndexSet *)adjustedIndexesForIndexSet:(NSIndexSet *)indexes
@@ -373,7 +377,7 @@
 {
     NSMutableIndexSet *adjustedSet = [NSMutableIndexSet new];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx != NSNotFound) {
+        if (idx < count) {
             [adjustedSet addIndex:[self adjustedIndexForIndex:idx forCount: count]];
         }
     }];
