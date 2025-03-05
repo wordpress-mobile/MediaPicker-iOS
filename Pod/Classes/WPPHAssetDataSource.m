@@ -97,8 +97,9 @@
         BOOL incrementalChanges = assetsChangeDetails.hasIncrementalChanges;
         // Capture removed, changed, and moved indexes before fetching results for incremental chaanges.
         // The adjustedIndex depends on the *old* asset count.
-        NSIndexSet *removedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.removedIndexes];
-        NSIndexSet *changedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.changedIndexes];
+        NSInteger oldCount = assetsChangeDetails.fetchResultBeforeChanges.count;
+        NSIndexSet *removedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.removedIndexes forCount:oldCount];
+        NSIndexSet *changedIndexes = [self adjustedIndexesForIndexSet:assetsChangeDetails.changedIndexes forCount:oldCount];
         NSMutableArray *moves = [NSMutableArray array];
         if  (assetsChangeDetails.hasMoves) {
             [assetsChangeDetails enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex) {
@@ -360,7 +361,11 @@
     // Adjust the index so items are returned in reverse order.
     // We do this, rather than specifying the sort order in PHFetchOptions,
     // to preserve the sort order of assets in the Photos app (only in reverse).
-    return (count - 1) - index;
+    if (index < count) {
+        return (count - 1) - index;
+    } else {
+        @throw NSRangeException;
+    }
 }
 
 - (NSIndexSet *)adjustedIndexesForIndexSet:(NSIndexSet *)indexes
@@ -373,8 +378,11 @@
 {
     NSMutableIndexSet *adjustedSet = [NSMutableIndexSet new];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx != NSNotFound) {
-            [adjustedSet addIndex:[self adjustedIndexForIndex:idx forCount: count]];
+        if (idx < count) {
+            NSInteger adjustedIndex = [self adjustedIndexForIndex:idx forCount: count];
+            if (adjustedIndex < NSNotFound) {
+                [adjustedSet addIndex:adjustedIndex];
+            }
         }
     }];
 

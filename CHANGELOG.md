@@ -48,6 +48,12 @@ _None._
 
 _None._
 
+## 1.8.12
+
+### Bug Fixes
+
+- Prevent crash when unexpected indexes received in a PHAsset changeset [#423]
+
 ## 1.8.11
 
 ### Bug Fixes
